@@ -14,7 +14,7 @@ import com.sharingif.cube.core.logger.LogbackConfigurer;
  */
 public class Bootstrap {
 	
-	private ClassPathXmlApplicationContext webApplicationContext;
+	private ClassPathXmlApplicationContext applicationContext;
 	
 	private void init() {
 		Runtime runtime = Runtime.getRuntime();
@@ -26,8 +26,7 @@ public class Bootstrap {
 			}
 		}, "detroy application context"));
 		
-		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:/config/ApplicationContext.xml");
-		webApplicationContext = new ClassPathXmlApplicationContext(new String[]{"classpath:/config/WebApplicationContext.xml"}, applicationContext);
+		applicationContext = new ClassPathXmlApplicationContext("classpath:/config/ApplicationContext.xml");
 		
 	}
 	
@@ -41,8 +40,8 @@ public class Bootstrap {
 	}
 	
 	public void stop() {
-		if(null != webApplicationContext)
-			webApplicationContext.close();
+		if(null != applicationContext)
+			applicationContext.close();
 		
 		LogbackConfigurer.shutdownLogging();
 	}
