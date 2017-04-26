@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
  */
 public class ZookeeperConnection implements Watcher {
 	
-	
 	private ZooKeeper zooKeeper;
 	
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
