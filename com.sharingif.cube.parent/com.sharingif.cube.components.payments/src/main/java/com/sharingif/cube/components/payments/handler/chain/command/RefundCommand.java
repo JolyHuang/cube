@@ -1,4 +1,4 @@
-package com.sharingif.cube.components.payments.method.chain.command;
+package com.sharingif.cube.components.payments.handler.chain.command;
 
 import com.sharingif.cube.communication.http.handler.HttpHandlerMethodContent;
 import com.sharingif.cube.components.payments.Payment;
