@@ -1,4 +1,4 @@
-package com.sharingif.cube.com.sharingif.cube.web.vert.x.request;
+package com.sharingif.cube.web.vert.x.request;
 
 import io.vertx.ext.web.RoutingContext;
 

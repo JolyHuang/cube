@@ -1,4 +1,4 @@
-package com.sharingif.cube.com.sharingif.cube.web.vert.x.transport;
+package com.sharingif.cube.web.vert.x.transport;
 
 import com.sharingif.cube.communication.exception.CommunicationException;
 import com.sharingif.cube.communication.http.HttpMethod;

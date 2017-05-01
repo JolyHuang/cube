@@ -1,4 +1,4 @@
-package com.sharingif.cube.com.sharingif.cube.web.vert.x.view;
+package com.sharingif.cube.web.vert.x.view;
 
 import org.springframework.http.MediaType;
 

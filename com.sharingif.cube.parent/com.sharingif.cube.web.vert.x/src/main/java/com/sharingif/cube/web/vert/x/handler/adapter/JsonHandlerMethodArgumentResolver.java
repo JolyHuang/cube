@@ -1,4 +1,4 @@
-package com.sharingif.cube.com.sharingif.cube.web.vert.x.handler.adapter;
+package com.sharingif.cube.web.vert.x.handler.adapter;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;

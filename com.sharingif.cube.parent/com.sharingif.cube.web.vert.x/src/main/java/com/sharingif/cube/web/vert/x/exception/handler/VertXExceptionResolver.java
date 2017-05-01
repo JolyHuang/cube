@@ -1,4 +1,4 @@
-package com.sharingif.cube.com.sharingif.cube.web.vert.x.exception.handler;
+package com.sharingif.cube.web.vert.x.exception.handler;
 
 import com.sharingif.cube.core.exception.handler.AbstractCubeExceptionHandler;
 import com.sharingif.cube.core.exception.handler.IExceptionResolver;

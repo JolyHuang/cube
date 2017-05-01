@@ -1,4 +1,4 @@
-package com.sharingif.cube.com.sharingif.cube.web.vert.x.http;
+package com.sharingif.cube.web.vert.x.http;
 
 import java.util.Enumeration;
 

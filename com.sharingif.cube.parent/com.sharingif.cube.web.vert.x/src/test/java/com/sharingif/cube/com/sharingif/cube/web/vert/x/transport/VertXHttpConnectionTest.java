@@ -17,6 +17,7 @@ import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.handler.bind.support.ConfigurableBindingInitializer;
 import com.sharingif.cube.core.handler.bind.support.DefaultDataBinderFactory;
 import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.web.vert.x.transport.VertXHttpJsonConnection;
 
 
 /**

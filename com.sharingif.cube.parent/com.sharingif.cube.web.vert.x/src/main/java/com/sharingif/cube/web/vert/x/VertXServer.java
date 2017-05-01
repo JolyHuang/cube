@@ -1,10 +1,10 @@
-package com.sharingif.cube.com.sharingif.cube.web.vert.x;
+package com.sharingif.cube.web.vert.x;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
-import com.sharingif.cube.com.sharingif.cube.web.vert.x.request.ExtendedRoutingContext;
 import com.sharingif.cube.communication.handler.DispatcherHandler;
+import com.sharingif.cube.web.vert.x.request.ExtendedRoutingContext;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;

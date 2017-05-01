@@ -1,4 +1,4 @@
-package com.sharingif.cube.com.sharingif.cube.web.vert.x.request;
+package com.sharingif.cube.web.vert.x.request;
 
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.core.request.RequestInfoResolver;
