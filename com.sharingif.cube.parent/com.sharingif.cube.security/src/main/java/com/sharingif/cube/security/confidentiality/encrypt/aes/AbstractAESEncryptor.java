@@ -11,6 +11,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import com.sharingif.cube.core.exception.CubeRuntimeException;
+import com.sharingif.cube.core.util.Charset;
 import com.sharingif.cube.security.binary.BinaryCoder;
 import com.sharingif.cube.security.binary.HexCoder;
 
@@ -26,8 +27,8 @@ public abstract class AbstractAESEncryptor {
 	//密钥算法
     private static final String KEY_ALGORITHM = "AES";
     
-  	private int keySize = 128;					// AES要求密钥长度为128,192,256位
-    private String charset = "UTF-8";			// 字符编码
+  	private int keySize = 128;									// AES要求密钥长度为128,192,256位
+    private String charset = Charset.UTF8.toString();			// 字符编码
     
 	private Cipher encryptCipher;
 	private Cipher decryptCipher;

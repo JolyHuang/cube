@@ -5,6 +5,7 @@ import java.io.UnsupportedEncodingException;
 import org.apache.commons.codec.binary.Base64;
 
 import com.sharingif.cube.core.exception.CubeRuntimeException;
+import com.sharingif.cube.core.util.Charset;
 
 /**
  * Base64编码器
@@ -15,7 +16,7 @@ import com.sharingif.cube.core.exception.CubeRuntimeException;
  */
 public class Base64Coder implements BinaryCoder {
 
-	private String charset = "UTF-8";			// 字符编码
+	private String charset = Charset.UTF8.toString();			// 字符编码
 	
 	@Override
 	public String getCharset() {

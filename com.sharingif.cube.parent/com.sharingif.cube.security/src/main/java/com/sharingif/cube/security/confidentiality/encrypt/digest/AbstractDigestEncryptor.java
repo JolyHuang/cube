@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import com.sharingif.cube.core.exception.CubeRuntimeException;
+import com.sharingif.cube.core.util.Charset;
 import com.sharingif.cube.security.binary.BinaryCoder;
 import com.sharingif.cube.security.binary.HexCoder;
 import com.sharingif.cube.security.confidentiality.encrypt.TextEncryptor;
@@ -18,8 +19,8 @@ import com.sharingif.cube.security.confidentiality.encrypt.TextEncryptor;
  */
 public abstract class AbstractDigestEncryptor implements TextEncryptor {
 	
-	private String charset = "UTF-8";				// 字符编码
-	private String salt;							// 盐值
+	private String charset = Charset.UTF8.toString();				// 字符编码
+	private String salt;											// 盐值
 	
 	private MessageDigest messageDigest;
 	private BinaryCoder binaryCoder;
