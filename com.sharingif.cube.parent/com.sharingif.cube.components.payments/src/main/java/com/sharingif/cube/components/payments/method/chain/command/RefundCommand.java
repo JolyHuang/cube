@@ -1,10 +1,10 @@
 package com.sharingif.cube.components.payments.method.chain.command;
 
-import com.sharingif.cube.communication.http.method.HttpHandlerMethodContent;
+import com.sharingif.cube.communication.http.handler.HttpHandlerMethodContent;
 import com.sharingif.cube.components.payments.Payment;
 import com.sharingif.cube.components.payments.PaymentServiceProxy;
 import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.web.method.chain.command.AbstractWebHandlerMethodCommand;
+import com.sharingif.cube.web.handler.chain.command.AbstractWebHandlerMethodCommand;
 
 /**
  *

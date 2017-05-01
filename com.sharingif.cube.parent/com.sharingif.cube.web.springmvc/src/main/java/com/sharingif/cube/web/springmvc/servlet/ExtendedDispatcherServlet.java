@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.DispatcherServlet;
 
-import com.sharingif.cube.communication.http.method.HttpHandlerMethodContent;
+import com.sharingif.cube.communication.http.handler.HttpHandlerMethodContent;
 import com.sharingif.cube.core.handler.HandlerMethodContent;
 import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
 import com.sharingif.cube.web.springmvc.http.SpringMVCHttpResponse;
