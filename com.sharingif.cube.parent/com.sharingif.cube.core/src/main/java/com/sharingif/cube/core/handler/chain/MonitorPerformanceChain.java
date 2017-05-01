@@ -3,6 +3,13 @@ package com.sharingif.cube.core.handler.chain;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.HandlerMethodContent;
 
+/**
+ * 日志监控
+ * 2015年8月1日 下午4:25:07
+ * @author Joly
+ * @version v1.0
+ * @since v1.0
+ */
 public class MonitorPerformanceChain extends AbstractHandlerMethodChain<HandlerMethodContent> {
 	
 	private static final ThreadLocal<String> CONTEXT_HOLDER = new ThreadLocal<String>();

@@ -10,8 +10,8 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBody
 import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod;
 import org.springframework.web.servlet.mvc.method.annotation.ServletModelAttributeMethodProcessor;
 
-import com.sharingif.cube.core.handler.HandlerMethodContent;
 import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
+import com.sharingif.cube.web.springmvc.handler.SpringMVCHandlerMethodContent;
 import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.MediaTypeMethodProcessor;
 import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.container.DataContainerMethodProcessor;
 
@@ -24,12 +24,12 @@ import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.container.
  */
 public class ExtendedRequestMappingHandlerAdapter extends RequestMappingHandlerAdapter {
 	
-	private HandlerMethodChain<HandlerMethodContent> handlerMethodChain;
+	private HandlerMethodChain<SpringMVCHandlerMethodContent> handlerMethodChain;
 	
-	public HandlerMethodChain<HandlerMethodContent> getHandlerMethodChain() {
+	public HandlerMethodChain<SpringMVCHandlerMethodContent> getHandlerMethodChain() {
 		return handlerMethodChain;
 	}
-	public void setHandlerMethodChain(HandlerMethodChain<HandlerMethodContent> handlerMethodChain) {
+	public void setHandlerMethodChain(HandlerMethodChain<SpringMVCHandlerMethodContent> handlerMethodChain) {
 		this.handlerMethodChain = handlerMethodChain;
 	}
 

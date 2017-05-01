@@ -17,7 +17,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import com.sharingif.cube.core.handler.HandlerMethodContent;
 import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
 import com.sharingif.cube.web.springmvc.handler.SpringMVCHandlerMethodContent;
 
@@ -44,7 +43,7 @@ public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandl
 
 	private ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
 	
-	private HandlerMethodChain<HandlerMethodContent> handlerMethodChain;
+	private HandlerMethodChain<SpringMVCHandlerMethodContent> handlerMethodChain;
 
 	public WebDataBinderFactory getDataBinderFactory() {
 		return dataBinderFactory;
@@ -67,11 +66,11 @@ public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandl
 	public void setParameterNameDiscoverer(ParameterNameDiscoverer parameterNameDiscoverer) {
 		this.parameterNameDiscoverer = parameterNameDiscoverer;
 	}
-	public HandlerMethodChain<HandlerMethodContent> getHandlerMethodChain() {
+	public HandlerMethodChain<SpringMVCHandlerMethodContent> getHandlerMethodChain() {
 		return handlerMethodChain;
 	}
 
-	public void setHandlerMethodChain(HandlerMethodChain<HandlerMethodContent> handlerMethodChain) {
+	public void setHandlerMethodChain(HandlerMethodChain<SpringMVCHandlerMethodContent> handlerMethodChain) {
 		this.handlerMethodChain = handlerMethodChain;
 	}
 
