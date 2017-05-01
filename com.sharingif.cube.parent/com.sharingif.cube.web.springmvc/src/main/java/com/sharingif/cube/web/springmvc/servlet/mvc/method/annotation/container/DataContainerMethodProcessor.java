@@ -9,7 +9,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.sharingif.cube.core.method.bind.annotation.DataContainer;
+import com.sharingif.cube.core.handler.bind.annotation.DataContainer;
 
 /**   
  *  

@@ -2,8 +2,8 @@ package com.sharingif.cube.web.exception.handler;
 
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.UnknownCubeException;
-import com.sharingif.cube.core.method.HandlerMethod;
-import com.sharingif.cube.core.method.exception.handler.AbstractCubeHandlerMethodExceptionHandler;
+import com.sharingif.cube.core.handler.HandlerMethod;
+import com.sharingif.cube.core.handler.exception.handler.AbstractCubeHandlerMethodExceptionHandler;
 import com.sharingif.cube.core.request.RequestInfo;
 
 /**

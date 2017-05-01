@@ -13,9 +13,9 @@ import com.sharingif.cube.communication.http.transport.HttpJsonRemoteHandlerMeth
 import com.sharingif.cube.communication.http.transport.transform.HttpJsonTransform;
 import com.sharingif.cube.communication.http.transport.transform.ObjectToJsonStringMarshaller;
 import com.sharingif.cube.communication.http.transport.transform.StringToJsonModelMarshaller;
-import com.sharingif.cube.core.method.HandlerMethod;
-import com.sharingif.cube.core.method.bind.support.ConfigurableBindingInitializer;
-import com.sharingif.cube.core.method.bind.support.DefaultDataBinderFactory;
+import com.sharingif.cube.core.handler.HandlerMethod;
+import com.sharingif.cube.core.handler.bind.support.ConfigurableBindingInitializer;
+import com.sharingif.cube.core.handler.bind.support.DefaultDataBinderFactory;
 import com.sharingif.cube.core.request.RequestInfo;
 
 

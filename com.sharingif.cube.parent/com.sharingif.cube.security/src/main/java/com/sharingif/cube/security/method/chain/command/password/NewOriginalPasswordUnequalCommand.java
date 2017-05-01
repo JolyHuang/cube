@@ -4,8 +4,8 @@ import com.sharingif.cube.components.password.IOriginalPassword;
 import com.sharingif.cube.components.password.IPassword;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
-import com.sharingif.cube.core.method.HandlerMethodContent;
-import com.sharingif.cube.core.method.chain.command.AbstractHandlerMethodCommand;
+import com.sharingif.cube.core.handler.HandlerMethodContent;
+import com.sharingif.cube.core.handler.chain.command.AbstractHandlerMethodCommand;
 
 /**
  * 新密码不能等于旧密码

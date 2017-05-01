@@ -10,11 +10,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.sharingif.cube.core.exception.CubeException;
+import com.sharingif.cube.core.handler.HandlerMethod;
+import com.sharingif.cube.core.handler.adapter.DefaultMappingHandlerAdapter;
 import com.sharingif.cube.core.handler.adapter.MapRequestResolver;
-import com.sharingif.cube.core.method.HandlerMethod;
-import com.sharingif.cube.core.method.handler.adapter.DefaultMappingHandlerAdapter;
-import com.sharingif.cube.core.method.handler.mapping.RequestMappingHandlerMapping;
-import com.sharingif.cube.core.method.handler.request.RequestLocalContextHolder;
+import com.sharingif.cube.core.handler.mapping.RequestMappingHandlerMapping;
+import com.sharingif.cube.core.handler.request.RequestLocalContextHolder;
 import com.sharingif.cube.core.request.RequestInfo;
 
 /**

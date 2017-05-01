@@ -7,8 +7,8 @@ import com.sharingif.cube.com.sharingif.cube.web.vert.x.http.VertXHttpResponse;
 import com.sharingif.cube.com.sharingif.cube.web.vert.x.request.ExtendedRoutingContext;
 import com.sharingif.cube.communication.http.method.HttpHandlerMethodContent;
 import com.sharingif.cube.communication.method.handler.AbstractDispatcherHandler;
-import com.sharingif.cube.core.method.HandlerMethod;
-import com.sharingif.cube.core.method.HandlerMethodContent;
+import com.sharingif.cube.core.handler.HandlerMethod;
+import com.sharingif.cube.core.handler.HandlerMethodContent;
 import com.sharingif.cube.core.request.RequestInfo;
 
 import io.vertx.core.http.HttpHeaders;

@@ -8,7 +8,7 @@ import org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.sharingif.cube.core.exception.handler.AbstractCubeExceptionHandler;
-import com.sharingif.cube.core.method.HandlerMethod;
+import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.web.exception.handler.WebExceptionContent;
 import com.sharingif.cube.web.exception.handler.WebRequestInfo;

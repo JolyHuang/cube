@@ -2,7 +2,7 @@ package com.sharingif.cube.com.sharingif.cube.web.vert.x.exception.handler;
 
 import com.sharingif.cube.core.exception.handler.AbstractCubeExceptionHandler;
 import com.sharingif.cube.core.exception.handler.IExceptionResolver;
-import com.sharingif.cube.core.method.DefaultInvocableHandlerMethod;
+import com.sharingif.cube.core.handler.DefaultInvocableHandlerMethod;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.web.exception.handler.WebExceptionContent;
 

@@ -1,7 +1,7 @@
 package com.sharingif.cube.security.web.exception.handler.validation.access;
 
 import com.sharingif.cube.core.exception.ICubeException;
-import com.sharingif.cube.core.method.HandlerMethod;
+import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.security.exception.validation.access.AccessDecisionCubeException;
 import com.sharingif.cube.web.exception.handler.WebExceptionContent;

@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharingif.cube.communication.JsonModel;
 import com.sharingif.cube.communication.transport.transform.Marshaller;
 import com.sharingif.cube.communication.transport.transform.exception.MarshallerException;
-import com.sharingif.cube.core.method.bind.support.BindingInitializer;
+import com.sharingif.cube.core.handler.bind.support.BindingInitializer;
 
 /**
  * JsonUnmarshaller

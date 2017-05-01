@@ -7,7 +7,7 @@ import com.sharingif.cube.communication.JsonModel;
 import com.sharingif.cube.communication.remote.RemoteHandlerMethodTransportFactory;
 import com.sharingif.cube.communication.transport.Connection;
 import com.sharingif.cube.communication.transport.transform.Transform;
-import com.sharingif.cube.core.method.HandlerMethod;
+import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.request.RequestInfo;
 
 /**

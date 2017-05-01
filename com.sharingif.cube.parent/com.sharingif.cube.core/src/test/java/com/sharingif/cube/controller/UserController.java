@@ -2,7 +2,7 @@ package com.sharingif.cube.controller;
 
 import org.springframework.stereotype.Controller;
 
-import com.sharingif.cube.core.method.bind.annotation.RequestMapping;
+import com.sharingif.cube.core.handler.bind.annotation.RequestMapping;
 import com.sharingif.cube.model.User;
 
 /**

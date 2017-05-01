@@ -3,8 +3,8 @@ package com.sharingif.cube.communication.http.method.chain;
 import com.sharingif.cube.communication.http.method.HttpHandlerMethodContent;
 import com.sharingif.cube.components.sequence.ISequenceGenerator;
 import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.method.chain.AbstractHandlerMethodChain;
-import com.sharingif.cube.core.method.handler.request.RequestLocalContextHolder;
+import com.sharingif.cube.core.handler.chain.AbstractHandlerMethodChain;
+import com.sharingif.cube.core.handler.request.RequestLocalContextHolder;
 import com.sharingif.cube.core.util.StringUtils;
 
 /**

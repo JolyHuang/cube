@@ -39,7 +39,7 @@ public class MediaTypeMethodProcessor implements HandlerMethodArgumentResolver{
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
-		if (parameter.hasParameterAnnotation(com.sharingif.cube.core.method.bind.annotation.MediaType.class)) {
+		if (parameter.hasParameterAnnotation(com.sharingif.cube.core.handler.bind.annotation.MediaType.class)) {
 			return true;
 		}
 		else if (this.annotationNotRequired) {

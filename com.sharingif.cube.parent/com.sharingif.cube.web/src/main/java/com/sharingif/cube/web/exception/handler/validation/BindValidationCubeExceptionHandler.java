@@ -12,7 +12,7 @@ import org.springframework.validation.FieldError;
 
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
-import com.sharingif.cube.core.method.HandlerMethod;
+import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.web.exception.handler.WebExceptionContent;
 import com.sharingif.cube.web.exception.handler.WebRequestInfo;

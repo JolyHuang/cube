@@ -3,7 +3,7 @@ package com.sharingif.cube.web.springmvc.method.chain;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.method.chain.AbstractHandlerMethodChain;
+import com.sharingif.cube.core.handler.chain.AbstractHandlerMethodChain;
 import com.sharingif.cube.web.springmvc.http.SpringMVCHttpRequest;
 import com.sharingif.cube.web.springmvc.method.SpringMVCHandlerMethodContent;
 

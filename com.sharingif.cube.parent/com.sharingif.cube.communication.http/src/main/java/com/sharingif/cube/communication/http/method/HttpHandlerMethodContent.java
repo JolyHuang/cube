@@ -7,7 +7,7 @@ import org.springframework.core.MethodParameter;
 
 import com.sharingif.cube.communication.http.HttpRequest;
 import com.sharingif.cube.communication.http.HttpResponse;
-import com.sharingif.cube.core.method.HandlerMethodContent;
+import com.sharingif.cube.core.handler.HandlerMethodContent;
 import com.sharingif.cube.core.request.RequestInfo;
 
 /**

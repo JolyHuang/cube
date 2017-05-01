@@ -7,9 +7,9 @@ import org.springframework.core.annotation.AnnotationUtils;
 
 import com.sharingif.cube.communication.MediaType;
 import com.sharingif.cube.communication.http.HttpMethod;
-import com.sharingif.cube.core.method.bind.annotation.PathVariable;
-import com.sharingif.cube.core.method.bind.annotation.RequestMapping;
-import com.sharingif.cube.core.method.bind.annotation.RequestMethod;
+import com.sharingif.cube.core.handler.bind.annotation.PathVariable;
+import com.sharingif.cube.core.handler.bind.annotation.RequestMapping;
+import com.sharingif.cube.core.handler.bind.annotation.RequestMethod;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.core.request.RequestInfoResolver;
 import com.sharingif.cube.core.util.StringUtils;
