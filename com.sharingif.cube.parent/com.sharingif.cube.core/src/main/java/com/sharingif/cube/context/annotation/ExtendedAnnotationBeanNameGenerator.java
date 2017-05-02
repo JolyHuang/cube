@@ -7,7 +7,7 @@ import com.sharingif.cube.core.util.StringUtils;
 
 /**   
  *  
- * @Description:  [替换注解生成的BeanName]   
+ * @Description:  [替换注解生成的BeanName,删除DAOImpl、ServiceImpl的Impl后缀]   
  * @Author:       [Joly]   
  * @CreateDate:   [2014年1月16日 下午2:29:53]   
  * @UpdateUser:   [Joly]   
@@ -16,7 +16,7 @@ import com.sharingif.cube.core.util.StringUtils;
  * @Version:      [v1.0] 
  *    
  */
-public class RemoveLastImplOfDAOServiceAnnotationBeanNameGenerator extends AnnotationBeanNameGenerator{
+public class ExtendedAnnotationBeanNameGenerator extends AnnotationBeanNameGenerator{
 
 	@Override
 	protected String buildDefaultBeanName(BeanDefinition definition) {
