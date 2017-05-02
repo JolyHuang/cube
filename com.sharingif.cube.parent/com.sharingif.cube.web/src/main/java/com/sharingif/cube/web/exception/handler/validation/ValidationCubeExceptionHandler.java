@@ -5,7 +5,7 @@ import com.sharingif.cube.core.exception.validation.ValidationCubeException;
 import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.core.util.StringUtils;
-import com.sharingif.cube.web.exception.handler.CubeExceptionHandler;
+import com.sharingif.cube.web.exception.handler.WebCubeExceptionHandler;
 import com.sharingif.cube.web.exception.handler.WebExceptionContent;
 import com.sharingif.cube.web.exception.handler.WebRequestInfo;
 
@@ -20,7 +20,7 @@ import com.sharingif.cube.web.exception.handler.WebRequestInfo;
  * @Version:      [v1.0] 
  *    
  */
-public class ValidationCubeExceptionHandler extends CubeExceptionHandler {
+public class ValidationCubeExceptionHandler extends WebCubeExceptionHandler {
 	
 	private String refererAttribute = "_referer";
 	

@@ -13,7 +13,7 @@ import com.sharingif.cube.core.request.RequestInfo;
  * @version v1.0
  * @since v1.0
  */
-public class CubeExceptionHandler extends AbstractCubeHandlerMethodExceptionHandler<WebRequestInfo,WebExceptionContent> {
+public class WebCubeExceptionHandler extends AbstractCubeHandlerMethodExceptionHandler<WebRequestInfo,WebExceptionContent> {
 	
 	private String defaultErrorView="DefaultExceptionView";
 	

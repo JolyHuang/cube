@@ -7,7 +7,7 @@ import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.validation.TokenValidationCubeException;
 import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.request.RequestInfo;
-import com.sharingif.cube.web.exception.handler.CubeExceptionHandler;
+import com.sharingif.cube.web.exception.handler.WebCubeExceptionHandler;
 import com.sharingif.cube.web.exception.handler.WebExceptionContent;
 import com.sharingif.cube.web.exception.handler.WebRequestInfo;
 
@@ -22,7 +22,7 @@ import com.sharingif.cube.web.exception.handler.WebRequestInfo;
  * @Version:      [v1.0] 
  *    
  */
-public class TokenValidationCubeExceptionHandler extends CubeExceptionHandler {
+public class TokenValidationCubeExceptionHandler extends WebCubeExceptionHandler {
 	private String defaultErrorView;
 	private String queryStateUrl="_queryStateUrl";
 	private Map<String,String> exceptionCodeMappings;
