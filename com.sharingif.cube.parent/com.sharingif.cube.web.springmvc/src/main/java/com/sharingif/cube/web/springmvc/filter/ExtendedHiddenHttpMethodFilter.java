@@ -34,9 +34,6 @@ import org.springframework.web.filter.HiddenHttpMethodFilter;
  */
 public class ExtendedHiddenHttpMethodFilter extends HiddenHttpMethodFilter{
 
-	/** Default method parameter: {@code _method} */
-	public static final String DEFAULT_METHOD_PARAM = "_method";
-
 	private String methodParam = DEFAULT_METHOD_PARAM;
 
 
@@ -45,6 +42,7 @@ public class ExtendedHiddenHttpMethodFilter extends HiddenHttpMethodFilter{
 	 * @see #DEFAULT_METHOD_PARAM
 	 */
 	public void setMethodParam(String methodParam) {
+		super.setMethodParam(methodParam);
 		Assert.hasText(methodParam, "'methodParam' must not be empty");
 		this.methodParam = methodParam;
 	}
@@ -53,15 +51,14 @@ public class ExtendedHiddenHttpMethodFilter extends HiddenHttpMethodFilter{
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
+		HttpServletRequest requestToUse = request;
 		String paramValue = request.getParameter(this.methodParam);
 		if (StringUtils.hasLength(paramValue)) {
 			String method = paramValue.toUpperCase(Locale.ENGLISH);
-			HttpServletRequest wrapper = new HttpMethodRequestWrapper(request, method);
-			filterChain.doFilter(wrapper, response);
+			requestToUse = new HttpMethodRequestWrapper(request, method);
 		}
-		else {
-			filterChain.doFilter(request, response);
-		}
+		
+		filterChain.doFilter(requestToUse, response);
 	}
 
 
