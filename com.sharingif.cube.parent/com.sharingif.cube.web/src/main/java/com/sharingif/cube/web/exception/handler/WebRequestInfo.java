@@ -1,7 +1,7 @@
 package com.sharingif.cube.web.exception.handler;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.sharingif.cube.communication.http.HttpRequest;
+import com.sharingif.cube.communication.http.HttpResponse;
 
 /**
  * web请求消息
@@ -13,26 +13,26 @@ import javax.servlet.http.HttpServletResponse;
 public class WebRequestInfo {
 	
 	public WebRequestInfo(
-			HttpServletRequest request
-			,HttpServletResponse response
+			HttpRequest request
+			,HttpResponse response
 			) {
 		this.request = request;
 		this.response = response;
 	}
 	
-	private HttpServletRequest request;
-	private HttpServletResponse response;
+	private HttpRequest request;
+	private HttpResponse response;
 
-	public HttpServletRequest getRequest() {
+	public HttpRequest getRequest() {
 		return request;
 	}
-	public void setRequest(HttpServletRequest request) {
+	public void setRequest(HttpRequest request) {
 		this.request = request;
 	}
-	public HttpServletResponse getResponse() {
+	public HttpResponse getResponse() {
 		return response;
 	}
-	public void setResponse(HttpServletResponse response) {
+	public void setResponse(HttpResponse response) {
 		this.response = response;
 	}
 

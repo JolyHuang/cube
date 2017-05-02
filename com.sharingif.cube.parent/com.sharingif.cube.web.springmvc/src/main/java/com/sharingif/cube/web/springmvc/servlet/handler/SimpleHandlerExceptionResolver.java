@@ -12,6 +12,8 @@ import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.web.exception.handler.WebExceptionContent;
 import com.sharingif.cube.web.exception.handler.WebRequestInfo;
+import com.sharingif.cube.web.springmvc.http.SpringMVCHttpRequest;
+import com.sharingif.cube.web.springmvc.http.SpringMVCHttpResponse;
 
 /**
  * SimpleHandlerExceptionResolver
@@ -41,7 +43,7 @@ public class SimpleHandlerExceptionResolver extends AbstractHandlerExceptionReso
 	@Override
 	protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 		
-		WebRequestInfo webRequestInfo = new WebRequestInfo(request,response);
+		WebRequestInfo webRequestInfo = new WebRequestInfo(new SpringMVCHttpRequest(request),new SpringMVCHttpResponse(response));
 		RequestInfo<WebRequestInfo> requestInfo = new RequestInfo<WebRequestInfo>(null,null,RequestContextUtils.getLocale(request),null,webRequestInfo);
 				
 		org.springframework.web.method.HandlerMethod hm = (org.springframework.web.method.HandlerMethod)handler;
