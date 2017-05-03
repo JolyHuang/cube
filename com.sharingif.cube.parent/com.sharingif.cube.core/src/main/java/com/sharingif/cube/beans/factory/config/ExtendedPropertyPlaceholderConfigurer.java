@@ -58,14 +58,8 @@ public class ExtendedPropertyPlaceholderConfigurer extends
 		
 		if(commonProperties != null && commonProperties.size() != 0){
 			Resource[] mergedlocations = new Resource[locations.length+commonProperties.size()];
-			
-			for(int i=0; i<commonProperties.size(); i++){
-				mergedlocations[i] = commonProperties.get(i);
-			}
-
-			for(int i=0; i<locations.length; i++){
-				mergedlocations[commonProperties.size()+i] = locations[i];
-			}
+			System.arraycopy(locations,0,mergedlocations,0,locations.length);
+			System.arraycopy(commonProperties.toArray(), 0, mergedlocations, locations.length, commonProperties.size());
 			
 			super.setLocations(mergedlocations);
 			
