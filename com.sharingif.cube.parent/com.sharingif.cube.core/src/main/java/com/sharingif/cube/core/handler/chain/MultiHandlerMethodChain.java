@@ -30,28 +30,16 @@ public class MultiHandlerMethodChain<T extends HandlerMethodContent> extends Abs
 			return;
 		
 		for(int i=0; i<chains.size(); i++){
+			HandlerMethodChain<? super T> chain = null;
 			try {
-				HandlerMethodChain<? super T> chain = chains.get(i);
+				chain = chains.get(i);
 				chain.before(handlerMethodContent);
 			} catch (Exception exception) {
-				
-				if(exception.getCause() == null){
-					this.logger.error("excute before HandlerMethodChain error \nmessage:{} \nlocalizedMessage:{}", exception.getMessage() ,exception.getLocalizedMessage());
-				}else{
-					this.logger.error("excute before HandlerMethodChain error", exception);
-				}
-				
-				for(;i>-1;i--){
-					try {
-						HandlerMethodChain<? super T> chain = chains.get(i);
-						chain.exception(handlerMethodContent, exception);
-					} catch (Exception e) {
-						this.logger.error("excute before HandlerMethodChain exception error", e);
-					}
-				}
-				
-				CubeExceptionUtil.throwCubeException(exception);
-					
+				this.logger.error("Before HandlerMethodChain runtime exception,handlerName:{},exception:{}", chain.getClass().getSimpleName(),exception);
+				boolean flag = chain.exception(handlerMethodContent, exception);
+				if(!flag) {
+					CubeExceptionUtil.throwCubeException(exception);
+				} 
 			}
 		}
 
@@ -63,22 +51,16 @@ public class MultiHandlerMethodChain<T extends HandlerMethodContent> extends Abs
 			return;
 		
 		for(int i=(chains.size()-1); i>-1; i--){
+			HandlerMethodChain<? super T> chain = null;
 			try {
-				HandlerMethodChain<? super T> chain = chains.get(i);
+				chain = chains.get(i);
 				chain.after(handlerMethodContent);
 			} catch (Exception exception) {
-				this.logger.error("excute after HandlerMethodChain error", exception);
-				
-				for(;i>-1;i--){
-					try {
-						HandlerMethodChain<? super T> chain = chains.get(i);
-						chain.exception(handlerMethodContent, exception);
-					} catch (Exception e) {
-						this.logger.error("excute after HandlerMethodChain exception error", e);
-					}
-				}
-				
-				CubeExceptionUtil.throwCubeException(exception);
+				this.logger.error("After HandlerMethodChain runtime exception,handlerName:{},exception:{}", chain.getClass().getSimpleName(),exception);
+				boolean flag = chain.exception(handlerMethodContent, exception);
+				if(!flag) {
+					CubeExceptionUtil.throwCubeException(exception);
+				} 
 			}
 		}
 	}

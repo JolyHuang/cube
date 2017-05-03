@@ -40,9 +40,10 @@ public class MDCChain extends AbstractHandlerMethodChain<HandlerMethodContent> {
 	}
 
 	@Override
-	public void exception(HandlerMethodContent handlerMethodContent, Exception exception) {
-		super.exception(handlerMethodContent, exception);
+	public boolean exception(HandlerMethodContent handlerMethodContent, Exception exception) {
 		MDC.clear();
+		
+		return false;
 	}
 
 	

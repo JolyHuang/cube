@@ -11,8 +11,8 @@ public abstract class AbstractHandlerMethodChain<T extends HandlerMethodContent>
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Override
-	public void exception(T handlerMethodContent, Exception exception) {
-		
+	public boolean exception(T handlerMethodContent, Exception exception) {
+		return false;
 	}
 	
 }

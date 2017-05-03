@@ -22,9 +22,6 @@ public class CubeExceptionUtil {
 	 * @throws CubeException
 	 */
 	public static void throwCubeException(Exception exception) throws CubeException {
-		if(exception instanceof ICubeRuntimeException)
-			throw (RuntimeException)exception;
-		
 		if(exception instanceof ICubeException)
 			throw (CubeException)exception;
 		

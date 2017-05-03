@@ -18,7 +18,7 @@ public class AnnotationHandlerMethodChain<T extends HandlerMethodContent> extend
 	private static final String BEFORE_SIMPLECHAIN_PREFIX = "_B_";
 	private static final String AFTER_SIMPLECHAIN_PREFIX = "_A_";
 	
-	private Map<String, Chain<? super T>> chainMap = new HashMap<String, Chain<? super T>>(100);
+	private Map<String, Chain<? super T>> cacheChainMap = new HashMap<String, Chain<? super T>>(100);
 
 	@Override
 	public void before(T content) throws CubeException {
@@ -43,9 +43,9 @@ public class AnnotationHandlerMethodChain<T extends HandlerMethodContent> extend
 		
 		Method method = handlerMethodContent.getMethod();
 		
-		String chainMapKey = BEFORE_SIMPLECHAIN_PREFIX+handlerMethodContent.getObj().getClass().getName()+"."+method.getName();
+		String chainMapKey = new StringBuilder(BEFORE_SIMPLECHAIN_PREFIX).append(handlerMethodContent.getObj().getClass().getName()).append(".").append(method.getName()).toString();
 		
-		Chain<? super T> simpleChain = chainMap.get(chainMapKey);
+		Chain<? super T> simpleChain = cacheChainMap.get(chainMapKey);
 		
 		if(null != simpleChain){
 			return simpleChain;
@@ -54,7 +54,7 @@ public class AnnotationHandlerMethodChain<T extends HandlerMethodContent> extend
 		BHMChain bcmChain = method.getAnnotation(BHMChain.class);
 		if(null == bcmChain){
 			simpleChain = new EmptyChain();
-			chainMap.put(chainMapKey, simpleChain);
+			cacheChainMap.put(chainMapKey, simpleChain);
 			return simpleChain;
 		}
 		
@@ -71,7 +71,7 @@ public class AnnotationHandlerMethodChain<T extends HandlerMethodContent> extend
 			throw cubeRuntimeException;
 		} 
 		
-		chainMap.put(chainMapKey, simpleChain);
+		cacheChainMap.put(chainMapKey, simpleChain);
 		
 		return simpleChain;
 	}
@@ -81,9 +81,9 @@ public class AnnotationHandlerMethodChain<T extends HandlerMethodContent> extend
 		
 		Method method = handlerMethodContent.getMethod();
 		
-		String chainMapKey = AFTER_SIMPLECHAIN_PREFIX+handlerMethodContent.getObj().getClass().getName()+"."+method.getName();
+		String chainMapKey = new StringBuilder().append(AFTER_SIMPLECHAIN_PREFIX).append(handlerMethodContent.getObj().getClass().getName()).append(".").append(method.getName()).toString();
 		
-		Chain<? super T> simpleChain = chainMap.get(chainMapKey);
+		Chain<? super T> simpleChain = cacheChainMap.get(chainMapKey);
 		
 		if(null != simpleChain){
 			return simpleChain;
@@ -92,7 +92,7 @@ public class AnnotationHandlerMethodChain<T extends HandlerMethodContent> extend
 		AHMChain acmChain = method.getAnnotation(AHMChain.class);
 		if(null == acmChain){
 			simpleChain = new EmptyChain();
-			chainMap.put(chainMapKey, simpleChain);
+			cacheChainMap.put(chainMapKey, simpleChain);
 			return simpleChain;
 		}
 		
@@ -109,7 +109,7 @@ public class AnnotationHandlerMethodChain<T extends HandlerMethodContent> extend
 			throw cubeRuntimeException;
 		}
 		
-		chainMap.put(chainMapKey, simpleChain);
+		cacheChainMap.put(chainMapKey, simpleChain);
 		
 		return simpleChain;
 	}

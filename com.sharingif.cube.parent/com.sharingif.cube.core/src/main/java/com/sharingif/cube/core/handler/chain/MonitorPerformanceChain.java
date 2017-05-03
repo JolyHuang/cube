@@ -44,8 +44,7 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain<HandlerM
 	}
 
 	@Override
-	public void exception(HandlerMethodContent content, Exception exception) {
-		super.exception(content, exception);
+	public boolean exception(HandlerMethodContent content, Exception exception) {
 		
 		Long beginCurrentTime = Long.valueOf(CONTEXT_HOLDER.get());
 		
@@ -61,8 +60,8 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain<HandlerM
 				,exception.getMessage()
 				,exception.getLocalizedMessage()
 				);
-		return;
 		
+		return false;
 	}
 	
 }

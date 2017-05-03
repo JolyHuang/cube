@@ -26,10 +26,11 @@ public class RequestLocalContextHolderChain extends AbstractHandlerMethodChain<H
 	}
 
 	@Override
-	public void exception(HandlerMethodContent handlerMethodContent,
-			Exception exception) {
+	public boolean exception(HandlerMethodContent handlerMethodContent, Exception exception) {
 		RequestLocalContextHolder.clearContext();
 		super.exception(handlerMethodContent, exception);
+		
+		return false;
 	}
 	
 	

@@ -112,11 +112,15 @@ public class HttpJsonRemoteHandlerMethodTransport extends AbstractRemoteHandlerM
 				handlerMethodContent.setReturnValue(returnValue);
 				getHandlerMethodChain().after(handlerMethodContent);
 			}
-		} catch (Exception e) {
+		} catch (Exception exception) {
 			if(handlerMethodChainIsEmpty) {
-				getHandlerMethodChain().exception(handlerMethodContent, e);
+				boolean flag = getHandlerMethodChain().exception(handlerMethodContent, exception);
+				if(!flag) {
+					CubeExceptionUtil.throwCubeRuntimeException(exception);
+				} 
+			} else {
+				CubeExceptionUtil.throwCubeRuntimeException(exception);
 			}
-			CubeExceptionUtil.throwCubeRuntimeException(e);
 		}
 		
 		if(handlerMethodChainIsEmpty) {

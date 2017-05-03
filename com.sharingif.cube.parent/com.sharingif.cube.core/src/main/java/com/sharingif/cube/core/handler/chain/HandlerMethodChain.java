@@ -30,7 +30,8 @@ public interface HandlerMethodChain<T extends HandlerMethodContent> {
 	 * HandlerMethod异常时执行
 	 * @param handlerMethodContent
 	 * @param exception
+	 * @return 返回true异常终止，否则异常继续抛出
 	 */
-	void exception(T handlerMethodContent, Exception exception);
+	boolean exception(T handlerMethodContent, Exception exception);
 
 }
