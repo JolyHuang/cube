@@ -57,9 +57,11 @@ public class MultiCubeExceptionHandler<RI, O extends ExceptionContent, H extends
 	protected O handlerInternal(RequestInfo<RI> requestInfo, H handler, Exception exception) {
 		
 		for(AbstractCubeExceptionHandler<RI,O,H> cubeExceptionHandler : cubeExceptionHandlers){
-			O result = cubeExceptionHandler.handler(requestInfo, handler, exception);
-			if(result != null)
+			if(cubeExceptionHandler.supports(exception)) {
+				O result = cubeExceptionHandler.handler(requestInfo, handler, exception);
 				return result;
+			}
+			
 		}
 		
 		return null;
