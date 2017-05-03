@@ -1,6 +1,8 @@
 package com.sharingif.cube.core.exception.handler;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.request.RequestInfo;
@@ -14,6 +16,8 @@ import com.sharingif.cube.core.request.RequestInfo;
  * @since v1.0
  */
 public class MultiCubeExceptionHandler<RI, O extends ExceptionContent, H extends Object> extends AbstractCubeExceptionHandler<RI,O,H> {
+	
+	private Map<String,AbstractCubeExceptionHandler<RI,O,H>> cacheExceptionHandlers = new HashMap<String,AbstractCubeExceptionHandler<RI,O,H>>(20);
 	
 	private List<AbstractCubeExceptionHandler<RI,O,H>> cubeExceptionHandlers;
 	
@@ -55,10 +59,17 @@ public class MultiCubeExceptionHandler<RI, O extends ExceptionContent, H extends
 	}
 	
 	protected O handlerInternal(RequestInfo<RI> requestInfo, H handler, Exception exception) {
+		String cacheKey = exception.getClass().getName();
+		AbstractCubeExceptionHandler<RI,O,H> cacheExceptionHandler = cacheExceptionHandlers.get(cacheKey);
+		
+		if(cacheExceptionHandler != null){
+			return cacheExceptionHandler.handler(requestInfo, handler, exception);
+		}
 		
 		for(AbstractCubeExceptionHandler<RI,O,H> cubeExceptionHandler : cubeExceptionHandlers){
 			if(cubeExceptionHandler.supports(exception)) {
 				O result = cubeExceptionHandler.handler(requestInfo, handler, exception);
+				cacheExceptionHandlers.put(cacheKey, cubeExceptionHandler);
 				return result;
 			}
 			
@@ -66,6 +77,5 @@ public class MultiCubeExceptionHandler<RI, O extends ExceptionContent, H extends
 		
 		return null;
 	}
-
-
+	
 }
