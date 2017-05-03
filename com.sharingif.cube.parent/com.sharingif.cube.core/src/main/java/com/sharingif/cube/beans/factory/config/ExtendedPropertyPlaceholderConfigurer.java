@@ -12,7 +12,11 @@ import org.springframework.core.io.Resource;
 
 /**
  *
- * @Description: [扩展PropertyPlaceholderConfigurer获得属相值]
+ * @Description: [
+ * 扩展PropertyPlaceholderConfigurer，
+ * 添加commonPropertiess属性保存通用属性文件，setLocations方法配置不同语言环境配置文件。
+ * 重写processProperties方法，将所有配置文件属性缓存，添加getContextProperty方法，获取缓存属性。
+ * ]
  * @Author: [Joly]
  * @CreateDate: [2014年7月1日 下午5:08:51]
  * @UpdateUser: [Joly]
