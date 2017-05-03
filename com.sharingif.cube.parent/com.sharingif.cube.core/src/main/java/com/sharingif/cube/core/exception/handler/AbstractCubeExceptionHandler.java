@@ -37,10 +37,14 @@ public abstract class AbstractCubeExceptionHandler<RI,O extends ExceptionContent
 			Object[] args = cubeException.getArgs();
 			if(null != args){
 				for(int i=0; i<args.length; i++){
+					Object messageKey = args[i];
+					if(!(messageKey instanceof String)) {
+						continue;
+					}
 					try {
-						args[i] = super.getApplicationContext().getMessage((String)args[i], null, locale);
+						args[i] = super.getApplicationContext().getMessage((String)messageKey, null, locale);
 					} catch (Exception e) {
-						this.logger.error("ICubeExceptionResolver error,message {} is not find in the locale source file", cubeException.getMessage());
+						this.logger.error("ICubeExceptionResolver error,message args key {} is not find in the locale source file", messageKey);
 					}
 				}
 			}
@@ -55,7 +59,6 @@ public abstract class AbstractCubeExceptionHandler<RI,O extends ExceptionContent
 	 * @param obj : 错误输入信息
 	 * @param H handler : 请求处理器
 	 * @param exception : 异常
-	 * @param locale : 语言环境
 	 * @return O : 异常处理结果
 	 */
 	public O handler(RequestInfo<RI> requestInfo, H handler, Exception exception) {
