@@ -23,6 +23,16 @@ public class DB2PaginationHandler implements IPaginationHandler {
 		
 		return rowBounds;
 	}
+	
+	@Override
+	public String createCountSql(String sql) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	@Override
+	public String createPaginationSql(String sql, RowBounds rowBounds) {
+		return null;
+	}
 
 }

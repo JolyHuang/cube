@@ -42,14 +42,6 @@ public interface ICubeMyBatisDAO<T, ID extends Serializable> extends IBaseDAO<T,
 	 * @return
 	 */
 	PaginationRepertory<T> queryPagination(String statement, PaginationCondition<? extends Object> paginationCondition);
-	/**
-	 * 分页查询，默认查询sql id为statement+Count
-	 * @param statement : 查询list sql id
-	 * @param paginationCondition : 查询条件
-	 * @param isQueryCount : 是否查询总条数
-	 * @return
-	 */
-	PaginationRepertory<T> queryPagination(String statement, PaginationCondition<? extends Object> paginationCondition, boolean isQueryCount);
 	
 	/**
 	 * 分页查询
@@ -59,14 +51,5 @@ public interface ICubeMyBatisDAO<T, ID extends Serializable> extends IBaseDAO<T,
 	 * @return
 	 */
 	PaginationRepertory<T> queryPagination(String countStatement, String statement, PaginationCondition<? extends Object> paginationCondition);
-	/**
-	 * 分页查询
-	 * @param countStatement : 查询总数sql id
-	 * @param statement : 查询list sql id
-	 * @param paginationCondition : 查询条件
-	 * @param isQueryCount : 是否查询总条数
-	 * @return
-	 */
-	PaginationRepertory<T> queryPagination(String countStatement, String statement, PaginationCondition<? extends Object> paginationCondition, boolean isQueryCount);
 
 }

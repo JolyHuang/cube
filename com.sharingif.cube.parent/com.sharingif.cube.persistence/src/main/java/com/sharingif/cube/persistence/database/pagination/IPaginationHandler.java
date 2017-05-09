@@ -23,4 +23,19 @@ public interface IPaginationHandler {
 	 */
 	RowBounds handleRowBounds(int currentPage, int pageSize);
 	
+	/**
+	 * 根据sql创建总数sql
+	 * @param sql
+	 * @return
+	 */
+	String createCountSql(String sql);
+	
+	/**
+	 * 根据sql创建分页sql
+	 * @param sql
+	 * @param rowBounds
+	 * @return
+	 */
+	String createPaginationSql(String sql, RowBounds rowBounds);
+	
 }

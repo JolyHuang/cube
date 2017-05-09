@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.slf4j.Logger;
@@ -40,9 +41,10 @@ public abstract class CubeMyBatisDAOImpl<T, ID extends Serializable> extends Abs
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@SuppressWarnings("unchecked")
-	private String namespace = Introspector.decapitalize(((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]).getSimpleName());
+	private String namespace = namespace = Introspector.decapitalize(((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]).getSimpleName());
 	
 	public CubeMyBatisDAOImpl(){
+		
 	}
 
 	private SqlSession sqlSession;
@@ -77,6 +79,10 @@ public abstract class CubeMyBatisDAOImpl<T, ID extends Serializable> extends Abs
 
 	protected List<T> selectList(String statement, Object parameter) {
 		return sqlSession.selectList(getNamespaceStatement(statement), parameter);
+	}
+	
+	protected List<T> selectList(String statement, Object parameter, RowBounds rowBounds) {
+		return sqlSession.selectList(statement, parameter, rowBounds);
 	}
 
 	protected int insert(String statement) {
@@ -166,33 +172,21 @@ public abstract class CubeMyBatisDAOImpl<T, ID extends Serializable> extends Abs
 	
 	@Override
 	public int queryPaginationCount(String countStatement, PaginationCondition<? extends Object> paginationCondition) {
-		return (Integer)selectOne(countStatement, paginationCondition);
+		return (Integer)selectOne(countStatement, paginationCondition.getCondition());
 	}
 	
 	@Override
 	public PaginationRepertory<T> queryPagination(PaginationCondition<? extends Object> paginationCondition) {
-		return queryPagination(paginationCondition, true);
-	}
-	@Override
-	public PaginationRepertory<T> queryPagination(PaginationCondition<? extends Object> paginationCondition, boolean isQueryCount) {
-		return queryPagination(CubeMyBatisDAOImplAssist.QUERY_PAGINATION_LIST, paginationCondition, isQueryCount);
+		return queryPagination(CubeMyBatisDAOImplAssist.QUERY_PAGINATION_LIST, paginationCondition);
 	}
 	
 	@Override
 	public PaginationRepertory<T> queryPagination(String statement, PaginationCondition<? extends Object> paginationCondition) {
-		return queryPagination(statement, paginationCondition, true);
-	}
-	@Override
-	public PaginationRepertory<T> queryPagination(String statement, PaginationCondition<? extends Object> paginationCondition, boolean isQueryCount) {
-		return queryPagination(CubeMyBatisDAOImplAssist.getQueryPaginationCountStatement(statement), statement, paginationCondition, isQueryCount);
+		return queryPagination(CubeMyBatisDAOImplAssist.getQueryPaginationCountStatement(statement), statement, paginationCondition);
 	}
 	
 	@Override
 	public PaginationRepertory<T> queryPagination(String countStatement, String statement, PaginationCondition<? extends Object> paginationCondition) {
-		return queryPagination(countStatement, statement, paginationCondition, true);
-	}
-	@Override
-	public PaginationRepertory<T> queryPagination(String countStatement, String statement, PaginationCondition<? extends Object> paginationCondition, boolean isQueryCount) {
 		
 		if(null == paginationCondition)
 			paginationCondition = new PaginationCondition<Object>();
@@ -201,12 +195,12 @@ public abstract class CubeMyBatisDAOImpl<T, ID extends Serializable> extends Abs
 			paginationCondition.setPageSize(PaginationCondition.DEFAULT_PAGE_SIZE);
 		
 		int count = 0;
-		if(isQueryCount){
+		if(paginationCondition.isQueryCount()){
 			count = queryPaginationCount(countStatement, paginationCondition);
 		}
 		
 		List<T> list = null;
-		if(0 != count || !isQueryCount){
+		if(0 != count || !paginationCondition.isQueryCount()){
 			paginationCondition.setRowBounds(paginationHandler.handleRowBounds(paginationCondition.getCurrentPage(), paginationCondition.getPageSize()));
 			list = selectList(statement, paginationCondition);
 		}

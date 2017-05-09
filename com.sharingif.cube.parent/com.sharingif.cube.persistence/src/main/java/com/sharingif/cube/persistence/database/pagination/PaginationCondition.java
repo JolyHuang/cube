@@ -24,21 +24,24 @@ public class PaginationCondition<T extends Object> implements Serializable {
 	
 	public static final int DEFAULT_CURRENT_PAGE = 1;
 	public static final int DEFAULT_PAGE_SIZE = 20;
+	public static final boolean DEFAULT_ISQUERY_COUNT = true;
 	
 	private int pageSize = DEFAULT_PAGE_SIZE;
 	private int currentPage = DEFAULT_CURRENT_PAGE;
 	private T condition;
 	private List<String> sort;
 	private RowBounds rowBounds;
+	private boolean isQueryCount = DEFAULT_ISQUERY_COUNT;
 	
 	public PaginationCondition(){
 		
 	}
-	public PaginationCondition(int pageSize, int currentPage, List<String> sort, T condition){
+	public PaginationCondition(int pageSize, int currentPage, List<String> sort, T condition, boolean isQueryCount){
 		this.pageSize = pageSize;
 		this.currentPage = currentPage;
 		this.sort = sort;
 		this.condition = condition;
+		this.isQueryCount = isQueryCount;
 	}
 	
 	public int getPageSize() {
@@ -71,6 +74,11 @@ public class PaginationCondition<T extends Object> implements Serializable {
 	public void setRowBounds(RowBounds rowBounds) {
 		this.rowBounds = rowBounds;
 	}
+	public boolean isQueryCount() {
+		return isQueryCount;
+	}
+	public void setQueryCount(boolean isQueryCount) {
+		this.isQueryCount = isQueryCount;
+	}
 	
-
 }

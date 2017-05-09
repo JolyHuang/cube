@@ -50,12 +50,5 @@ public interface IBaseDAO <T, ID extends Serializable>{
 	 * @return
 	 */
 	PaginationRepertory<T> queryPagination(PaginationCondition<? extends Object> paginationCondition);
-	/**
-	 * 分页查询
-	 * @param paginationCondition : 查询条件
-	 * @param isQueryCount : 是否查询总条数
-	 * @return
-	 */
-	PaginationRepertory<T> queryPagination(PaginationCondition<? extends Object> paginationCondition, boolean isQueryCount);
 
 }
