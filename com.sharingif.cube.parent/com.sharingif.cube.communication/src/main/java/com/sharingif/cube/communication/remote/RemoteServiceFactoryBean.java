@@ -16,13 +16,10 @@ public class RemoteServiceFactoryBean implements FactoryBean<Object> {
 	
 	private Object proxyObject;
 	
-	public Object getProxyObject() {
-		return proxyObject;
-	}
-	public void setProxyObject(Object proxyObject) {
+	public RemoteServiceFactoryBean(Object proxyObject) {
 		this.proxyObject = proxyObject;
 	}
-
+	
 	@Override
 	public Object getObject() throws Exception {
 		return proxyObject;

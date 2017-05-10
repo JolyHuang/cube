@@ -8,7 +8,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
-import org.springframework.beans.factory.support.RootBeanDefinition;
+import org.springframework.beans.factory.support.GenericBeanDefinition;
 
 import com.sharingif.cube.core.exception.CubeRuntimeException;
 import com.sharingif.cube.core.handler.bind.support.BindingInitializer;
@@ -67,11 +67,12 @@ public class RemoteServicesApplicationContext implements BeanDefinitionRegistryP
 		for(String beanName : remoteServiceMap.keySet()) {
 			Object proxyObject = remoteServiceMap.get(beanName);
 			
-			RootBeanDefinition rootBeanDefinition = new RootBeanDefinition();
-			rootBeanDefinition.setBeanClass(RemoteServiceFactoryBean.class);
-			rootBeanDefinition.setLazyInit(true);
-			rootBeanDefinition.getPropertyValues().addPropertyValue(RemoteServiceFactoryBean.PROXY_OBJECT, proxyObject);
-			registry.registerBeanDefinition(beanName, rootBeanDefinition);
+			GenericBeanDefinition genericBeanDefinition = new GenericBeanDefinition();
+			genericBeanDefinition.setBeanClass(RemoteServiceFactoryBean.class);
+			genericBeanDefinition.getConstructorArgumentValues().addGenericArgumentValue(proxyObject);
+			genericBeanDefinition.setLazyInit(true);
+			genericBeanDefinition.getPropertyValues().addPropertyValue(RemoteServiceFactoryBean.PROXY_OBJECT, proxyObject);
+			registry.registerBeanDefinition(beanName, genericBeanDefinition);
 		}
 	}
 
