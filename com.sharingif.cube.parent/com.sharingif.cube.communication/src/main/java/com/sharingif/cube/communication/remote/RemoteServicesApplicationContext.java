@@ -71,7 +71,6 @@ public class RemoteServicesApplicationContext implements BeanDefinitionRegistryP
 			genericBeanDefinition.setBeanClass(RemoteServiceFactoryBean.class);
 			genericBeanDefinition.getConstructorArgumentValues().addGenericArgumentValue(proxyObject);
 			genericBeanDefinition.setLazyInit(true);
-			genericBeanDefinition.getPropertyValues().addPropertyValue(RemoteServiceFactoryBean.PROXY_OBJECT, proxyObject);
 			registry.registerBeanDefinition(beanName, genericBeanDefinition);
 		}
 	}

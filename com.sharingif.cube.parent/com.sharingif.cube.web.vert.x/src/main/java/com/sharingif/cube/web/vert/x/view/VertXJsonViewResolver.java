@@ -22,7 +22,8 @@ public class VertXJsonViewResolver implements ViewResolver<RoutingContext, WebEx
 	
 	@Override
 	public View<RoutingContext, WebExceptionContent> resolveView(RequestInfo<RoutingContext> requestInfo, Object returnValue, WebExceptionContent exceptionContent) {
-		if(requestInfo.getMediaType().equals(MediaType.APPLICATION_JSON.toString())) {
+		MediaType candidateContentType = MediaType.parseMediaType(requestInfo.getMediaType());
+		if(MediaType.APPLICATION_JSON.isCompatibleWith(candidateContentType)) {
 			return view;
 		} else {
 			return null;
