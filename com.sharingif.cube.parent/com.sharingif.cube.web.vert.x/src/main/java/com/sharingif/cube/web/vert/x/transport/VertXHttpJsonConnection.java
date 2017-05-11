@@ -104,7 +104,7 @@ public class VertXHttpJsonConnection implements Connection<RequestInfo<String>, 
 		}
 		request.end();
 		
-		return "{\"_tranStatus\":true,\"_exceptionMessage\":null,\"_exceptionLocalizedMessage\":null,\"_data\":{\"name\":\"Joly\",\"age\":1,\"birthday\":1483884423785}}";
+		return null;
 		
 	}
 	
