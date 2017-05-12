@@ -40,10 +40,8 @@ public class MDCChain extends AbstractHandlerMethodChain<HandlerMethodContent> {
 	}
 
 	@Override
-	public boolean exception(HandlerMethodContent handlerMethodContent, Exception exception) {
+	public void exception(HandlerMethodContent handlerMethodContent, Exception exception) throws CubeException {
 		MDC.clear();
-		
-		return false;
 	}
 
 	

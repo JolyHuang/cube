@@ -1,9 +1,8 @@
 package com.sharingif.cube.communication.http.transport.transform;
 
-import java.util.Map;
-
 import com.sharingif.cube.communication.JsonModel;
 import com.sharingif.cube.communication.transport.transform.Marshaller;
+import com.sharingif.cube.communication.transport.transform.MethodParameterArgument;
 import com.sharingif.cube.communication.transport.transform.Transform;
 import com.sharingif.cube.communication.transport.transform.exception.MarshallerException;
 
@@ -14,10 +13,10 @@ import com.sharingif.cube.communication.transport.transform.exception.Marshaller
  * @version v1.0
  * @since v1.0
  */
-public class HttpJsonTransform implements Transform<Object[],String,String,JsonModel<Map<String, Object>>> {
+public class HttpJsonTransform implements Transform<Object[],String,MethodParameterArgument<Object[], String>,JsonModel<Object>> {
 
 	private Marshaller<Object[], String> marshaller;
-	private Marshaller<String, JsonModel<Map<String, Object>>> unmarshaller;
+	private Marshaller<MethodParameterArgument<Object[], String>, JsonModel<Object>> unmarshaller;
 	
 	@Override
 	public void setMarshaller(Marshaller<Object[], String> marshaller) {
@@ -25,7 +24,7 @@ public class HttpJsonTransform implements Transform<Object[],String,String,JsonM
 	}
 
 	@Override
-	public void setUnmarshaller(Marshaller<String, JsonModel<Map<String, Object>>> unmarshaller) {
+	public void setUnmarshaller(Marshaller<MethodParameterArgument<Object[], String>, JsonModel<Object>> unmarshaller) {
 		this.unmarshaller = unmarshaller;
 	}
 	
@@ -35,8 +34,8 @@ public class HttpJsonTransform implements Transform<Object[],String,String,JsonM
 	}
 
 	@Override
-	public JsonModel<Map<String, Object>> unmarshaller(String data) throws MarshallerException {
-		return unmarshaller.marshaller(data);
+	public JsonModel<Object> unmarshaller(MethodParameterArgument<Object[], String> methodParameterArgument) throws MarshallerException {
+		return unmarshaller.marshaller(methodParameterArgument);
 	}
 
 }

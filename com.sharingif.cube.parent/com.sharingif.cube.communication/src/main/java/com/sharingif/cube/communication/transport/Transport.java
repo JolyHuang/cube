@@ -1,6 +1,7 @@
 package com.sharingif.cube.communication.transport;
 
 import com.sharingif.cube.communication.transport.transform.Transform;
+import com.sharingif.cube.core.exception.CubeException;
 
 /**
  * 通讯处理
@@ -15,6 +16,6 @@ public interface Transport<I,MI,MO,UI,UO,CI,CO> {
 	
 	void setConnection(Connection<CI,CO> connection);
 
-	Object doTransport(I obj);
+	Object doTransport(I obj) throws CubeException ;
 	
 }

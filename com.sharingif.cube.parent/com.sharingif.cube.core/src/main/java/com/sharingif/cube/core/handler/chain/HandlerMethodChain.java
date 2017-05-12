@@ -32,6 +32,6 @@ public interface HandlerMethodChain<T extends HandlerMethodContent> {
 	 * @param exception
 	 * @return 返回true异常终止，否则异常继续抛出
 	 */
-	boolean exception(T handlerMethodContent, Exception exception);
+	void exception(T handlerMethodContent, Exception exception)  throws CubeException;
 
 }

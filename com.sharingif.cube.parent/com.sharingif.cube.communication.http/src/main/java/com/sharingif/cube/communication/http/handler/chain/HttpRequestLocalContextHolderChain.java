@@ -36,10 +36,8 @@ public class HttpRequestLocalContextHolderChain extends AbstractHandlerMethodCha
 	}
 	
 	@Override
-	public boolean exception(HttpHandlerMethodContent handlerMethodContent, Exception exception) {
+	public void exception(HttpHandlerMethodContent handlerMethodContent, Exception exception) {
 		RequestLocalContextHolder.clearContext();
-		
-		return false;
 	}
 	
 	protected String getSequence(HttpHandlerMethodContent handlerMethodContent) {
