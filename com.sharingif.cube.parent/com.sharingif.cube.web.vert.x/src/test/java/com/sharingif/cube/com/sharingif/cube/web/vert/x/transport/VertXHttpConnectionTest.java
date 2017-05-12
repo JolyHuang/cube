@@ -11,8 +11,8 @@ import com.sharingif.cube.communication.MediaType;
 import com.sharingif.cube.communication.http.HttpMethod;
 import com.sharingif.cube.communication.http.transport.HttpJsonRemoteHandlerMethodTransport;
 import com.sharingif.cube.communication.http.transport.transform.HttpJsonTransform;
+import com.sharingif.cube.communication.http.transport.transform.MethodParameterArgumentToJsonModelMarshaller;
 import com.sharingif.cube.communication.http.transport.transform.ObjectToJsonStringMarshaller;
-import com.sharingif.cube.communication.http.transport.transform.StringToJsonModelMarshaller;
 import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.handler.bind.support.ConfigurableBindingInitializer;
 import com.sharingif.cube.core.handler.bind.support.DefaultDataBinderFactory;
@@ -31,7 +31,7 @@ public class VertXHttpConnectionTest {
 
 	static VertXHttpJsonConnection vertXHttpConnection = new VertXHttpJsonConnection("localhost", 8081, "wechat-server");
 	static ObjectToJsonStringMarshaller jsonMarshaller = new ObjectToJsonStringMarshaller();
-	static StringToJsonModelMarshaller jsonUnmarshaller = new StringToJsonModelMarshaller();
+	static MethodParameterArgumentToJsonModelMarshaller jsonUnmarshaller = new MethodParameterArgumentToJsonModelMarshaller();
 	
 	@Test
 	public void testPost() {
