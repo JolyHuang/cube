@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProce
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 
 import com.sharingif.cube.core.exception.CubeRuntimeException;
+import com.sharingif.cube.core.exception.validation.ValidationCubeException;
 import com.sharingif.cube.core.handler.bind.support.BindingInitializer;
 import com.sharingif.cube.core.handler.bind.support.DefaultDataBinderFactory;
 
@@ -22,6 +25,8 @@ import com.sharingif.cube.core.handler.bind.support.DefaultDataBinderFactory;
  * @since v1.0
  */
 public class RemoteServicesApplicationContext implements BeanDefinitionRegistryPostProcessor {
+	
+	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private BindingInitializer bindingInitializer;
 	private List<RemoteServices> remoteServices;
@@ -44,7 +49,18 @@ public class RemoteServicesApplicationContext implements BeanDefinitionRegistryP
 	public void init() throws ClassNotFoundException {
 		DefaultDataBinderFactory defaultDataBinderFactory = new DefaultDataBinderFactory(getBindingInitializer());
 		for(RemoteServices remoteService : remoteServices) {
-			remoteServiceMap.putAll(remoteService.initServices(defaultDataBinderFactory));
+			Map<String,Object> initRemoteService = remoteService.initServices(defaultDataBinderFactory);
+			for (Map.Entry<String, Object> entry : initRemoteService.entrySet()) {
+				String key = entry.getKey();
+				Object value = entry.getValue();
+				
+				Object oldproxyClass = remoteServiceMap.put(key, value);
+				if(null != oldproxyClass) {
+					this.logger.error("roxy class name repeat,name:{}",key);
+					throw new ValidationCubeException("proxy class name repeat");
+				}
+			}
+			
 		}
 	}
 	

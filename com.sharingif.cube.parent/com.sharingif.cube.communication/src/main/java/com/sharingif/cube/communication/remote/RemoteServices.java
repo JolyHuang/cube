@@ -11,6 +11,7 @@ import java.util.Map;
 import org.springframework.util.ClassUtils;
 
 import com.sharingif.cube.communication.transport.AbstractRemoteHandlerMethodTransport;
+import com.sharingif.cube.core.exception.validation.ValidationCubeException;
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.core.request.RequestInfoResolver;
@@ -85,7 +86,10 @@ public class RemoteServices {
 				
 			});
 			
-			proxyClassMap.put(proxyClassName, proxyClass);
+			Object oldproxyClass = proxyClassMap.put(proxyClassName, proxyClass);
+			if(null != oldproxyClass) {
+				throw new ValidationCubeException("proxy class name repeat");
+			}
 			
 		}
 		
