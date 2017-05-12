@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.ClassUtils;
 
 import com.sharingif.cube.communication.transport.AbstractRemoteHandlerMethodTransport;
@@ -24,6 +26,8 @@ import com.sharingif.cube.core.request.RequestInfoResolver;
  * @since v1.0
  */
 public class RemoteServices {
+	
+	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private RequestInfoResolver<Object[], ?> requestInfoResolver;
 	private RemoteHandlerMethodTransportFactory<?,?,?,?,?,?,?> remoteHandlerMethodTransportFactory;
@@ -88,6 +92,7 @@ public class RemoteServices {
 			
 			Object oldproxyClass = proxyClassMap.put(proxyClassName, proxyClass);
 			if(null != oldproxyClass) {
+				this.logger.error("roxy class name repeat,name:{}",proxyClassName);
 				throw new ValidationCubeException("proxy class name repeat");
 			}
 			

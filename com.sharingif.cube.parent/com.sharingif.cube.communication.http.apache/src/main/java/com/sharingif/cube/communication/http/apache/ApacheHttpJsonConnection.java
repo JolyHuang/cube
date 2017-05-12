@@ -1,4 +1,4 @@
-package com.sharingif.cube.communication.http.transport;
+package com.sharingif.cube.communication.http.apache;
 
 import java.io.IOException;
 import java.nio.charset.CodingErrorAction;
@@ -48,11 +48,14 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.CharArrayBuffer;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
 import com.sharingif.cube.communication.exception.CommunicationException;
 import com.sharingif.cube.communication.http.HttpMethod;
 import com.sharingif.cube.communication.transport.Connection;
+import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.core.util.Charset;
 import com.sharingif.cube.core.util.StringUtils;
@@ -70,11 +73,14 @@ import com.sharingif.cube.core.util.StringUtils;
  */
 public class ApacheHttpJsonConnection implements Connection<RequestInfo<String>, String>, InitializingBean {
 	
+	protected final Logger logger = LoggerFactory.getLogger(getClass());
+	
 	private static final Header APPLICATION_JSON_CONTENT_TYPE = new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
 	
 	private CloseableHttpClient httpclient;
 	private String host;
 	private int port;
+	private String address;
 	private String contextPath;
 	
 	private int connectionRequestTimeout = 1000;
@@ -82,6 +88,15 @@ public class ApacheHttpJsonConnection implements Connection<RequestInfo<String>,
     private int soTimeout = 5000;
 	private int maxTotal = 200;
 	private int defaultMaxPerRoute = 200;
+	
+	private String encoding = CubeConfigure.DEFAULT_ENCODING;
+	
+	private String debug;
+	
+	public ApacheHttpJsonConnection(String address, String contextPath) {
+		this.address = address;
+		this.contextPath = contextPath;
+	}
 	
 	public ApacheHttpJsonConnection(String host, int port, String contextPath) {
 		this.host = host;
@@ -139,13 +154,34 @@ public class ApacheHttpJsonConnection implements Connection<RequestInfo<String>,
 		this.defaultMaxPerRoute = defaultMaxPerRoute;
 	}
 	
+	public String getDebug() {
+		return debug;
+	}
+	public void setDebug(String debug) {
+		this.debug = debug;
+	}
 	
+	public String getEncoding() {
+		return encoding;
+	}
+	public void setEncoding(String encoding) {
+		this.encoding = encoding;
+	}
+
 	@Override
 	public String connect(RequestInfo<String> httpContext) throws CommunicationException {
 		
+		HttpHost httpHost = null;
+		if(!StringUtils.isEmpty(address)) {
+			httpHost = new HttpHost(address);
+        } else {
+        	httpHost = new HttpHost(host, port);
+        }
+		String url = new StringBuffer("/").append(contextPath).append("/").append(httpContext.getLookupPath()).toString();
+		
 		CloseableHttpResponse response = null;
 		try {
-			response = execute(httpContext);
+			response = execute(httpHost, url, httpContext);
 		} catch (ClientProtocolException e) {
 			throw new CommunicationException("client protocol exception", e);
 		} catch (IOException e) {
@@ -153,6 +189,11 @@ public class ApacheHttpJsonConnection implements Connection<RequestInfo<String>,
 		}
 		
 		try {
+			int statusCode = response.getStatusLine().getStatusCode();
+			if(statusCode != 200) {
+				logger.error("client protocol exception, statusCode:{},url:{}",statusCode, new StringBuffer(httpHost.getSchemeName()).append(":").append(httpHost.getAddress()).append(url).toString());
+				throw new CommunicationException("client protocol exception");
+			}
 			return EntityUtils.toString(response.getEntity(), Charset.UTF8.toString());
 		} catch (ParseException e) {
 			throw new CommunicationException("EntityUtils parse exception", e);
@@ -162,14 +203,13 @@ public class ApacheHttpJsonConnection implements Connection<RequestInfo<String>,
 		
 	}
 	
-	protected CloseableHttpResponse execute(RequestInfo<String> httpContext) throws ClientProtocolException, IOException {
-		String url = new StringBuffer("http://").append(host).append(":").append(port).append("/").append(contextPath).append("/").append(httpContext.getLookupPath()).toString();
+	protected CloseableHttpResponse execute(HttpHost httpHost, String url, RequestInfo<String> httpContext) throws ClientProtocolException, IOException {
 		
 		if(httpContext.getMethod().equals(HttpMethod.GET.name())) {
 			HttpGet httpGet = new HttpGet(url);
 			httpGet.addHeader(APPLICATION_JSON_CONTENT_TYPE);
 			try {
-				return httpclient.execute(httpGet);
+				return httpclient.execute(httpHost, httpGet);
 			} finally{
 				httpGet.releaseConnection();
 			}
@@ -181,7 +221,7 @@ public class ApacheHttpJsonConnection implements Connection<RequestInfo<String>,
 				httpPost.setEntity(new StringEntity(httpContext.getRequest(), ContentType.APPLICATION_JSON));
 			}
 			try {
-				return httpclient.execute(httpPost);
+				return httpclient.execute(httpHost, httpPost);
 			} finally{
 				httpPost.releaseConnection();
 			}
@@ -271,7 +311,6 @@ public class ApacheHttpJsonConnection implements Connection<RequestInfo<String>,
         // Configure the connection manager to use connection configuration either
         // by default or for a specific host.
         connManager.setDefaultConnectionConfig(connectionConfig);
-        connManager.setConnectionConfig(new HttpHost(host, port), connectionConfig);
         
         // Configure total max or per route limits for persistent connections
         // that can be kept in the pool or leased by the connection manager.
