@@ -44,7 +44,7 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain<HandlerM
 	}
 
 	@Override
-	public boolean exception(HandlerMethodContent content, Exception exception) {
+	public void exception(HandlerMethodContent content, Exception exception) throws CubeException {
 		
 		Long beginCurrentTime = Long.valueOf(CONTEXT_HOLDER.get());
 		
@@ -61,7 +61,6 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain<HandlerM
 				,exception.getLocalizedMessage()
 				);
 		
-		return false;
 	}
 	
 }

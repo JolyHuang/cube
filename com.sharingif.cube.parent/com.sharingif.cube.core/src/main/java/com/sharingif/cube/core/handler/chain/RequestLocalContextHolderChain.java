@@ -26,11 +26,8 @@ public class RequestLocalContextHolderChain extends AbstractHandlerMethodChain<H
 	}
 
 	@Override
-	public boolean exception(HandlerMethodContent handlerMethodContent, Exception exception) {
+	public void exception(HandlerMethodContent handlerMethodContent, Exception exception) throws CubeException {
 		RequestLocalContextHolder.clearContext();
-		super.exception(handlerMethodContent, exception);
-		
-		return false;
 	}
 	
 	
