@@ -27,6 +27,7 @@ public class ExtendedDispatcherServlet extends DispatcherServlet {
 	private static final String WEB_HANDLERMETHODCHAIN = "webHandlerMethodChain";
 	
 	private HandlerMethodChain<HandlerMethodContent> handlerMethodChain;
+	private boolean handlerMethodChainIsNotEmpty;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -34,22 +35,41 @@ public class ExtendedDispatcherServlet extends DispatcherServlet {
 		super.init(config);
 		
 		handlerMethodChain = (HandlerMethodChain<HandlerMethodContent>) super.getWebApplicationContext().getBean(WEB_HANDLERMETHODCHAIN);
+		
+		handlerMethodChainIsNotEmpty = (null != handlerMethodChain);
 	}
 
 	@Override
 	protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		HttpHandlerMethodContent webHandlerMethodContent = new HttpHandlerMethodContent(null, null, null, null, null, null, null, new SpringMVCHttpRequest(request), new SpringMVCHttpResponse(response));
+		HttpHandlerMethodContent webHandlerMethodContent = null;
+		if(handlerMethodChainIsNotEmpty) {
+			webHandlerMethodContent = new HttpHandlerMethodContent(null, null, null, null, null, null, null, new SpringMVCHttpRequest(request), new SpringMVCHttpResponse(response));
+			handlerMethodChain.before(webHandlerMethodContent);
+		}
 		
-		handlerMethodChain.before(webHandlerMethodContent);
 		
 		try {
 			super.doService(request, response);
 		} catch (Exception exception){
-			handlerMethodChain.exception(webHandlerMethodContent, exception);
+			if(handlerMethodChainIsNotEmpty) {
+				try {
+					handlerMethodChain.exception(webHandlerMethodContent, exception);
+				} catch (Exception e) {
+					logger.error("do service error", e);
+					throw e;
+				}
+			}
+			throw exception;
 		}
 		
-		handlerMethodChain.after(webHandlerMethodContent);
+		if(handlerMethodChainIsNotEmpty) {
+			try {
+				handlerMethodChain.after(webHandlerMethodContent);
+			} catch (Exception e) {
+				logger.error("handler method after chain error", e);
+			}
+		}
 		
 	}
 	
