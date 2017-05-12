@@ -17,7 +17,9 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
+import com.sharingif.cube.core.util.CubeExceptionUtil;
 import com.sharingif.cube.web.springmvc.handler.SpringMVCHandlerMethodContent;
 
 /**
@@ -84,9 +86,9 @@ public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandl
 					"' with arguments " + Arrays.toString(args));
 		}
 		
-		boolean handlerMethodChainIsEmpty = (null != getHandlerMethodChain());
+		boolean handlerMethodChainIsNotEmpty = (null != getHandlerMethodChain());
 		SpringMVCHandlerMethodContent handlerMethodContent = null;
-		if(handlerMethodChainIsEmpty) {
+		if(handlerMethodChainIsNotEmpty) {
 			handlerMethodContent = new SpringMVCHandlerMethodContent(
 					getBean()
 					,super.getMethod()
@@ -102,9 +104,24 @@ public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandl
 			getHandlerMethodChain().before(handlerMethodContent);
 		}
 		
-		Object returnValue = doInvoke(handlerMethodContent.getArgs());
+		Object returnValue = null;
+		try {
+			returnValue = doInvoke(handlerMethodContent.getArgs());
+		} catch (Exception exception) {
+			if(handlerMethodChainIsNotEmpty) {
+				try {
+					getHandlerMethodChain().exception(handlerMethodContent, exception);
+				} catch (CubeException handlerMethodChainException) {
+					this.logger.error("doTransport error", exception);
+					CubeExceptionUtil.throwCubeRuntimeException(handlerMethodChainException);
+				}
+				
+			}
+			
+			throw exception;
+		}
 		
-		if(handlerMethodChainIsEmpty) {
+		if(handlerMethodChainIsNotEmpty) {
 			handlerMethodContent.setReturnValue(returnValue);
 			getHandlerMethodChain().after(handlerMethodContent);
 		}
@@ -114,7 +131,7 @@ public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandl
 					"] returned [" + returnValue + "]");
 		}
 		
-		if(handlerMethodChainIsEmpty) {
+		if(handlerMethodChainIsNotEmpty) {
 			return handlerMethodContent.getReturnValue();
 		} else {
 			return returnValue;

@@ -42,8 +42,6 @@ public class HttpJsonRemoteHandlerMethodTransport extends AbstractRemoteHandlerM
 	@Override
 	public Object doTransport(RequestInfo<Object[]> requestInfo) throws CubeException {
 		
-		Object returnValue = null;
-		
 		boolean handlerMethodChainIsNotEmpty = (null != getHandlerMethodChain());
 		HandlerMethodContent handlerMethodContent = null;
 		
@@ -53,6 +51,8 @@ public class HttpJsonRemoteHandlerMethodTransport extends AbstractRemoteHandlerM
 			handlerMethodContent = new HandlerMethodContent(getBean(), getMethod(), requestInfo.getRequest(), null, getMethodParameters(), requestInfo.getLocale(), requestInfo);
 			getHandlerMethodChain().before(handlerMethodContent);
 		}
+		
+		Object returnValue = null;
 		try {
 			
 			String connectReturnValue = connect(requestInfo, jsonData);

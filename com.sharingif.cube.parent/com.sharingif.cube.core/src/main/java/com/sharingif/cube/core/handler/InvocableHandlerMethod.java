@@ -17,6 +17,7 @@ import com.sharingif.cube.core.handler.adapter.HandlerMethodArgumentResolverComp
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
 import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
 import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.util.CubeExceptionUtil;
 
 
 /**
@@ -115,16 +116,31 @@ public class InvocableHandlerMethod extends HandlerMethod {
 			logger.trace(sb.toString());
 		}
 		
-		boolean handlerMethodChainIsEmpty = (null != getHandlerMethodChain());
+		boolean handlerMethodChainIsNotEmpty = (null != getHandlerMethodChain());
 		HandlerMethodContent handlerMethodContent = null;
-		if(handlerMethodChainIsEmpty) {
+		if(handlerMethodChainIsNotEmpty) {
 			handlerMethodContent = new HandlerMethodContent(getBean(), super.getMethod(), args, null, super.getMethodParameters(), requestInfo.getLocale(), requestInfo);
 			getHandlerMethodChain().before(handlerMethodContent);
 		}
 		
-		Object returnValue = doInvoke(args);
+		Object returnValue = null;;
+		try {
+			returnValue = doInvoke(args);
+		} catch (Exception exception) {
+			if(handlerMethodChainIsNotEmpty) {
+				try {
+					getHandlerMethodChain().exception(handlerMethodContent, exception);
+				} catch (CubeException handlerMethodChainException) {
+					this.logger.error("doTransport error", exception);
+					CubeExceptionUtil.throwCubeRuntimeException(handlerMethodChainException);
+				}
+				
+			}
+			
+			throw exception;
+		}
 		
-		if(handlerMethodChainIsEmpty) {
+		if(handlerMethodChainIsNotEmpty) {
 			handlerMethodContent.setReturnValue(returnValue);
 			handlerMethodChain.after(handlerMethodContent);
 		}
@@ -133,7 +149,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 			logger.trace("Method [" + getMethod().getName() + "] returned [" + returnValue + "]");
 		}
 		
-		if(handlerMethodChainIsEmpty) {
+		if(handlerMethodChainIsNotEmpty) {
 			return handlerMethodContent.getReturnValue();
 		} else {
 			return returnValue;
