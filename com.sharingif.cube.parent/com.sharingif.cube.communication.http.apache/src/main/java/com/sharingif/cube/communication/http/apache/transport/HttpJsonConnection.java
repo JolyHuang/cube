@@ -1,4 +1,4 @@
-package com.sharingif.cube.communication.http.apache;
+package com.sharingif.cube.communication.http.apache.transport;
 
 import java.io.IOException;
 import java.nio.charset.CodingErrorAction;
@@ -71,7 +71,7 @@ import com.sharingif.cube.core.util.StringUtils;
  * @Version:      [v1.0] 
  *    
  */
-public class ApacheHttpJsonConnection implements Connection<RequestInfo<String>, String>, InitializingBean {
+public class HttpJsonConnection implements Connection<RequestInfo<String>, String>, InitializingBean {
 	
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -93,12 +93,12 @@ public class ApacheHttpJsonConnection implements Connection<RequestInfo<String>,
 	
 	private String debug;
 	
-	public ApacheHttpJsonConnection(String address, String contextPath) {
+	public HttpJsonConnection(String address, String contextPath) {
 		this.address = address;
 		this.contextPath = contextPath;
 	}
 	
-	public ApacheHttpJsonConnection(String host, int port, String contextPath) {
+	public HttpJsonConnection(String host, int port, String contextPath) {
 		this.host = host;
 		this.port = port;
 		this.contextPath = contextPath;
