@@ -26,8 +26,9 @@ public class MultiHandlerMethodChain<T extends HandlerMethodContent> extends Abs
 
 	@Override
 	public void before(T handlerMethodContent) throws CubeException {
-		if(null == chains)
+		if(null == chains) {
 			return;
+		}
 		
 		for(int i=0; i<chains.size(); i++){
 			HandlerMethodChain<? super T> chain = null;
@@ -35,20 +36,17 @@ public class MultiHandlerMethodChain<T extends HandlerMethodContent> extends Abs
 				chain = chains.get(i);
 				chain.before(handlerMethodContent);
 			} catch (Exception exception) {
-				this.logger.error("Before HandlerMethodChain runtime exception,handlerName:{},exception:{}", chain.getClass().getSimpleName(),exception);
-				boolean flag = chain.exception(handlerMethodContent, exception);
-				if(!flag) {
-					CubeExceptionUtil.throwCubeException(exception);
-				} 
+				CubeExceptionUtil.throwCubeException(exception);
 			}
 		}
 
 	}
-
+	
 	@Override
 	public void after(T handlerMethodContent) throws CubeException {
-		if(null == chains)
+		if(null == chains) {
 			return;
+		}
 		
 		for(int i=(chains.size()-1); i>-1; i--){
 			HandlerMethodChain<? super T> chain = null;
@@ -56,13 +54,29 @@ public class MultiHandlerMethodChain<T extends HandlerMethodContent> extends Abs
 				chain = chains.get(i);
 				chain.after(handlerMethodContent);
 			} catch (Exception exception) {
-				this.logger.error("After HandlerMethodChain runtime exception,handlerName:{},exception:{}", chain.getClass().getSimpleName(),exception);
-				boolean flag = chain.exception(handlerMethodContent, exception);
-				if(!flag) {
-					CubeExceptionUtil.throwCubeException(exception);
-				} 
+				CubeExceptionUtil.throwCubeException(exception);
 			}
 		}
 	}
+	
+	@Override
+	public void exception(T handlerMethodContent, Exception exception) throws CubeException {
+		if(null == chains) {
+			return;
+		}
+		
+		
+		for(int i=(chains.size()-1); i>-1; i--){
+			HandlerMethodChain<? super T> chain = null;
+			try {
+				chain = chains.get(i);
+				chain.exception(handlerMethodContent, exception);
+			} catch (Exception handlerMethodChainException) {
+				CubeExceptionUtil.throwCubeException(handlerMethodChainException);
+			}
+		}
+	}
+	
+	
 
 }
