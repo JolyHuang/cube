@@ -1,17 +1,17 @@
 package com.sharingif.cube.web.springmvc.servlet.view.json;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sharingif.cube.communication.JsonModel;
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.UnknownCubeException;
 
@@ -27,10 +27,10 @@ import com.sharingif.cube.core.exception.UnknownCubeException;
  *    
  */
 public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
-	
-	private String exceptionMessageName = "_exceptionMessage";
-	private String exceptionLocalizedMessageName = "_exceptionLocalizedMessage";
-	private String tranStatusName="_tranStatus";
+	private String exceptionMessageName = JsonModel.EXCEPTION_MESSAGE;
+	private String exceptionLocalizedMessageName = JsonModel.EXCEPTION_LOCALIZED_MESSAGE;
+	private String tranStatusName = JsonModel.TRAN_STATUS;
+	private String dataName = JsonModel.DATA;
 
 	public ExtendedMappingJackson2JsonView(){
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -63,44 +63,51 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 	public void setTranStatusName(String tranStatusName) {
 		this.tranStatusName = tranStatusName;
 	}
+	public String getDataName() {
+		return dataName;
+	}
+	public void setDataName(String dataName) {
+		this.dataName = dataName;
+	}
 	
 	@Override
 	protected void renderMergedOutputModel(Map<String, Object> model,HttpServletRequest request, HttpServletResponse response) throws Exception {
-		resolverException(model, request, response);
+		Map<String, Object> resultMap = renderMergedOutputModelException(model, request, response);
 		
-		super.renderMergedOutputModel(model, request, response);
+		super.renderMergedOutputModel(resultMap, request, response);
 	}
 	
-	protected void resolverException(Map<String, Object> model,HttpServletRequest request, HttpServletResponse response){
-		List<String> removeKeys = new ArrayList<String>();
-		Map<String, Object> addModels = new HashMap<String, Object>();
+	protected Map<String, Object> renderMergedOutputModelException(Map<String, Object> model,HttpServletRequest request, HttpServletResponse response){
 		boolean tranStatusFlag = true;
 		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Map<String, Object> _data = new HashMap<String, Object>();
 		for (Map.Entry<String, Object> entry : model.entrySet()) {
 			String key = entry.getKey();
 			Object value = entry.getValue();
 			
 			if(value instanceof Exception){
 				tranStatusFlag=false;
-				removeKeys.add(key);
 				
 				if (!(value instanceof ICubeException))
 					value = new UnknownCubeException((Exception)value);
 				
 				ICubeException exception = (ICubeException)value;
 				
-				addModels.put(exceptionMessageName, exception.getMessage());
-				addModels.put(exceptionLocalizedMessageName, exception.getLocalizedMessage());
+				resultMap.put(getExceptionMessageName(), exception.getMessage());
+				resultMap.put(getExceptionLocalizedMessageName(), exception.getLocalizedMessage());
+			} else {
+				
+				if(!(value instanceof BindingResult)) {
+					_data.put(key, value);
+				}
 			}
-			
 		}
 		
-		for(String key : removeKeys){
-			model.remove(key);
-		}
+		resultMap.put(getTranStatusName(), tranStatusFlag);
+		resultMap.put(getDataName(), _data);
 		
-		model.putAll(addModels);
-		model.put(tranStatusName,tranStatusFlag);
+		return resultMap;
 	}
 	
 }
