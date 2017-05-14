@@ -197,7 +197,7 @@ public class HttpJsonConnection implements Connection<RequestInfo<String>, Strin
 			String receiveMessage = EntityUtils.toString(response.getEntity(), encoding);
 			
 			if(debug) {
-				this.logger.info("receive message:{}");
+				this.logger.info("receive message:{}", receiveMessage);
 			}
 			
 			return receiveMessage;
