@@ -1,11 +1,11 @@
 package com.sharingif.cube.communication.http.apache.transport;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.charset.CodingErrorAction;
 
 import javax.net.ssl.SSLContext;
 
-import org.apache.http.Consts;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
@@ -57,7 +57,6 @@ import com.sharingif.cube.communication.http.HttpMethod;
 import com.sharingif.cube.communication.transport.Connection;
 import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.request.RequestInfo;
-import com.sharingif.cube.core.util.Charset;
 import com.sharingif.cube.core.util.StringUtils;
 
 /**   
@@ -76,7 +75,7 @@ public class HttpJsonConnection implements Connection<RequestInfo<String>, Strin
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private static final Header APPLICATION_JSON_CONTENT_TYPE = new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
-	
+
 	private CloseableHttpClient httpclient;
 	private String host;
 	private int port;
@@ -91,7 +90,7 @@ public class HttpJsonConnection implements Connection<RequestInfo<String>, Strin
 	
 	private String encoding = CubeConfigure.DEFAULT_ENCODING;
 	
-	private String debug;
+	private boolean debug = true;
 	
 	public HttpJsonConnection(String address, String contextPath) {
 		this.address = address;
@@ -154,10 +153,10 @@ public class HttpJsonConnection implements Connection<RequestInfo<String>, Strin
 		this.defaultMaxPerRoute = defaultMaxPerRoute;
 	}
 	
-	public String getDebug() {
+	public boolean getDebug() {
 		return debug;
 	}
-	public void setDebug(String debug) {
+	public void setDebug(boolean debug) {
 		this.debug = debug;
 	}
 	
@@ -177,56 +176,90 @@ public class HttpJsonConnection implements Connection<RequestInfo<String>, Strin
         } else {
         	httpHost = new HttpHost(host, port);
         }
-		String url = new StringBuffer("/").append(contextPath).append("/").append(httpContext.getLookupPath()).toString();
+		String path = new StringBuffer("/").append(contextPath).append("/").append(httpContext.getLookupPath()).toString();
 		
 		CloseableHttpResponse response = null;
 		try {
-			response = execute(httpHost, url, httpContext);
+			response = connect(httpHost, path, httpContext);
 		} catch (ClientProtocolException e) {
 			throw new CommunicationException("client protocol exception", e);
 		} catch (IOException e) {
 			throw new CommunicationException("client io exception", e);
 		}
 		
+		int statusCode = response.getStatusLine().getStatusCode();
+		if(statusCode != 200) {
+			connectErrorLog(httpContext, httpHost, path, statusCode);
+			throw new CommunicationException("client protocol exception");
+		}
+		
 		try {
-			int statusCode = response.getStatusLine().getStatusCode();
-			if(statusCode != 200) {
-				logger.error("client protocol exception, statusCode:{},url:{}",statusCode, new StringBuffer(httpHost.getSchemeName()).append(":").append(httpHost.getAddress()).append(url).toString());
-				throw new CommunicationException("client protocol exception");
+			String receiveMessage = EntityUtils.toString(response.getEntity(), encoding);
+			
+			if(debug) {
+				this.logger.info("receive message:{}");
 			}
-			return EntityUtils.toString(response.getEntity(), Charset.UTF8.toString());
+			
+			return receiveMessage;
 		} catch (ParseException e) {
 			throw new CommunicationException("EntityUtils parse exception", e);
 		} catch (IOException e) {
 			throw new CommunicationException("EntityUtils io exception", e);
+		} finally {
+			if(null != response) {
+				try {
+					response.close();
+				} catch (IOException e) {
+					throw new CommunicationException("close reponse exception");
+				}
+			}
 		}
 		
 	}
 	
-	protected CloseableHttpResponse execute(HttpHost httpHost, String url, RequestInfo<String> httpContext) throws ClientProtocolException, IOException {
+	protected CloseableHttpResponse connect(HttpHost httpHost, String path, RequestInfo<String> httpContext) throws ClientProtocolException, IOException {
+		
+		if(debug) {
+			this.logger.info("send message:{}", httpContext.getRequest());
+		}
 		
 		if(httpContext.getMethod().equals(HttpMethod.GET.name())) {
-			HttpGet httpGet = new HttpGet(url);
+			HttpGet httpGet = new HttpGet(path);
 			httpGet.addHeader(APPLICATION_JSON_CONTENT_TYPE);
-			try {
-				return httpclient.execute(httpHost, httpGet);
-			} finally{
-				httpGet.releaseConnection();
-			}
+			return httpclient.execute(httpHost, httpGet);
 		}
 		if(httpContext.getMethod().equals(HttpMethod.POST.name())) {
-			HttpPost httpPost = new HttpPost(url);
+			HttpPost httpPost = new HttpPost(path);
 			httpPost.addHeader(APPLICATION_JSON_CONTENT_TYPE);
 			if(!StringUtils.isEmpty(httpContext.getRequest())) {
 				httpPost.setEntity(new StringEntity(httpContext.getRequest(), ContentType.APPLICATION_JSON));
 			}
-			try {
-				return httpclient.execute(httpHost, httpPost);
-			} finally{
-				httpPost.releaseConnection();
-			}
+			return httpclient.execute(httpHost, httpPost);
 		}
-		return null;
+		
+		this.logger.error("method type error, method value:{}", httpContext.getMethod());
+		throw new CommunicationException("method type error");
+	}
+	
+	protected void connectErrorLog(RequestInfo<String> httpContext, HttpHost httpHost, String path,Integer statusCode) {
+		StringBuilder url = new StringBuilder();
+		url.append(httpHost.getSchemeName());
+		url.append("://");
+		if(!StringUtils.isEmpty(address)) {
+			url.append(address);
+		} else {
+			url.append(host);
+			url.append(":");
+			url.append(port);
+		}
+		url.append(path);
+		
+		if(StringUtils.isEmpty(statusCode)) {
+			logger.error("client protocol exception, method:{}、url:{},", httpContext.getMethod(), url.toString());
+		} else {
+			logger.error("client protocol exception, statusCode:{}、method:{}、url:{},", statusCode, httpContext.getMethod(), url.toString());
+		}
+		
 	}
 	
 	
@@ -306,7 +339,7 @@ public class HttpJsonConnection implements Connection<RequestInfo<String>, Strin
         ConnectionConfig connectionConfig = ConnectionConfig.custom()
             .setMalformedInputAction(CodingErrorAction.IGNORE)
             .setUnmappableInputAction(CodingErrorAction.IGNORE)
-            .setCharset(Consts.UTF_8)
+            .setCharset(Charset.forName(encoding))
             .build();
         // Configure the connection manager to use connection configuration either
         // by default or for a specific host.
@@ -316,7 +349,6 @@ public class HttpJsonConnection implements Connection<RequestInfo<String>, Strin
         // that can be kept in the pool or leased by the connection manager.
         connManager.setMaxTotal(maxTotal);
         connManager.setDefaultMaxPerRoute(defaultMaxPerRoute);
-        
         
         RequestConfig requestConfig = RequestConfig.custom()
         		.setConnectionRequestTimeout(connectionRequestTimeout)
