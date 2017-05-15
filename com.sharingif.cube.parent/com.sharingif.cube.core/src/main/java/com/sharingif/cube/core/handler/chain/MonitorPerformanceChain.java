@@ -14,13 +14,22 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain<HandlerM
 	
 	private static final ThreadLocal<String> CONTEXT_HOLDER = new ThreadLocal<String>();
 	
+	private String name = "controller";
 	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Override
 	public void before(HandlerMethodContent content) throws CubeException {
 		Long beginCurrentTime = System.currentTimeMillis();
 		CONTEXT_HOLDER.set(String.valueOf(beginCurrentTime));
 		
-		this.logger.info("controller begin===> ThdId:{}, TrsId:{}.{}"
+		this.logger.info("{} begin===> ThdId:{}, TrsId:{}.{}"
+				,name
 				,Thread.currentThread().getId()
 				,content.getObj().getClass().getName()
 				,content.getMethod().getName()
@@ -34,7 +43,8 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain<HandlerM
 		
 		Long endCurrentTime = System.currentTimeMillis();
 		
-		this.logger.info("controller end===> ThdId:{}, TrsId:{}.{}, ExTime:{}"
+		this.logger.info("{} end===> ThdId:{}, TrsId:{}.{}, ExTime:{}"
+				,name
 				,Thread.currentThread().getId()
 				,content.getObj().getClass().getName()
 				,content.getMethod().getName()
@@ -50,9 +60,10 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain<HandlerM
 		
 		Long endCurrentTime = System.currentTimeMillis();
 		
-		String loggerMessage = "controller error===> ThdId:{}, TrsId:{}.{}, ExTime:{} \nmessage:{} \nlocalizedMessage:{}";
+		String loggerMessage = "{} error===> ThdId:{}, TrsId:{}.{}, ExTime:{} \nmessage:{} \nlocalizedMessage:{}";
 			
 		this.logger.error(loggerMessage
+				,name
 				,Thread.currentThread().getId()
 				,content.getObj().getClass().getName()
 				,content.getMethod().getName()

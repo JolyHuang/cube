@@ -8,6 +8,8 @@ import com.sharingif.cube.communication.transport.Connection;
 import com.sharingif.cube.communication.transport.transform.MethodParameterArgument;
 import com.sharingif.cube.communication.transport.transform.Transform;
 import com.sharingif.cube.core.handler.HandlerMethod;
+import com.sharingif.cube.core.handler.HandlerMethodContent;
+import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
 import com.sharingif.cube.core.request.RequestInfo;
 
 /**
@@ -20,15 +22,17 @@ import com.sharingif.cube.core.request.RequestInfo;
 public class HttpJsonRemoteHandlerMethodTransportFactory implements RemoteHandlerMethodTransportFactory<RequestInfo<Object[]>,Object[],String,MethodParameterArgument<Object[],String>,JsonModel<Object>,RequestInfo<String>,String> {
 	
 	private Connection<RequestInfo<String>,String> connection;
-	
 	private Transform<Object[],String, MethodParameterArgument<Object[],String>, JsonModel<Object>> transform;
+	private HandlerMethodChain<? super HandlerMethodContent> handlerMethodChain;
 
 	public void setConnection(Connection<RequestInfo<String>,String> connection) {
 		this.connection = connection;
 	}
-	
 	public void setTransform(Transform<Object[], String, MethodParameterArgument<Object[],String>, JsonModel<Object>> transform) {
 		this.transform = transform;
+	}
+	public void setHandlerMethodChain(HandlerMethodChain<? super HandlerMethodContent> handlerMethodChain) {
+		this.handlerMethodChain = handlerMethodChain;
 	}
 
 
@@ -37,6 +41,7 @@ public class HttpJsonRemoteHandlerMethodTransportFactory implements RemoteHandle
 		HttpJsonRemoteHandlerMethodTransport httpJsonRemoteHandlerMethodTransport = new HttpJsonRemoteHandlerMethodTransport(new HandlerMethod(bean, method));
 		httpJsonRemoteHandlerMethodTransport.setConnection(connection);
 		httpJsonRemoteHandlerMethodTransport.setTransform(transform);
+		httpJsonRemoteHandlerMethodTransport.setHandlerMethodChain(handlerMethodChain);
 		
 		return httpJsonRemoteHandlerMethodTransport;
 	}

@@ -19,7 +19,7 @@ public abstract class AbstractRemoteHandlerMethodTransport<I,MI,MO,UI,UO,CI,CO> 
 
 	private DataBinderFactory dataBinderFactory;
 	private ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
-	private HandlerMethodChain<HandlerMethodContent> handlerMethodChain;
+	private HandlerMethodChain<? super HandlerMethodContent> handlerMethodChain;
 	
 	public void setDataBinderFactory(DataBinderFactory dataBinderFactory) {
 		this.dataBinderFactory = dataBinderFactory;
@@ -33,10 +33,10 @@ public abstract class AbstractRemoteHandlerMethodTransport<I,MI,MO,UI,UO,CI,CO> 
 	public ParameterNameDiscoverer getParameterNameDiscoverer() {
 		return parameterNameDiscoverer;
 	}
-	public HandlerMethodChain<HandlerMethodContent> getHandlerMethodChain() {
+	public HandlerMethodChain<? super HandlerMethodContent> getHandlerMethodChain() {
 		return handlerMethodChain;
 	}
-	public void setHandlerMethodChain(HandlerMethodChain<HandlerMethodContent> handlerMethodChain) {
+	public void setHandlerMethodChain(HandlerMethodChain<? super HandlerMethodContent> handlerMethodChain) {
 		this.handlerMethodChain = handlerMethodChain;
 	}
 	
