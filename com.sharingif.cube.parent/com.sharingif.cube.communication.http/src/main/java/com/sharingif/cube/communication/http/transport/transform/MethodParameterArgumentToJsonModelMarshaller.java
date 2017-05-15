@@ -5,6 +5,8 @@ import java.lang.annotation.Annotation;
 import java.util.Map;
 import java.util.TimeZone;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.core.Conventions;
@@ -36,6 +38,8 @@ import com.sharingif.cube.core.request.RequestInfo;
  * @since v1.0
  */
 public class MethodParameterArgumentToJsonModelMarshaller implements Marshaller<MethodParameterArgument<Object[], String>, JsonModel<Object>> {
+	
+	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private String exceptionMessageName = JsonModel.EXCEPTION_MESSAGE;
 	private String exceptionLocalizedMessageName = JsonModel.EXCEPTION_LOCALIZED_MESSAGE;
@@ -110,6 +114,11 @@ public class MethodParameterArgumentToJsonModelMarshaller implements Marshaller<
 	protected JsonModel<Object> marshallerInternal(MethodParameterArgument<Object[], String> methodParameterArgument) throws MarshallerException, JsonParseException, JsonMappingException, IOException {
 		Map<String, Object> connectReturnMap = objectMapper.readValue(methodParameterArgument.getConnectReturnValue(), Map.class);
 		Object tranStatusObject = connectReturnMap.get(getTranStatusName());
+		
+		if(null == tranStatusObject) {
+			this.logger.error("The transaction status field {} is not found in the message", getTranStatusName());
+			throw new MarshallerException("tranStatus key name error");
+		}
 		
 		boolean tranStatus = false;
 		Object data = null;

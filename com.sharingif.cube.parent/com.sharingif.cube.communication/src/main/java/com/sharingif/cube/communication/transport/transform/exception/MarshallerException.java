@@ -13,6 +13,10 @@ public class MarshallerException extends CubeException {
 
 	private static final long serialVersionUID = -2449730991754475037L;
 	
+	public MarshallerException(String message) {
+		super(message);
+	}
+	
 	public MarshallerException(String message, Throwable cause) {
 		super(message, cause);
 	}
