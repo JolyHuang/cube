@@ -33,7 +33,7 @@ public class ObjectToJsonStringMarshaller implements Marshaller<Object[], String
 				return null;
 			}
 			
-			return objectMapper.writeValueAsString((data.length > 1) ? data : data);
+			return objectMapper.writeValueAsString((data.length > 1) ? data : data[0]);
 		} catch (Exception e) {
 			throw new MarshallerException("marshaller object to json error", e);
 		}
