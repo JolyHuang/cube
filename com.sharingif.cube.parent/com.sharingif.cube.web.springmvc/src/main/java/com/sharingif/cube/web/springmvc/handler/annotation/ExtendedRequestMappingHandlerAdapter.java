@@ -33,20 +33,6 @@ public class ExtendedRequestMappingHandlerAdapter extends RequestMappingHandlerA
 		this.handlerMethodChain = handlerMethodChain;
 	}
 
-	public ExtendedRequestMappingHandlerAdapter() {
-		super();
-		
-		List<HandlerMethodArgumentResolver> resolvers = new ArrayList<HandlerMethodArgumentResolver>();
-		resolvers.add(new DataContainerMethodProcessor());
-		
-		resolvers.add(new MediaTypeMethodProcessor(
-				true,
-				new RequestResponseBodyMethodProcessor(getMessageConverters()),
-				new ServletModelAttributeMethodProcessor(false))
-		);
-		this.setCustomArgumentResolvers(resolvers);
-	}
-	
 	@Override
 	protected ServletInvocableHandlerMethod createInvocableHandlerMethod(HandlerMethod handlerMethod) {
 		ExtendedServletInvocableHandlerMethod requestMethod = new ExtendedServletInvocableHandlerMethod(handlerMethod);
@@ -54,5 +40,28 @@ public class ExtendedRequestMappingHandlerAdapter extends RequestMappingHandlerA
 		
 		return requestMethod;
 	}
+	
+	@Override
+	public void afterPropertiesSet() {
+		List<HandlerMethodArgumentResolver> resolvers = this.getCustomArgumentResolvers();
+		
+		if(null == resolvers) {
+			resolvers = new ArrayList<HandlerMethodArgumentResolver>();
+		}
+		
+		resolvers.add(new DataContainerMethodProcessor());
+		
+		resolvers.add(new MediaTypeMethodProcessor(
+				true,
+				new RequestResponseBodyMethodProcessor(getMessageConverters()),
+				new ServletModelAttributeMethodProcessor(false))
+		);
+		
+		this.setCustomArgumentResolvers(resolvers);
+		
+		super.afterPropertiesSet();
+	}
+	
+	
 	
 }

@@ -45,12 +45,12 @@ public class HttpJsonRemoteHandlerMethodTransport extends AbstractRemoteHandlerM
 		boolean handlerMethodChainIsNotEmpty = (null != getHandlerMethodChain());
 		HandlerMethodContent handlerMethodContent = null;
 		
-		String jsonData = marshaller(requestInfo);
-		
 		if(handlerMethodChainIsNotEmpty) {
 			handlerMethodContent = new HandlerMethodContent(getBean(), getMethod(), requestInfo.getRequest(), null, getMethodParameters(), requestInfo.getLocale(), requestInfo);
 			getHandlerMethodChain().before(handlerMethodContent);
 		}
+		
+		String jsonData = marshaller(requestInfo);
 		
 		Object returnValue = null;
 		try {
