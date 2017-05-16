@@ -39,6 +39,7 @@ public class HttpJsonRemoteHandlerMethodTransport extends AbstractRemoteHandlerM
 		this.transform = transform;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object doTransport(RequestInfo<Object[]> requestInfo) throws CubeException {
 		
@@ -50,7 +51,7 @@ public class HttpJsonRemoteHandlerMethodTransport extends AbstractRemoteHandlerM
 			getHandlerMethodChain().before(handlerMethodContent);
 		}
 		
-		String jsonData = marshaller(requestInfo);
+		String jsonData = marshaller((RequestInfo<Object[]>) handlerMethodContent.getRequestInfo());
 		
 		Object returnValue = null;
 		try {
