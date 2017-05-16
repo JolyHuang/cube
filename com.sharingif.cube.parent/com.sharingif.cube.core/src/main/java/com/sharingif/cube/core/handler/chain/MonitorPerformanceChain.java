@@ -28,11 +28,11 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain<HandlerM
 		Long beginCurrentTime = System.currentTimeMillis();
 		CONTEXT_HOLDER.set(String.valueOf(beginCurrentTime));
 		
-		this.logger.info("{} begin===> ThdId:{}, TrsId:{}.{}"
+		this.logger.info("{} begin===> ThdId:{}, method:{}, TrsId:{}"
 				,name
 				,Thread.currentThread().getId()
-				,content.getObj().getClass().getName()
-				,content.getMethod().getName()
+				,content.getRequestInfo().getMethod()
+				,content.getRequestInfo().getLookupPath()
 				);
 		
 	}
@@ -43,11 +43,11 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain<HandlerM
 		
 		Long endCurrentTime = System.currentTimeMillis();
 		
-		this.logger.info("{} end===> ThdId:{}, TrsId:{}.{}, ExTime:{}"
+		this.logger.info("{} end===> ThdId:{}, method:{}, TrsId:{}, ExTime:{}"
 				,name
 				,Thread.currentThread().getId()
-				,content.getObj().getClass().getName()
-				,content.getMethod().getName()
+				,content.getRequestInfo().getMethod()
+				,content.getRequestInfo().getLookupPath()
 				,(endCurrentTime-beginCurrentTime)
 				);
 		
@@ -60,13 +60,13 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain<HandlerM
 		
 		Long endCurrentTime = System.currentTimeMillis();
 		
-		String loggerMessage = "{} error===> ThdId:{}, TrsId:{}.{}, ExTime:{} \nmessage:{} \nlocalizedMessage:{}";
+		String loggerMessage = "{} error===> ThdId:{}, method:{}, TrsId:{}, ExTime:{} \nmessage:{} \nlocalizedMessage:{}";
 			
 		this.logger.error(loggerMessage
 				,name
 				,Thread.currentThread().getId()
-				,content.getObj().getClass().getName()
-				,content.getMethod().getName()
+				,content.getRequestInfo().getMethod()
+				,content.getRequestInfo().getLookupPath()
 				,(endCurrentTime-beginCurrentTime)
 				,exception.getMessage()
 				,exception.getLocalizedMessage()

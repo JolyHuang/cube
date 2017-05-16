@@ -7,6 +7,7 @@ import org.slf4j.MDC;
 
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.HandlerMethodContent;
+import com.sharingif.cube.core.handler.request.RequestLocalContextHolder;
 import com.sharingif.cube.core.user.CoreUserContextHolder;
 import com.sharingif.cube.core.user.ICoreUser;
 
@@ -30,6 +31,10 @@ public class MDCChain extends AbstractHandlerMethodChain<HandlerMethodContent> {
 		ICoreUser coreUser = CoreUserContextHolder.getContext();
 		String uniqueId = (coreUser == null ? "NOUSER" : coreUser.getUniqueId());
 		mdcVariables.put("userId", uniqueId);
+		
+		String transUniqueId = RequestLocalContextHolder.getToken();
+		transUniqueId = (transUniqueId == null ? "" : transUniqueId);
+		mdcVariables.put("transUniqueId", transUniqueId);
 		
 		MDC.setContextMap(mdcVariables);
 	}

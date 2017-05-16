@@ -1,17 +1,22 @@
 package com.sharingif.cube.web.springmvc.servlet;
 
+import java.util.Locale;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.util.UrlPathHelper;
 
 import com.sharingif.cube.communication.http.handler.HttpHandlerMethodContent;
 import com.sharingif.cube.core.handler.HandlerMethodContent;
 import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
-import com.sharingif.cube.web.springmvc.http.SpringMVCHttpResponse;
+import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.web.springmvc.http.SpringMVCHttpRequest;
+import com.sharingif.cube.web.springmvc.http.SpringMVCHttpResponse;
 
 /**
  * 扩展DispatcherServlet，重写父类doService方法,添加initContextHolders、resetContextHolders方法。
@@ -23,6 +28,8 @@ import com.sharingif.cube.web.springmvc.http.SpringMVCHttpRequest;
 public class ExtendedDispatcherServlet extends DispatcherServlet {
 	
 	private static final long serialVersionUID = 6246966252667371968L;
+	
+	private UrlPathHelper urlPathHelper = new UrlPathHelper();
 	
 	private static final String WEB_HANDLERMETHODCHAIN = "webHandlerMethodChain";
 	
@@ -44,7 +51,7 @@ public class ExtendedDispatcherServlet extends DispatcherServlet {
 		
 		HttpHandlerMethodContent webHandlerMethodContent = null;
 		if(handlerMethodChainIsNotEmpty) {
-			webHandlerMethodContent = new HttpHandlerMethodContent(null, null, null, null, null, null, null, new SpringMVCHttpRequest(request), new SpringMVCHttpResponse(response));
+			webHandlerMethodContent = new HttpHandlerMethodContent(null, null, null, null, null, null, getRequestInfo(request), new SpringMVCHttpRequest(request), new SpringMVCHttpResponse(response));
 			handlerMethodChain.before(webHandlerMethodContent);
 		}
 		
@@ -71,6 +78,16 @@ public class ExtendedDispatcherServlet extends DispatcherServlet {
 			}
 		}
 		
+	}
+	
+	protected RequestInfo<HttpServletRequest> getRequestInfo(HttpServletRequest request) {
+		
+		String lookupPath = urlPathHelper.getLookupPathForRequest(request);
+		String method = request.getMethod().toUpperCase(Locale.ENGLISH);
+		
+		RequestInfo<HttpServletRequest> requestInfo = new RequestInfo<HttpServletRequest>(null, lookupPath, RequestContextUtils.getLocale(request), method, request);
+		
+		return requestInfo;
 	}
 	
 }

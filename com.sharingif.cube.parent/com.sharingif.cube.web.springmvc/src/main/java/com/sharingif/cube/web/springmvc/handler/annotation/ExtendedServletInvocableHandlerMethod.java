@@ -2,6 +2,7 @@ package com.sharingif.cube.web.springmvc.handler.annotation;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,9 +17,11 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolverCompo
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod;
 import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.util.UrlPathHelper;
 
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
+import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.core.util.CubeExceptionUtil;
 import com.sharingif.cube.web.springmvc.handler.SpringMVCHandlerMethodContent;
 
@@ -30,6 +33,8 @@ import com.sharingif.cube.web.springmvc.handler.SpringMVCHandlerMethodContent;
  * @since v1.0
  */
 public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandlerMethod {
+	
+	private UrlPathHelper urlPathHelper = new UrlPathHelper();
 
 	public ExtendedServletInvocableHandlerMethod(HandlerMethod handlerMethod) {
 		super(handlerMethod);
@@ -75,6 +80,16 @@ public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandl
 	public void setHandlerMethodChain(HandlerMethodChain<SpringMVCHandlerMethodContent> handlerMethodChain) {
 		this.handlerMethodChain = handlerMethodChain;
 	}
+	
+	protected RequestInfo<HttpServletRequest> getRequestInfo(HttpServletRequest request) {
+		
+		String lookupPath = urlPathHelper.getLookupPathForRequest(request);
+		String method = request.getMethod().toUpperCase(Locale.ENGLISH);
+		
+		RequestInfo<HttpServletRequest> requestInfo = new RequestInfo<HttpServletRequest>(null, lookupPath, RequestContextUtils.getLocale(request), method, request);
+		
+		return requestInfo;
+	}
 
 	@Override
 	public Object invokeForRequest(NativeWebRequest request, ModelAndViewContainer mavContainer, Object... providedArgs)
@@ -96,7 +111,7 @@ public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandl
 					,null
 					,super.getMethodParameters()
 					,RequestContextUtils.getLocale(request.getNativeRequest(HttpServletRequest.class))
-					,null
+					,getRequestInfo(request.getNativeRequest(HttpServletRequest.class))
 					,request
 					,mavContainer
 					,providedArgs
