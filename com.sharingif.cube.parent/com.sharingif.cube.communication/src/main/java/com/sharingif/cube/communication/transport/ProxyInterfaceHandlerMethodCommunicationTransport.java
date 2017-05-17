@@ -27,26 +27,15 @@ public class ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> extends
 	public Object doTransport(RequestInfo<Object[]> requestInfo) throws CubeException {
 		
 		boolean handlerMethodChainIsNotEmpty = (null != getHandlerMethodChain());
-		HandlerMethodContent handlerMethodContent = null;
+		HandlerMethodContent handlerMethodContent = new HandlerMethodContent(getBean(), getMethod(), requestInfo.getRequest(), null, getMethodParameters(), requestInfo.getLocale(), requestInfo);
 		
 		if(handlerMethodChainIsNotEmpty) {
-			handlerMethodContent = new HandlerMethodContent(getBean(), getMethod(), requestInfo.getRequest(), null, getMethodParameters(), requestInfo.getLocale(), requestInfo);
 			getHandlerMethodChain().before(handlerMethodContent);
 		}
 		
-		MO marshallerData = marshaller((RequestInfo<Object[]>)handlerMethodContent.getRequestInfo());
-		
 		Object returnValue = null;
 		try {
-			
-			CO connectReceiveMessage = connect(requestInfo, marshallerData);
-			
-			UO unmarshallerData = unmarshaller(connectReceiveMessage, requestInfo);
-			
-			handleException(unmarshallerData);
-			
-			returnValue = unmarshallerData;
-			
+			doTransportInternal((RequestInfo<Object[]>) handlerMethodContent.getRequestInfo());
 		} catch (Exception exception) {
 			if(handlerMethodChainIsNotEmpty) {
 				try {
@@ -72,6 +61,18 @@ public class ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> extends
 			return returnValue;
 		}
 		
+	}
+	
+	public Object doTransportInternal(RequestInfo<Object[]> requestInfo) throws CubeException {
+		MO marshallerData = marshaller((RequestInfo<Object[]>)requestInfo);
+		
+		CO connectReceiveMessage = connect(requestInfo, marshallerData);
+		
+		UO unmarshallerData = unmarshaller(connectReceiveMessage, requestInfo);
+		
+		handleException(unmarshallerData);
+		
+		return unmarshallerData;
 	}
 	
 	protected UO unmarshaller(CO connectReceiveMessage, RequestInfo<Object[]> requestInfo) throws MarshallerException {
