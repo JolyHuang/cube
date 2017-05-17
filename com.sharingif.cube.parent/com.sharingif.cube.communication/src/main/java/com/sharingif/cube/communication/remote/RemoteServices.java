@@ -35,7 +35,7 @@ public class RemoteServices {
 	private AbstractHandlerMethodCommunicationTransportFactory<?,?,?,?,?> handlerMethodCommunicationTransportFactory;
 	private List<String> services;
 	
-	private Map<String, AbstractHandlerMethodCommunicationTransport<?,?,?,?,?>> cacheProxyInterfaceHandlerMethodCommunicationTransportMap = new HashMap<String,AbstractHandlerMethodCommunicationTransport<?,?,?,?,?>>(128);
+	private Map<String, AbstractHandlerMethodCommunicationTransport<?,?,?,?,?>> cacheHandlerMethodCommunicationTransportMap = new HashMap<String,AbstractHandlerMethodCommunicationTransport<?,?,?,?,?>>(128);
 	
 	public RequestInfoResolver<Object[], ?> getRequestInfoResolver() {
 		return requestInfoResolver;
@@ -80,13 +80,13 @@ public class RemoteServices {
 				@Override
 				public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 					String key = new StringBuilder(method.getDeclaringClass().getTypeName()).append('.').append(method.getName()).toString();
-					AbstractHandlerMethodCommunicationTransport handlerMethodCommunicationTransport = (ProxyInterfaceHandlerMethodCommunicationTransport) cacheProxyInterfaceHandlerMethodCommunicationTransportMap.get(key);
+					AbstractHandlerMethodCommunicationTransport handlerMethodCommunicationTransport = (ProxyInterfaceHandlerMethodCommunicationTransport) cacheHandlerMethodCommunicationTransportMap.get(key);
 					if(handlerMethodCommunicationTransport == null) {
 						handlerMethodCommunicationTransport = handlerMethodCommunicationTransportFactory.createHandlerMethodCommunicationTransport(proxy, method);
 						if(null == handlerMethodCommunicationTransport.getDataBinderFactory()){
 							handlerMethodCommunicationTransport.setDataBinderFactory(dataBinderFactory);
 						}
-						cacheProxyInterfaceHandlerMethodCommunicationTransportMap.put(key, handlerMethodCommunicationTransport);
+						cacheHandlerMethodCommunicationTransportMap.put(key, handlerMethodCommunicationTransport);
 					}
 					
 					RequestInfo<?> requestInfo = requestInfoResolver.resolveRequest(new Object[]{handlerMethodCommunicationTransport, args});
