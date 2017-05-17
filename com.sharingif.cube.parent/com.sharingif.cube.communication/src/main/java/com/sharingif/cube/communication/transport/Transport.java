@@ -5,7 +5,7 @@ import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.request.RequestInfo;
 
 /**
- * 通讯处理
+ * Transport
  * 2016年4月12日 下午8:11:53
  * @author Joly
  * @version v1.0
