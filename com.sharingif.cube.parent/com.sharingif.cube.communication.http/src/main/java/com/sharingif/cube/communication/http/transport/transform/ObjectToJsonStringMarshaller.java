@@ -5,6 +5,7 @@ import java.util.TimeZone;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharingif.cube.communication.transport.transform.Marshaller;
 import com.sharingif.cube.communication.transport.transform.exception.MarshallerException;
+import com.sharingif.cube.core.config.CubeConfigure;
 
 /**
  * 对象数组转json字符串
@@ -19,7 +20,7 @@ public class ObjectToJsonStringMarshaller implements Marshaller<Object[], String
 	
 	public ObjectToJsonStringMarshaller() {
 		objectMapper = new ObjectMapper();
-		objectMapper.setTimeZone(TimeZone.getTimeZone("GMT+0800"));			// 中国上海
+		objectMapper.setTimeZone(TimeZone.getTimeZone(CubeConfigure.DEFAULT_TIME_ZONE));
 	}
 	
 	public ObjectToJsonStringMarshaller(ObjectMapper objectMapper) {

@@ -5,6 +5,7 @@ import java.util.TimeZone;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sharingif.cube.core.config.CubeConfigure;
 
 /**
  * [设置默认时区位为“中国上海”] 
@@ -18,7 +19,7 @@ public class ExtendedMappingJackson2HttpMessageConverter extends MappingJackson2
 	public ExtendedMappingJackson2HttpMessageConverter() {
 		super();
 		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.setTimeZone(TimeZone.getTimeZone("GMT+0800"));			// 中国上海
+		objectMapper.setTimeZone(TimeZone.getTimeZone(CubeConfigure.DEFAULT_TIME_ZONE));
 		
 		super.setObjectMapper(objectMapper);
 	}

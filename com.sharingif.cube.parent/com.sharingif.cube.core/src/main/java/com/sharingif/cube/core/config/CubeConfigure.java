@@ -20,6 +20,7 @@ public final class CubeConfigure {
 	private static final Logger logger = LoggerFactory.getLogger(CubeConfigure.class);
 	
 	public static final String DEFAULT_ENCODING;
+	public static final String DEFAULT_TIME_ZONE;
 	
 	static{
 		Properties properties = null;
@@ -32,12 +33,21 @@ public final class CubeConfigure {
 			throw new CubeRuntimeException(e);
 		}
 		
+		String defaultEncoding = null;
 		try {
-			DEFAULT_ENCODING = properties.getProperty("app.properties.default.encoding").trim();
+			defaultEncoding = properties.getProperty("app.default.encoding").trim();
 		} catch (Exception e) {
-			logger.error("Property app.properties.default.encoding was not found in file config.app.CubeConfigure");
-			throw e;
+			defaultEncoding = "UTF-8";
 		}
+		DEFAULT_ENCODING = defaultEncoding;
+		
+		String defaultTimeZone = null;
+		try {
+			defaultTimeZone = properties.getProperty("app.default.time.zone").trim();
+		} catch (Exception e) {
+			defaultTimeZone = "GMT+0800";// 中国上海
+		}
+		DEFAULT_TIME_ZONE = defaultTimeZone;
 		
 	}
 	

@@ -4,6 +4,7 @@ import java.util.TimeZone;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharingif.cube.communication.JsonModel;
+import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.exception.CubeRuntimeException;
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
@@ -25,7 +26,7 @@ public abstract class AbstractJsonView<T,O extends ExceptionContent> implements 
 	
 	public AbstractJsonView() {
 		objectMapper = new ObjectMapper();
-		objectMapper.setTimeZone(TimeZone.getTimeZone("GMT+0800"));			// 中国上海
+		objectMapper.setTimeZone(TimeZone.getTimeZone(CubeConfigure.DEFAULT_TIME_ZONE));
 	}
 	
 	public AbstractJsonView(ObjectMapper objectMapper) {

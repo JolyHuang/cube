@@ -12,6 +12,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharingif.cube.communication.JsonModel;
+import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.UnknownCubeException;
 
@@ -34,7 +35,7 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 
 	public ExtendedMappingJackson2JsonView(){
 		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.setTimeZone(TimeZone.getTimeZone("GMT+0800"));			// 中国上海
+		objectMapper.setTimeZone(TimeZone.getTimeZone(CubeConfigure.DEFAULT_TIME_ZONE));
 		super.setObjectMapper(objectMapper);
 	}
 	
