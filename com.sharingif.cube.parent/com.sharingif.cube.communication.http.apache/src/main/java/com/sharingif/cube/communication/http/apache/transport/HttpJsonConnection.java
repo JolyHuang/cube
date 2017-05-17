@@ -200,6 +200,10 @@ public class HttpJsonConnection implements Connection<RequestInfo<String>, Strin
 				this.logger.info("receive message:{}", receiveMessage);
 			}
 			
+			if(StringUtils.isEmpty(receiveMessage) || "".equals(receiveMessage.trim())) {
+				throw new CommunicationException("The receive message is empty");
+			}
+			
 			return receiveMessage;
 		} catch (ParseException e) {
 			throw new CommunicationException("EntityUtils parse exception", e);

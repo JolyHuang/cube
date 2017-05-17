@@ -2,6 +2,7 @@ package com.sharingif.cube.communication.http.transport.transform;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -23,6 +24,7 @@ import com.sharingif.cube.communication.JsonModel;
 import com.sharingif.cube.communication.transport.transform.Marshaller;
 import com.sharingif.cube.communication.transport.transform.MethodParameterArgument;
 import com.sharingif.cube.communication.transport.transform.exception.MarshallerException;
+import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.exception.CubeRuntimeException;
 import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
@@ -53,7 +55,7 @@ public class MethodParameterArgumentToJsonModelMarshaller implements Marshaller<
 	
 	public MethodParameterArgumentToJsonModelMarshaller() {
 		objectMapper = new ObjectMapper();
-		objectMapper.setTimeZone(TimeZone.getTimeZone("GMT+0800"));			// 中国上海
+		objectMapper.setTimeZone(TimeZone.getTimeZone(CubeConfigure.DEFAULT_TIME_ZONE));
 	}
 	
 	public String getExceptionMessageName() {
@@ -135,7 +137,7 @@ public class MethodParameterArgumentToJsonModelMarshaller implements Marshaller<
 			Object dataObject = connectReturnMap.get(getDataName());
 			MethodParameter parameter = methodParameterArgument.getMethodParameter();
 			if((null != dataObject) && (!(parameter.getMethod().getReturnType().getName().equals(Void.TYPE.getName())))) {
-				data = convertAndAalidate(methodParameterArgument, (Map<String, Object>) dataObject);
+				data = convertAndAalidate(methodParameterArgument, dataObject);
 			}
 		} else {
 			exceptionMessage = (String) connectReturnMap.get(getExceptionMessageName());
@@ -145,14 +147,32 @@ public class MethodParameterArgumentToJsonModelMarshaller implements Marshaller<
 		return new JsonModel<Object>(tranStatus, exceptionMessage, exceptionLocalizedMessage, data);
 	}
 	
-	protected Object convertAndAalidate(MethodParameterArgument<Object[], String> methodParameterArgument, Map<String, Object> dataMap) {
+	protected Object convertAndAalidate(MethodParameterArgument<Object[], String> methodParameterArgument, Object data) {
 		MethodParameter parameter = methodParameterArgument.getMethodParameter();
 		RequestInfo<Object[]> requestInfo = methodParameterArgument.getRequestInfo();
 		DataBinderFactory dataBinderFactory = methodParameterArgument.getDataBinderFactory();
 		
+//		if(data instanceof List) {
+//			List<Object> dataList = (List<Object>)data;
+//			List<Object> returnDataList = new ArrayList(dataList.size());
+//			for(Object obj : dataList) {
+//				returnDataList.add(convertAndAalidate(parameter, requestInfo, dataBinderFactory, (Map<?,?>)obj));
+//			}
+//			
+//			return returnDataList;
+//		}
+		
+		if(data instanceof List) {
+			return data;
+		}
+	
+		return convertAndAalidate(parameter, requestInfo, dataBinderFactory, (Map<?,?>)data);
+	}
+	
+	protected Object convertAndAalidate(MethodParameter parameter, RequestInfo<Object[]> requestInfo, DataBinderFactory dataBinderFactory, Map<?,?> dataMap) {
 		DataBinder binder = null;
 		try {
-			String name = Conventions.getVariableNameForParameter(methodParameterArgument.getMethodParameter());
+			String name = Conventions.getVariableNameForParameter(parameter);
 			Object attribute = createAttribute(name, parameter, requestInfo, dataBinderFactory);
 			binder = dataBinderFactory.createBinder(requestInfo, attribute, name);
 		} catch (CubeException e) {

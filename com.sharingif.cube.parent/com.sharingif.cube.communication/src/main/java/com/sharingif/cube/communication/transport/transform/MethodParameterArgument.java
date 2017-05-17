@@ -19,8 +19,7 @@ public class MethodParameterArgument<RI,CO> {
 	private DataBinderFactory dataBinderFactory;
 	private CO connectReturnValue;
 	
-	public MethodParameterArgument(MethodParameter methodParameter, RequestInfo<RI> requestInfo,
-			DataBinderFactory dataBinderFactory, CO connectReturnValue) {
+	public MethodParameterArgument(MethodParameter methodParameter, RequestInfo<RI> requestInfo, DataBinderFactory dataBinderFactory, CO connectReturnValue) {
 		super();
 		this.methodParameter = methodParameter;
 		this.requestInfo = requestInfo;

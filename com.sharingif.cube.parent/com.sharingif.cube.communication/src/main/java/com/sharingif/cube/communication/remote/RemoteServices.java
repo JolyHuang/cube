@@ -12,7 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ClassUtils;
 
-import com.sharingif.cube.communication.transport.AbstractRemoteHandlerMethodTransport;
+import com.sharingif.cube.communication.transport.AbstractHandlerMethodCommunicationTransport;
+import com.sharingif.cube.communication.transport.AbstractHandlerMethodCommunicationTransportFactory;
+import com.sharingif.cube.communication.transport.ProxyInterfaceHandlerMethodCommunicationTransport;
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
 import com.sharingif.cube.core.request.RequestInfo;
@@ -30,10 +32,10 @@ public class RemoteServices {
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private RequestInfoResolver<Object[], ?> requestInfoResolver;
-	private RemoteHandlerMethodTransportFactory<?,?,?,?,?,?,?> remoteHandlerMethodTransportFactory;
+	private AbstractHandlerMethodCommunicationTransportFactory<?,?,?,?,?> handlerMethodCommunicationTransportFactory;
 	private List<String> services;
 	
-	private Map<String, AbstractRemoteHandlerMethodTransport<?,?,?,?,?,?,?>> cacheAbstractRemoteHandlerMethodTransportMap = new HashMap<String,AbstractRemoteHandlerMethodTransport<?,?,?,?,?,?,?>>(128);
+	private Map<String, AbstractHandlerMethodCommunicationTransport<?,?,?,?,?>> cacheProxyInterfaceHandlerMethodCommunicationTransportMap = new HashMap<String,AbstractHandlerMethodCommunicationTransport<?,?,?,?,?>>(128);
 	
 	public RequestInfoResolver<Object[], ?> getRequestInfoResolver() {
 		return requestInfoResolver;
@@ -41,8 +43,12 @@ public class RemoteServices {
 	public void setRequestInfoResolver(RequestInfoResolver<Object[], ?> requestInfoResolver) {
 		this.requestInfoResolver = requestInfoResolver;
 	}
-	public void setRemoteHandlerMethodTransportFactory(RemoteHandlerMethodTransportFactory<?,?,?,?,?,?,?> remoteHandlerMethodTransportFactory) {
-		this.remoteHandlerMethodTransportFactory = remoteHandlerMethodTransportFactory;
+	public AbstractHandlerMethodCommunicationTransportFactory<?,?,?,?,?> getHandlerMethodCommunicationTransportFactory() {
+		return handlerMethodCommunicationTransportFactory;
+	}
+	public void setHandlerMethodCommunicationTransportFactory(
+			AbstractHandlerMethodCommunicationTransportFactory<?,?,?,?,?> handlerMethodCommunicationTransportFactory) {
+		this.handlerMethodCommunicationTransportFactory = handlerMethodCommunicationTransportFactory;
 	}
 	public List<String> getServices() {
 		return services;
@@ -74,18 +80,18 @@ public class RemoteServices {
 				@Override
 				public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 					String key = new StringBuilder(method.getDeclaringClass().getTypeName()).append('.').append(method.getName()).toString();
-					AbstractRemoteHandlerMethodTransport remoteHandlerMethodTransport = (AbstractRemoteHandlerMethodTransport) cacheAbstractRemoteHandlerMethodTransportMap.get(key);
-					if(remoteHandlerMethodTransport == null) {
-						remoteHandlerMethodTransport = remoteHandlerMethodTransportFactory.createRemoteHandlerMethodTransport(proxy, method);
-						if(null == remoteHandlerMethodTransport.getDataBinderFactory()){
-							remoteHandlerMethodTransport.setDataBinderFactory(dataBinderFactory);
+					AbstractHandlerMethodCommunicationTransport handlerMethodCommunicationTransport = (ProxyInterfaceHandlerMethodCommunicationTransport) cacheProxyInterfaceHandlerMethodCommunicationTransportMap.get(key);
+					if(handlerMethodCommunicationTransport == null) {
+						handlerMethodCommunicationTransport = handlerMethodCommunicationTransportFactory.createHandlerMethodCommunicationTransport(proxy, method);
+						if(null == handlerMethodCommunicationTransport.getDataBinderFactory()){
+							handlerMethodCommunicationTransport.setDataBinderFactory(dataBinderFactory);
 						}
-						cacheAbstractRemoteHandlerMethodTransportMap.put(key, remoteHandlerMethodTransport);
+						cacheProxyInterfaceHandlerMethodCommunicationTransportMap.put(key, handlerMethodCommunicationTransport);
 					}
 					
-					RequestInfo<?> requestInfo = requestInfoResolver.resolveRequest(new Object[]{remoteHandlerMethodTransport, args});
+					RequestInfo<?> requestInfo = requestInfoResolver.resolveRequest(new Object[]{handlerMethodCommunicationTransport, args});
 					
-					return remoteHandlerMethodTransport.doTransport(requestInfo);
+					return handlerMethodCommunicationTransport.doTransport(requestInfo);
 				}
 				
 			});

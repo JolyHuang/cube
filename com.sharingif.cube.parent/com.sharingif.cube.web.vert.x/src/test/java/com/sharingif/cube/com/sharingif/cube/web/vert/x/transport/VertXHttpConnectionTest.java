@@ -7,12 +7,13 @@ import java.util.Locale;
 
 import org.junit.Test;
 
+import com.sharingif.cube.communication.JsonModel;
 import com.sharingif.cube.communication.MediaType;
 import com.sharingif.cube.communication.http.HttpMethod;
-import com.sharingif.cube.communication.http.transport.HttpJsonRemoteHandlerMethodTransport;
 import com.sharingif.cube.communication.http.transport.transform.HttpJsonTransform;
 import com.sharingif.cube.communication.http.transport.transform.MethodParameterArgumentToJsonModelMarshaller;
 import com.sharingif.cube.communication.http.transport.transform.ObjectToJsonStringMarshaller;
+import com.sharingif.cube.communication.transport.ProxyInterfaceHandlerMethodCommunicationTransport;
 import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.handler.bind.support.ConfigurableBindingInitializer;
 import com.sharingif.cube.core.handler.bind.support.DefaultDataBinderFactory;
@@ -58,19 +59,19 @@ public class VertXHttpConnectionTest {
 				
 				ConfigurableBindingInitializer bindingInitializer = new ConfigurableBindingInitializer();
 				
-				HttpJsonRemoteHandlerMethodTransport httpJsonTransport = new HttpJsonRemoteHandlerMethodTransport(new HandlerMethod(proxy, method));
-				httpJsonTransport.setDataBinderFactory(new DefaultDataBinderFactory(bindingInitializer));
+				ProxyInterfaceHandlerMethodCommunicationTransport<String,String,JsonModel<Object>> proxyInterfaceHandlerMethodCommunicationTransport = new ProxyInterfaceHandlerMethodCommunicationTransport<String,String,JsonModel<Object>>(new HandlerMethod(proxy, method));
+				proxyInterfaceHandlerMethodCommunicationTransport.setDataBinderFactory(new DefaultDataBinderFactory(bindingInitializer));
 				
-				httpJsonTransport.setConnection(vertXHttpConnection);
+				proxyInterfaceHandlerMethodCommunicationTransport.setConnection(vertXHttpConnection);
 				
 				HttpJsonTransform transform = new HttpJsonTransform();
 				transform.setMarshaller(jsonMarshaller);
 				transform.setUnmarshaller(jsonUnmarshaller);
 				
-				httpJsonTransport.setTransform(transform);
+				proxyInterfaceHandlerMethodCommunicationTransport.setTransform(transform);
 				
 				RequestInfo<Object[]> requestInfo = new RequestInfo<Object[]>(MediaType.APPLICATION_JSON.toString(), "user/get/123/", null, HttpMethod.GET.name(), null);
-				User user = (User) httpJsonTransport.doTransport(requestInfo);
+				User user = (User) proxyInterfaceHandlerMethodCommunicationTransport.doTransport(requestInfo);
 				System.out.println("returnValue:"+user);
 				
 //				User user = new User();

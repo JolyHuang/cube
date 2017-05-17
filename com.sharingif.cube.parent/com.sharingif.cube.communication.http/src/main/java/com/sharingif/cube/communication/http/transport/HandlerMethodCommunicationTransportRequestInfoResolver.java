@@ -7,6 +7,7 @@ import org.springframework.core.annotation.AnnotationUtils;
 
 import com.sharingif.cube.communication.MediaType;
 import com.sharingif.cube.communication.http.HttpMethod;
+import com.sharingif.cube.communication.transport.AbstractHandlerMethodTransport;
 import com.sharingif.cube.core.handler.bind.annotation.PathVariable;
 import com.sharingif.cube.core.handler.bind.annotation.RequestMapping;
 import com.sharingif.cube.core.handler.bind.annotation.RequestMethod;
@@ -21,12 +22,12 @@ import com.sharingif.cube.core.util.StringUtils;
  * @version v1.0
  * @since v1.0
  */
-public class HttpJsonRequestInfoResolver implements RequestInfoResolver<Object[], Object[]> {
+public class HandlerMethodCommunicationTransportRequestInfoResolver implements RequestInfoResolver<Object[], Object[]> {
 
 	@Override
 	public RequestInfo<Object[]> resolveRequest(Object[] request) {
 		
-		HttpJsonRemoteHandlerMethodTransport remoteHttpJsonHandlerMethod = (HttpJsonRemoteHandlerMethodTransport) request[0];
+		AbstractHandlerMethodTransport<?,?,?,?> remoteHttpJsonHandlerMethod = (AbstractHandlerMethodTransport<?,?,?,?>) request[0];
 		Object[] args = (Object[])request[1];
 		
 		RequestMapping beanRequestMapping = AnnotationUtils.findAnnotation(remoteHttpJsonHandlerMethod.getBean().getClass(), RequestMapping.class);
