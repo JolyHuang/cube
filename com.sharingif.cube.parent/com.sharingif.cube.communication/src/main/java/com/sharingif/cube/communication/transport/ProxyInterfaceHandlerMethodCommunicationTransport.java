@@ -75,12 +75,6 @@ public class ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> extends
 		return unmarshallerData;
 	}
 	
-	protected UO unmarshaller(CO connectReceiveMessage, RequestInfo<Object[]> requestInfo) throws MarshallerException {
-		MethodParameterArgument<Object[],CO> methodParameterArgument = new MethodParameterArgument<Object[],CO>(getReturnType(), requestInfo, getDataBinderFactory(), connectReceiveMessage);
-		
-		return getTransform().unmarshaller(methodParameterArgument);
-	}
-	
 	protected MO marshaller(RequestInfo<Object[]> requestInfo) throws MarshallerException {
 		return getTransform().marshaller(requestInfo.getRequest());
 	}
@@ -93,8 +87,14 @@ public class ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> extends
 		return connectReturnValue;
 	}
 	
-	protected void handleException(UO unmarshallerData) throws BusinessCommunicationException {
+	protected UO unmarshaller(CO connectReceiveMessage, RequestInfo<Object[]> requestInfo) throws MarshallerException {
+		MethodParameterArgument<Object[],CO> methodParameterArgument = new MethodParameterArgument<Object[],CO>(getReturnType(), requestInfo, getDataBinderFactory(), connectReceiveMessage);
 		
+		return getTransform().unmarshaller(methodParameterArgument);
+	}
+	
+	protected void handleException(UO unmarshallerData) throws BusinessCommunicationException {
+		getBusinessCommunicationExceptionHandler().handleCommunicationException(unmarshallerData);
 	}
 
 

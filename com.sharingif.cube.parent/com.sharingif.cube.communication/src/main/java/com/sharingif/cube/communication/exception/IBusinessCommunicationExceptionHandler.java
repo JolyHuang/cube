@@ -9,6 +9,6 @@ package com.sharingif.cube.communication.exception;
  */
 public interface IBusinessCommunicationExceptionHandler<T extends Object> {
 
-	BusinessCommunicationException handleCommunicationException(T obj);
+	void handleCommunicationException(T obj) throws BusinessCommunicationException ;
 	
 }
