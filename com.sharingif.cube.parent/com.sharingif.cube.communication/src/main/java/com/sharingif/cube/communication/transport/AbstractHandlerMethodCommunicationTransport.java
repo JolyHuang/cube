@@ -4,7 +4,7 @@ import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.request.RequestInfo;
 
 /**
- * AbstractRemoteHandlerMethodTransport
+ * AbstractHandlerMethodCommunicationTransport
  * 2017年1月16日 下午4:30:32
  * @author Joly
  * @version v1.0
