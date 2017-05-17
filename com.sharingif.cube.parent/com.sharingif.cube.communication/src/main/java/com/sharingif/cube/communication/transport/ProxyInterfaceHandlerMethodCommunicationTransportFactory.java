@@ -19,6 +19,7 @@ public class ProxyInterfaceHandlerMethodCommunicationTransportFactory<MO,CO,UO> 
 		ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> proxyInterfaceHandlerMethodCommunicationTransport = new ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO>(new HandlerMethod(bean, method));
 		proxyInterfaceHandlerMethodCommunicationTransport.setConnection(getConnection());
 		proxyInterfaceHandlerMethodCommunicationTransport.setTransform(getTransform());
+		proxyInterfaceHandlerMethodCommunicationTransport.setBusinessCommunicationExceptionHandler(getBusinessCommunicationExceptionHandler());
 		proxyInterfaceHandlerMethodCommunicationTransport.setDataBinderFactory(getDataBinderFactory());
 		proxyInterfaceHandlerMethodCommunicationTransport.setHandlerMethodChain(getHandlerMethodChain());
 		

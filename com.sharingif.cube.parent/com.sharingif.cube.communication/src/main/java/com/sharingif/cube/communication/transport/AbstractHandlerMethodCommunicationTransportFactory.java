@@ -1,5 +1,6 @@
 package com.sharingif.cube.communication.transport;
 
+import com.sharingif.cube.communication.exception.IBusinessCommunicationExceptionHandler;
 import com.sharingif.cube.core.request.RequestInfo;
 
 /**
@@ -12,12 +13,20 @@ import com.sharingif.cube.core.request.RequestInfo;
 public abstract class AbstractHandlerMethodCommunicationTransportFactory<MI,MO,CO,UI,UO> extends AbstractHandlerMethodTransportFactory<MI,MO,CO,UI,UO> implements HandlerMethodCommunicationTransportFactory<MI,MO,CO,UI,UO>  {
 	
 	private Connection<RequestInfo<MO>,CO> connection;
+	private IBusinessCommunicationExceptionHandler<UO> businessCommunicationExceptionHandler;
 	
 	public Connection<RequestInfo<MO>, CO> getConnection() {
 		return connection;
 	}
 	public void setConnection(Connection<RequestInfo<MO>, CO> connection) {
 		this.connection = connection;
+	}
+	public IBusinessCommunicationExceptionHandler<UO> getBusinessCommunicationExceptionHandler() {
+		return businessCommunicationExceptionHandler;
+	}
+	public void setBusinessCommunicationExceptionHandler(
+			IBusinessCommunicationExceptionHandler<UO> businessCommunicationExceptionHandler) {
+		this.businessCommunicationExceptionHandler = businessCommunicationExceptionHandler;
 	}
 	
 }
