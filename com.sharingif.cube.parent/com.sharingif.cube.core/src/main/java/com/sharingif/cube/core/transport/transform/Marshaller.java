@@ -1,6 +1,6 @@
-package com.sharingif.cube.communication.transport.transform;
+package com.sharingif.cube.core.transport.transform;
 
-import com.sharingif.cube.communication.transport.transform.exception.MarshallerException;
+import com.sharingif.cube.core.transport.exception.MarshallerException;
 
 /**
  * 数据格式转换

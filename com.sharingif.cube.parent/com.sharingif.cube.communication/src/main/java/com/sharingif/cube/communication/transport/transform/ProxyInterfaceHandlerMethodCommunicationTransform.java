@@ -1,6 +1,8 @@
 package com.sharingif.cube.communication.transport.transform;
 
-import com.sharingif.cube.communication.transport.transform.exception.MarshallerException;
+import com.sharingif.cube.core.transport.exception.MarshallerException;
+import com.sharingif.cube.core.transport.transform.Marshaller;
+import com.sharingif.cube.core.transport.transform.Transform;
 
 /**
  * ProxyInterfaceHandlerMethodCommunicationTransform

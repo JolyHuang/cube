@@ -1,6 +1,7 @@
 package com.sharingif.cube.communication.transport;
 
 import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.transport.Transport;
 
 /**
  * 通讯Transport

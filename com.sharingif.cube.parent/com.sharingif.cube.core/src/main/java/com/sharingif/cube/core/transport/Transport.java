@@ -1,8 +1,8 @@
-package com.sharingif.cube.communication.transport;
+package com.sharingif.cube.core.transport;
 
-import com.sharingif.cube.communication.transport.transform.Transform;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.transport.transform.Transform;
 
 /**
  * Transport

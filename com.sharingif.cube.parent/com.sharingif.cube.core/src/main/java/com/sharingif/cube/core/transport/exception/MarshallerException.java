@@ -1,4 +1,4 @@
-package com.sharingif.cube.communication.transport.transform.exception;
+package com.sharingif.cube.core.transport.exception;
 
 import com.sharingif.cube.core.exception.CubeException;
 
