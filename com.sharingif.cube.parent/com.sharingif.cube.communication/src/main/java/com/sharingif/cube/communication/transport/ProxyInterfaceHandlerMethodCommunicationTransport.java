@@ -35,7 +35,7 @@ public class ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> extends
 		
 		Object returnValue = null;
 		try {
-			doTransportInternal((RequestInfo<Object[]>) handlerMethodContent.getRequestInfo());
+			returnValue = doTransportInternal((RequestInfo<Object[]>) handlerMethodContent.getRequestInfo());
 		} catch (Exception exception) {
 			if(handlerMethodChainIsNotEmpty) {
 				try {
