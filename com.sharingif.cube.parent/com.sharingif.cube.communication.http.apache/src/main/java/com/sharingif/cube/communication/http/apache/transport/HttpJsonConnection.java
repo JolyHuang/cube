@@ -176,7 +176,7 @@ public class HttpJsonConnection implements Connection<RequestInfo<String>, Strin
         } else {
         	httpHost = new HttpHost(host, port);
         }
-		String path = new StringBuffer("/").append(contextPath).append("/").append(httpContext.getLookupPath()).toString();
+		String path = new StringBuffer("/").append(contextPath).append(httpContext.getLookupPath()).toString();
 		
 		CloseableHttpResponse response = null;
 		try {
