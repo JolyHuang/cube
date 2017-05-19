@@ -21,8 +21,6 @@ import com.sharingif.cube.persistence.database.pagination.PaginationRepertory;
  */
 public interface IBaseService<T, ID extends Serializable> {
 	
-	IBaseDAO<T, ID> getBaseDAO();
-	
 	void setBaseDAO(IBaseDAO<T, ID> baseDAO);
 	
 	int add(T obj);

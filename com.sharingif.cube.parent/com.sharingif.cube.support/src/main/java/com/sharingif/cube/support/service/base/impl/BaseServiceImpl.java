@@ -28,7 +28,7 @@ public class BaseServiceImpl<T, ID extends Serializable> implements IBaseService
 	
 	private IBaseDAO<T, ID> baseDAO;
 
-	public IBaseDAO<T, ID> getBaseDAO() {
+	protected IBaseDAO<T, ID> getBaseDAO() {
 		return baseDAO;
 	}
 	public void setBaseDAO(IBaseDAO<T, ID> baseDAO) {
