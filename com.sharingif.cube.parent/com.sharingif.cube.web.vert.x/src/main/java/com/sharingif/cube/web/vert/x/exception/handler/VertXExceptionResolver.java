@@ -9,14 +9,14 @@ import com.sharingif.cube.web.exception.handler.WebExceptionContent;
 import io.vertx.ext.web.RoutingContext;
 
 /**
- * TODO
+ * VertXExceptionResolver
  * 2016年12月28日 下午6:08:22
  * @author Joly
  * @version v1.0
  * @since v1.0
  */
 public class VertXExceptionResolver implements IExceptionResolver<RoutingContext, WebExceptionContent, DefaultInvocableHandlerMethod> {
-	
+
 	private AbstractCubeExceptionHandler<RoutingContext, WebExceptionContent, DefaultInvocableHandlerMethod> cubeExceptionHandler;
 	
 	public AbstractCubeExceptionHandler<RoutingContext, WebExceptionContent, DefaultInvocableHandlerMethod> getCubeExceptionHandler() {
