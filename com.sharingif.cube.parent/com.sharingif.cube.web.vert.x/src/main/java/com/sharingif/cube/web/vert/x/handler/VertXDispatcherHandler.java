@@ -24,14 +24,6 @@ import io.vertx.ext.web.RoutingContext;
 public class VertXDispatcherHandler extends AbstractDispatcherHandler<ExtendedRoutingContext,RoutingContext,HandlerMethod> {
 
 	@Override
-	protected void unknownException(RequestInfo<RoutingContext> requestInfo, Object returnValue) {
-		requestInfo.getRequest().response()
-			.putHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
-			.setStatusCode(404)
-			.end();
-	}
-
-	@Override
 	protected HandlerMethodContent getHandlerMethodContent(ExtendedRoutingContext request) {
 		HttpHandlerMethodContent webHandlerMethodContent = new HttpHandlerMethodContent(
 				null

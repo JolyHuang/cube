@@ -83,7 +83,9 @@ public abstract class AbstractDispatcherHandler<I,RI,H extends HandlerMethod> im
 		boolean handlerMethodChainIsNotEmpty = (null != getHandlerMethodChain());
 		HandlerMethodContent handlerMethodContent = null;
 
+		RequestInfo<RI> requestInfo = null;
 		try {
+
 			if(handlerMethodChainIsNotEmpty) {
 				handlerMethodContent = getHandlerMethodContent(request);
 				getHandlerMethodChain().before(handlerMethodContent);
@@ -92,7 +94,7 @@ public abstract class AbstractDispatcherHandler<I,RI,H extends HandlerMethod> im
 			doDispatchInternal(request);
 		} catch (Exception exception) {
 			try {
-				getHandlerMethodChain().exception(null, exception);
+				getHandlerMethodChain().exception(handlerMethodContent, exception);
 			} catch (Exception e) {
 				logger.error("handler method exception chain error", e);
 			}
@@ -144,7 +146,14 @@ public abstract class AbstractDispatcherHandler<I,RI,H extends HandlerMethod> im
 	}
 	
 	protected HandlerMethodContent getHandlerMethodContent(I request) {
-		return new HandlerMethodContent(null, null, null, null, null, null, null);
+		return new HandlerMethodContent(
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				new RequestInfo<I>(null,null,null,null,request));
 	}
 	
 }
