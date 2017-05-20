@@ -48,15 +48,14 @@ public class ExtendedDispatcherServlet extends DispatcherServlet {
 
 	@Override
 	protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
-		HttpHandlerMethodContent webHandlerMethodContent = null;
-		if(handlerMethodChainIsNotEmpty) {
-			webHandlerMethodContent = new HttpHandlerMethodContent(null, null, null, null, null, null, getRequestInfo(request), new SpringMVCHttpRequest(request), new SpringMVCHttpResponse(response));
-			handlerMethodChain.before(webHandlerMethodContent);
-		}
-		
-		
+
+		HandlerMethodContent webHandlerMethodContent = null;
 		try {
+			if(handlerMethodChainIsNotEmpty) {
+				webHandlerMethodContent = getHandlerMethodContent(request,response);
+				handlerMethodChain.before(webHandlerMethodContent);
+			}
+
 			super.doService(request, response);
 		} catch (Exception exception){
 			if(handlerMethodChainIsNotEmpty) {
@@ -79,15 +78,29 @@ public class ExtendedDispatcherServlet extends DispatcherServlet {
 		}
 		
 	}
-	
-	protected RequestInfo<HttpServletRequest> getRequestInfo(HttpServletRequest request) {
-		
-		String lookupPath = urlPathHelper.getLookupPathForRequest(request);
-		String method = request.getMethod().toUpperCase(Locale.ENGLISH);
-		
-		RequestInfo<HttpServletRequest> requestInfo = new RequestInfo<HttpServletRequest>(null, lookupPath, RequestContextUtils.getLocale(request), method, request);
-		
-		return requestInfo;
+
+	protected HandlerMethodContent getHandlerMethodContent(HttpServletRequest request, HttpServletResponse response) {
+		HttpHandlerMethodContent webHandlerMethodContent = new HttpHandlerMethodContent(
+				null
+				,null
+				,null
+				,null
+				,null
+				,null, getRequestInfo(request)
+				,new SpringMVCHttpRequest(request)
+				,new SpringMVCHttpResponse(response)
+		);
+		return webHandlerMethodContent;
 	}
 	
+	protected RequestInfo<HttpServletRequest> getRequestInfo(HttpServletRequest request) {
+
+		String lookupPath = urlPathHelper.getLookupPathForRequest(request);
+		String method = request.getMethod().toUpperCase(Locale.ENGLISH);
+
+		RequestInfo<HttpServletRequest> requestInfo = new RequestInfo<HttpServletRequest>(null, lookupPath, RequestContextUtils.getLocale(request), method, request);
+
+		return requestInfo;
+	}
+
 }
