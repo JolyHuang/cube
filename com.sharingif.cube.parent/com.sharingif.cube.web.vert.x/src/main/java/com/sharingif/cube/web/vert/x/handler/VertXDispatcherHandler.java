@@ -1,7 +1,5 @@
 package com.sharingif.cube.web.vert.x.handler;
 
-import org.springframework.http.MediaType;
-
 import com.sharingif.cube.communication.handler.AbstractDispatcherHandler;
 import com.sharingif.cube.communication.http.handler.HttpHandlerMethodContent;
 import com.sharingif.cube.core.handler.HandlerMethod;
@@ -10,7 +8,6 @@ import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.web.vert.x.http.VertXHttpRequest;
 import com.sharingif.cube.web.vert.x.http.VertXHttpResponse;
 import com.sharingif.cube.web.vert.x.request.ExtendedRoutingContext;
-
 import io.vertx.ext.web.RoutingContext;
 
 /**
