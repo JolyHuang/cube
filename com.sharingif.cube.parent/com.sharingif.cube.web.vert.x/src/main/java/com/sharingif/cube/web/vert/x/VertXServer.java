@@ -42,6 +42,8 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 		
 		vertxOptions = new VertxOptions();
 		vertxOptions.setWorkerPoolSize(200);
+
+		host = "localhost";
 	}
 	
 	public String getHost() {
@@ -94,7 +96,7 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 
 		Router router = Router.router(vertx);
 		
-		String basePath = new StringBuilder("/").append(contextPath).toString();
+		String basePath = new StringBuilder("/").append(getContextPath()).toString();
 		
 		staticRouter(router, basePath);
 		
@@ -102,14 +104,14 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 		
 		transactionRouter(router, basePath);
 		
-		server.requestHandler(router::accept).listen(port);
+		server.requestHandler(router::accept).listen(getPort(),getHost());
 	}
 	
 	protected void staticRouter(Router router, String basePath) {
-		String path = new StringBuilder(basePath).append("/").append(staticPath).append("/*").toString();
+		String path = new StringBuilder(basePath).append("/").append(getStaticPath()).append("/*").toString();
 		
 		StaticHandler staticHandler = StaticHandler.create();
-		staticHandler.setWebRoot(staticPath);
+		staticHandler.setWebRoot(getStaticPath());
 		
 		router.route(path).blockingHandler(staticHandler);
 	}
@@ -119,7 +121,7 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 		
 		router.routeWithRegex(webViewPath).blockingHandler(routingContext -> {
 			HttpServerRequest httpServerRequest = routingContext.request();
-			String templatePath = httpServerRequest.path().replace(new StringBuilder("/").append(contextPath).toString(), "");
+			String templatePath = httpServerRequest.path().replace(new StringBuilder("/").append(getContextPath()).toString(), "");
 			
 			templateEngine.render(routingContext, templatePath, res -> {
 				if (res.succeeded()) {
@@ -136,13 +138,13 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 		router.post().handler(BodyHandler.create());
 		String allPath = new StringBuilder(basePath).append("/*").toString();
 		router.route(allPath).blockingHandler(routingContext -> {
-			dispatcherHandler.doDispatch(new ExtendedRoutingContext(contextPath, routingContext));
+			getDispatcherHandler().doDispatch(new ExtendedRoutingContext(getContextPath(), routingContext));
 		});
 	}
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		final Vertx vertx = Vertx.vertx(vertxOptions);
+		final Vertx vertx = Vertx.vertx(getVertxOptions());
 		vertx.deployVerticle(this);
 	}
 

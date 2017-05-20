@@ -1,26 +1,18 @@
 package com.sharingif.cube.communication.http.apache.transport;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.CodingErrorAction;
-
-import javax.net.ssl.SSLContext;
-
-import org.apache.http.Header;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-import org.apache.http.ParseException;
+import com.sharingif.cube.communication.exception.CommunicationException;
+import com.sharingif.cube.communication.http.HttpMethod;
+import com.sharingif.cube.communication.transport.Connection;
+import com.sharingif.cube.core.config.CubeConfigure;
+import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.util.StringUtils;
+import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.config.ConnectionConfig;
-import org.apache.http.config.MessageConstraints;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.config.SocketConfig;
+import org.apache.http.config.*;
 import org.apache.http.conn.HttpConnectionFactory;
 import org.apache.http.conn.ManagedHttpClientConnection;
 import org.apache.http.conn.routing.HttpRoute;
@@ -52,12 +44,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
-import com.sharingif.cube.communication.exception.CommunicationException;
-import com.sharingif.cube.communication.http.HttpMethod;
-import com.sharingif.cube.communication.transport.Connection;
-import com.sharingif.cube.core.config.CubeConfigure;
-import com.sharingif.cube.core.request.RequestInfo;
-import com.sharingif.cube.core.util.StringUtils;
+import javax.net.ssl.SSLContext;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.CodingErrorAction;
 
 /**   
  *  
@@ -176,7 +166,11 @@ public class HttpJsonConnection implements Connection<RequestInfo<String>, Strin
         } else {
         	httpHost = new HttpHost(host, port);
         }
-		String path = new StringBuffer("/").append(contextPath).append(httpContext.getLookupPath()).toString();
+		String path = httpContext.getLookupPath();
+		if(!StringUtils.isEmpty(getContextPath())) {
+			path = new StringBuffer("/").append(getContextPath()).append(path).toString();
+		}
+
 		
 		CloseableHttpResponse response = null;
 		try {

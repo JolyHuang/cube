@@ -1,27 +1,20 @@
 package com.sharingif.cube.communication.handler;
 
-import java.util.List;
-
 import com.sharingif.cube.communication.view.MultiViewResolver;
+import com.sharingif.cube.communication.view.View;
 import com.sharingif.cube.communication.view.exception.NoViewFoundException;
 import com.sharingif.cube.communication.view.exception.ViewException;
-import com.sharingif.cube.core.handler.adapter.MultiHandlerMethodAdapter;
-import com.sharingif.cube.core.handler.mapping.MultiHandlerMapping;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.sharingif.cube.communication.view.View;
-import com.sharingif.cube.communication.view.ViewResolver;
-import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
 import com.sharingif.cube.core.exception.handler.IExceptionResolver;
 import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.handler.HandlerMethodContent;
-import com.sharingif.cube.core.handler.adapter.HandlerAdapter;
+import com.sharingif.cube.core.handler.adapter.MultiHandlerMethodAdapter;
 import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
-import com.sharingif.cube.core.handler.mapping.HandlerMapping;
+import com.sharingif.cube.core.handler.mapping.MultiHandlerMapping;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.core.request.RequestInfoResolver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 请求调度处理器
@@ -37,7 +30,7 @@ public abstract class AbstractDispatcherHandler<I,RI,H extends HandlerMethod> im
 	private RequestInfoResolver<I,RI> requestInfoResolver;
 	private MultiHandlerMapping<H> multiHandlerMapping;
 	private MultiHandlerMethodAdapter<H> multiHandlerMethodAdapter;
-	private IExceptionResolver<RI,ExceptionContent,H> exceptionResolver;
+	private IExceptionResolver<RI,? extends ExceptionContent,H> exceptionResolver;
 	private MultiViewResolver multiViewResolver;
 	private HandlerMethodChain<HandlerMethodContent> handlerMethodChain;
 	
@@ -59,10 +52,10 @@ public abstract class AbstractDispatcherHandler<I,RI,H extends HandlerMethod> im
 	public void setMultiHandlerMethodAdapter(MultiHandlerMethodAdapter<H> multiHandlerMethodAdapter) {
 		this.multiHandlerMethodAdapter = multiHandlerMethodAdapter;
 	}
-	public IExceptionResolver<RI, ExceptionContent, H> getExceptionResolver() {
+	public IExceptionResolver<RI, ? extends ExceptionContent, H> getExceptionResolver() {
 		return exceptionResolver;
 	}
-	public void setExceptionResolver(IExceptionResolver<RI, ExceptionContent, H> exceptionResolver) {
+	public void setExceptionResolver(IExceptionResolver<RI, ? extends ExceptionContent, H> exceptionResolver) {
 		this.exceptionResolver = exceptionResolver;
 	}
 	public MultiViewResolver getMultiViewResolver() {

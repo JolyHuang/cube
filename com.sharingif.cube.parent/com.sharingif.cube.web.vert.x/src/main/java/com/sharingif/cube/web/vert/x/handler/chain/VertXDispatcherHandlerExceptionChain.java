@@ -1,12 +1,12 @@
 package com.sharingif.cube.web.vert.x.handler.chain;
 
+import com.sharingif.cube.communication.MediaType;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.HandlerMethodContent;
 import com.sharingif.cube.core.handler.chain.AbstractHandlerMethodChain;
 import com.sharingif.cube.core.request.RequestInfo;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.ext.web.RoutingContext;
-import org.springframework.http.MediaType;
 
 /**
  * vert.x 处理器异常处理责任链

@@ -1,26 +1,24 @@
 package com.sharingif.cube.web.vert.x.handler.adapter;
 
-import java.lang.annotation.Annotation;
-import java.util.Map;
-
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.MutablePropertyValues;
-import org.springframework.core.Conventions;
-import org.springframework.core.MethodParameter;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.http.MediaType;
-import org.springframework.validation.DataBinder;
-import org.springframework.validation.Errors;
-import org.springframework.validation.annotation.Validated;
-
+import com.sharingif.cube.communication.MediaType;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
 import com.sharingif.cube.core.handler.adapter.HandlerMethodArgumentResolver;
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
 import com.sharingif.cube.core.request.RequestInfo;
-
 import io.vertx.core.buffer.Buffer;
 import io.vertx.ext.web.RoutingContext;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.MutablePropertyValues;
+import org.springframework.core.Conventions;
+import org.springframework.core.MethodParameter;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.validation.DataBinder;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
+
+import java.lang.annotation.Annotation;
+import java.util.Map;
 
 /**
  * 处理json参数
