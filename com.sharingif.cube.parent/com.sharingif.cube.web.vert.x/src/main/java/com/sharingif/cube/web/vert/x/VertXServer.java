@@ -1,11 +1,7 @@
 package com.sharingif.cube.web.vert.x;
 
-import org.springframework.beans.factory.InitializingBean;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
-
 import com.sharingif.cube.communication.handler.DispatcherHandler;
 import com.sharingif.cube.web.vert.x.request.ExtendedRoutingContext;
-
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
@@ -16,6 +12,8 @@ import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.templ.TemplateEngine;
 import io.vertx.ext.web.templ.ThymeleafTemplateEngine;
+import org.springframework.beans.factory.InitializingBean;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 /**
  * Vert.x服务 2016年12月7日 下午8:45:29
@@ -41,7 +39,7 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 		((ThymeleafTemplateEngine)templateEngine).getThymeleafTemplateEngine().setTemplateResolver(new ClassLoaderTemplateResolver());
 		
 		vertxOptions = new VertxOptions();
-		vertxOptions.setWorkerPoolSize(200);
+		vertxOptions.setWorkerPoolSize(200).setInternalBlockingPoolSize(100);
 
 		host = "localhost";
 	}
@@ -97,12 +95,18 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 		Router router = Router.router(vertx);
 		
 		String basePath = new StringBuilder("/").append(getContextPath()).toString();
-		
-		staticRouter(router, basePath);
-		
-		webViewRouter(router, basePath);
-		
-		transactionRouter(router, basePath);
+
+		router.post().handler(BodyHandler.create());
+		router.put().handler(BodyHandler.create());
+		String allPath = new StringBuilder(basePath).append("/*").toString();
+		router.route(allPath)
+				.handler(ctx -> {
+					ctx.request().setExpectMultipart(true);
+					ctx.next();
+				}).blockingHandler(routingContext -> {
+			System.out.println(Thread.currentThread().getId());
+			getDispatcherHandler().doDispatch(new ExtendedRoutingContext(getContextPath(), routingContext));
+		});
 		
 		server.requestHandler(router::accept).listen(getPort(),getHost());
 	}
@@ -132,14 +136,6 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 			});
 		});
 		
-	}
-	
-	protected void transactionRouter(Router router, String basePath) {
-		router.post().handler(BodyHandler.create());
-		String allPath = new StringBuilder(basePath).append("/*").toString();
-		router.route(allPath).blockingHandler(routingContext -> {
-			getDispatcherHandler().doDispatch(new ExtendedRoutingContext(getContextPath(), routingContext));
-		});
 	}
 	
 	@Override

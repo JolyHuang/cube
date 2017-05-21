@@ -42,7 +42,7 @@ public class MultiHandlerMethodAdapter<T> implements HandlerAdapter<T> {
                 logger.trace("Testing handler adapter [" + ha + "]");
             }
             if (ha.supports(handler)) {
-                return ha;
+                return ha.handle(request, handler);
             }
         }
 

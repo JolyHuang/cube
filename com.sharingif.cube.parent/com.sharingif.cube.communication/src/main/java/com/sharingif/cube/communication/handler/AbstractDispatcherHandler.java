@@ -89,7 +89,7 @@ public abstract class AbstractDispatcherHandler<I,RI,H extends HandlerMethod> im
 			try {
 				getHandlerMethodChain().exception(handlerMethodContent, exception);
 			} catch (Exception e) {
-				logger.error("handler method exception chain error", e);
+				logger.error("handle method exception chain error", e);
 			}
 		}
 
@@ -99,7 +99,7 @@ public abstract class AbstractDispatcherHandler<I,RI,H extends HandlerMethod> im
 				getHandlerMethodChain().after(handlerMethodContent);
 			}
 		} catch (Exception e) {
-			logger.error("handler method after chain error", e);
+			logger.error("handle method after chain error", e);
 		}
 	}
 	
@@ -134,6 +134,7 @@ public abstract class AbstractDispatcherHandler<I,RI,H extends HandlerMethod> im
 		} catch (NoViewFoundException exception) {
 			throw exception;
 		} catch (Exception exception) {
+			logger.error("handle view error", exception);
 			throw new ViewException(exception);
 		}
 	}
