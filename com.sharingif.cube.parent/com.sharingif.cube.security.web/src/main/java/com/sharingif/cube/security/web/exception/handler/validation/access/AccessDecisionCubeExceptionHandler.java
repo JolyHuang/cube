@@ -1,10 +1,10 @@
 package com.sharingif.cube.security.web.exception.handler.validation.access;
 
 import com.sharingif.cube.core.exception.ICubeException;
+import com.sharingif.cube.core.exception.handler.ExceptionContent;
 import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.security.exception.validation.access.AccessDecisionCubeException;
-import com.sharingif.cube.web.exception.handler.WebExceptionContent;
 import com.sharingif.cube.web.exception.handler.WebRequestInfo;
 import com.sharingif.cube.web.exception.handler.validation.ValidationCubeExceptionHandler;
 
@@ -31,12 +31,12 @@ public class AccessDecisionCubeExceptionHandler extends ValidationCubeExceptionH
 		return exception instanceof AccessDecisionCubeException;
 	}
 	@Override
-	public WebExceptionContent handlerException(
+	public ExceptionContent handlerException(
 			RequestInfo<WebRequestInfo> requestInfo,
 			HandlerMethod handlerMethod,
 			ICubeException cubeException) {
-		
-		WebExceptionContent out = new WebExceptionContent();
+
+		ExceptionContent out = new ExceptionContent();
 		out.setViewName(defaultErrorView);
 		
 		return out;

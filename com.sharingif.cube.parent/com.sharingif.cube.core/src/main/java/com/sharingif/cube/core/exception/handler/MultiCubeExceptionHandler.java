@@ -1,11 +1,11 @@
 package com.sharingif.cube.core.exception.handler;
 
+import com.sharingif.cube.core.exception.ICubeException;
+import com.sharingif.cube.core.request.RequestInfo;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.sharingif.cube.core.exception.ICubeException;
-import com.sharingif.cube.core.request.RequestInfo;
 
 /**
  * 组合多种异常处理器当有异常需要处理时按照顺序选择合适的处理器处理,
@@ -15,17 +15,17 @@ import com.sharingif.cube.core.request.RequestInfo;
  * @version v1.0
  * @since v1.0
  */
-public class MultiCubeExceptionHandler<RI, O extends ExceptionContent, H extends Object> extends AbstractCubeExceptionHandler<RI,O,H> {
+public class MultiCubeExceptionHandler<RI, H extends Object> extends AbstractCubeExceptionHandler<RI,H> {
 	
-	private Map<String,AbstractCubeExceptionHandler<RI,O,H>> cacheExceptionHandlers = new HashMap<String,AbstractCubeExceptionHandler<RI,O,H>>(20);
+	private Map<String,AbstractCubeExceptionHandler<RI,H>> cacheExceptionHandlers = new HashMap<String,AbstractCubeExceptionHandler<RI,H>>(20);
 	
-	private List<AbstractCubeExceptionHandler<RI,O,H>> cubeExceptionHandlers;
+	private List<AbstractCubeExceptionHandler<RI,H>> cubeExceptionHandlers;
 	
-	public List<AbstractCubeExceptionHandler<RI,O,H>> getCubeExceptionHandlers() {
+	public List<AbstractCubeExceptionHandler<RI,H>> getCubeExceptionHandlers() {
 		return cubeExceptionHandlers;
 	}
 
-	public void setCubeExceptionHandlers(List<AbstractCubeExceptionHandler<RI,O,H>> cubeExceptionHandlers) {
+	public void setCubeExceptionHandlers(List<AbstractCubeExceptionHandler<RI,H>> cubeExceptionHandlers) {
 		this.cubeExceptionHandlers = cubeExceptionHandlers;
 	}
 
@@ -44,12 +44,12 @@ public class MultiCubeExceptionHandler<RI, O extends ExceptionContent, H extends
 	}
 	
 	@Override
-	public O handlerException(RequestInfo<RI> requestInfo, H handler, ICubeException cubeException) {
+	public ExceptionContent handlerException(RequestInfo<RI> requestInfo, H handler, ICubeException cubeException) {
 		return null;
 	}
 	
 	@Override
-	public O handler(RequestInfo<RI> requestInfo, H handler, Exception exception) {
+	public ExceptionContent handler(RequestInfo<RI> requestInfo, H handler, Exception exception) {
 		try {
 			return handlerInternal(requestInfo, handler, exception);
 		} catch (Exception e) {
@@ -58,17 +58,17 @@ public class MultiCubeExceptionHandler<RI, O extends ExceptionContent, H extends
 		}
 	}
 	
-	protected O handlerInternal(RequestInfo<RI> requestInfo, H handler, Exception exception) {
+	protected ExceptionContent handlerInternal(RequestInfo<RI> requestInfo, H handler, Exception exception) {
 		String cacheKey = exception.getClass().getName();
-		AbstractCubeExceptionHandler<RI,O,H> cacheExceptionHandler = cacheExceptionHandlers.get(cacheKey);
+		AbstractCubeExceptionHandler<RI,H> cacheExceptionHandler = cacheExceptionHandlers.get(cacheKey);
 		
 		if(cacheExceptionHandler != null){
 			return cacheExceptionHandler.handler(requestInfo, handler, exception);
 		}
 		
-		for(AbstractCubeExceptionHandler<RI,O,H> cubeExceptionHandler : cubeExceptionHandlers){
+		for(AbstractCubeExceptionHandler<RI,H> cubeExceptionHandler : cubeExceptionHandlers){
 			if(cubeExceptionHandler.supports(exception)) {
-				O result = cubeExceptionHandler.handler(requestInfo, handler, exception);
+				ExceptionContent result = cubeExceptionHandler.handler(requestInfo, handler, exception);
 				cacheExceptionHandlers.put(cacheKey, cubeExceptionHandler);
 				return result;
 			}

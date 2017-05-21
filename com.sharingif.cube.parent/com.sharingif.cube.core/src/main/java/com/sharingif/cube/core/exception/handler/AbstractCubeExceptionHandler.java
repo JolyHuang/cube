@@ -1,14 +1,13 @@
 package com.sharingif.cube.core.exception.handler;
 
-import java.util.Locale;
-
+import com.sharingif.cube.core.exception.ICubeException;
+import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ApplicationObjectSupport;
 
-import com.sharingif.cube.core.exception.ICubeException;
-import com.sharingif.cube.core.request.RequestInfo;
-import com.sharingif.cube.core.util.StringUtils;
+import java.util.Locale;
 
 /**
  * AbstractCubeExceptionHandler
@@ -17,7 +16,7 @@ import com.sharingif.cube.core.util.StringUtils;
  * @version v1.0
  * @since v1.0
  */
-public abstract class AbstractCubeExceptionHandler<RI,O extends ExceptionContent, H extends Object> extends ApplicationObjectSupport implements IExceptionHandler<RI,O,H> {
+public abstract class AbstractCubeExceptionHandler<RI, H extends Object> extends ApplicationObjectSupport implements IExceptionHandler<RI,H> {
 	
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -56,12 +55,12 @@ public abstract class AbstractCubeExceptionHandler<RI,O extends ExceptionContent
 	}
 	
 	/**
-	 * @param obj : 错误输入信息
-	 * @param H handler : 请求处理器
+	 * @param requestInfo : 错误输入信息
+	 * @param handler : 请求处理器
 	 * @param exception : 异常
 	 * @return O : 异常处理结果
 	 */
-	public O handler(RequestInfo<RI> requestInfo, H handler, Exception exception) {
+	public ExceptionContent handler(RequestInfo<RI> requestInfo, H handler, Exception exception) {
 		
 		if(supports(exception)){
 			ICubeException cubeException = convertException(exception);
@@ -69,8 +68,8 @@ public abstract class AbstractCubeExceptionHandler<RI,O extends ExceptionContent
 			resolverMessages(cubeException, requestInfo.getLocale());
 			
 			wirteLog(requestInfo, handler, cubeException);
-			
-			O result = handlerException(requestInfo, handler, cubeException);
+
+			ExceptionContent result = handlerException(requestInfo, handler, cubeException);
 			result.setCubeException(cubeException);
 			
 			return result;

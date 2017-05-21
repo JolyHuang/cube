@@ -1,13 +1,12 @@
 package com.sharingif.cube.communication.view;
 
-import java.util.TimeZone;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharingif.cube.communication.JsonModel;
 import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.exception.CubeRuntimeException;
 import com.sharingif.cube.core.exception.ICubeException;
-import com.sharingif.cube.core.exception.handler.ExceptionContent;
+
+import java.util.TimeZone;
 
 /**
  * AbstractJsonView
@@ -16,7 +15,7 @@ import com.sharingif.cube.core.exception.handler.ExceptionContent;
  * @version v1.0
  * @since v1.0
  */
-public abstract class AbstractJsonView<T,O extends ExceptionContent> implements View<T,O> {
+public abstract class AbstractJsonView<T> implements View<T> {
 	
 	private String exceptionMessageName = "_exceptionMessage";
 	private String exceptionLocalizedMessageName = "_exceptionLocalizedMessage";

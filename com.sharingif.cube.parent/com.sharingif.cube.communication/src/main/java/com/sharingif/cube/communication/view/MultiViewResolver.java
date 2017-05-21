@@ -16,24 +16,24 @@ import java.util.List;
  * @version v1.0
  * @since v1.0
  */
-public class MultiViewResolver<T, O extends ExceptionContent> implements ViewResolver<T,O> {
+public class MultiViewResolver<T> implements ViewResolver<T> {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private List<ViewResolver<T,O>> viewResolvers;
+    private List<ViewResolver<T>> viewResolvers;
 
-    public List<ViewResolver<T, O>> getViewResolvers() {
+    public List<ViewResolver<T>> getViewResolvers() {
         return viewResolvers;
     }
 
-    public void setViewResolvers(List<ViewResolver<T, O>> viewResolvers) {
+    public void setViewResolvers(List<ViewResolver<T>> viewResolvers) {
         this.viewResolvers = viewResolvers;
     }
 
     @Override
-    public View<T, O> resolveView(RequestInfo<T> requestInfo, Object returnValue, O exceptionContent) {
-        for(ViewResolver<T,O> viewResolver : getViewResolvers()) {
-            View<T,O> view = viewResolver.resolveView(requestInfo, returnValue, exceptionContent);
+    public View<T> resolveView(RequestInfo<T> requestInfo, Object returnValue, ExceptionContent exceptionContent) {
+        for(ViewResolver<T> viewResolver : getViewResolvers()) {
+            View<T> view = viewResolver.resolveView(requestInfo, returnValue, exceptionContent);
             if(view != null){
                 return view;
             }

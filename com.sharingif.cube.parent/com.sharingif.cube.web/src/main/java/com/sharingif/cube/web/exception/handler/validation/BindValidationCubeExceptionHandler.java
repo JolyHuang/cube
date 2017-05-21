@@ -1,21 +1,16 @@
 package com.sharingif.cube.web.exception.handler.validation;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
+import com.sharingif.cube.core.exception.ICubeException;
+import com.sharingif.cube.core.exception.handler.ExceptionContent;
+import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
+import com.sharingif.cube.core.handler.HandlerMethod;
+import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.web.exception.handler.WebRequestInfo;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import com.sharingif.cube.core.exception.ICubeException;
-import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
-import com.sharingif.cube.core.handler.HandlerMethod;
-import com.sharingif.cube.core.request.RequestInfo;
-import com.sharingif.cube.web.exception.handler.WebExceptionContent;
-import com.sharingif.cube.web.exception.handler.WebRequestInfo;
+import java.util.*;
 
 /**
  * 数据验证
@@ -93,11 +88,11 @@ public class BindValidationCubeExceptionHandler extends ValidationCubeExceptionH
 	}
 
 	@Override
-	public WebExceptionContent handlerException(RequestInfo<WebRequestInfo> requestInfo,
+	public ExceptionContent handlerException(RequestInfo<WebRequestInfo> requestInfo,
 			HandlerMethod handlerMethod,
 			ICubeException cubeException) {
-		
-		WebExceptionContent out = super.handlerException(requestInfo, handlerMethod, cubeException);
+
+		ExceptionContent out = super.handlerException(requestInfo, handlerMethod, cubeException);
 		Map<String,Object> modelMap = out.getModel();
 		if(modelMap == null){
 			modelMap = new HashMap<String,Object>(1);

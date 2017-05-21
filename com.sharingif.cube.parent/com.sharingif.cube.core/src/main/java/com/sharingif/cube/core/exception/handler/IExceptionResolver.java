@@ -9,16 +9,15 @@ import com.sharingif.cube.core.request.RequestInfo;
  * @version v1.0
  * @since v1.0
  */
-public interface IExceptionResolver<RI,O extends ExceptionContent,H extends Object> {
+public interface IExceptionResolver<RI,H extends Object> {
 
 	/**
 	 * 处理异常
 	 * @param requestInfo : 请求信息
 	 * @param handler : 请求处理器
 	 * @param exception : 异常
-	 * @param locale : 语言环境
-	 * @return O : 异常处理结果
+	 * @return ExceptionContent : 异常处理结果
 	 */
-	O resolverException(RequestInfo<RI> requestInfo, H handler, Exception exception);
+	ExceptionContent resolverException(RequestInfo<RI> requestInfo, H handler, Exception exception);
 	
 }

@@ -1,15 +1,15 @@
 package com.sharingif.cube.web.exception.handler.validation;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.sharingif.cube.core.exception.ICubeException;
+import com.sharingif.cube.core.exception.handler.ExceptionContent;
 import com.sharingif.cube.core.exception.validation.TokenValidationCubeException;
 import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.web.exception.handler.WebCubeExceptionHandler;
-import com.sharingif.cube.web.exception.handler.WebExceptionContent;
 import com.sharingif.cube.web.exception.handler.WebRequestInfo;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**   
  *  
@@ -51,11 +51,11 @@ public class TokenValidationCubeExceptionHandler extends WebCubeExceptionHandler
 		return exception instanceof TokenValidationCubeException;
 	}
 	@Override
-	public WebExceptionContent handlerException(RequestInfo<WebRequestInfo> requestInfo,
-			HandlerMethod handlerMethod,
-			ICubeException cubeException) {
-		
-		WebExceptionContent out = new WebExceptionContent();
+	public ExceptionContent handlerException(RequestInfo<WebRequestInfo> requestInfo,
+											 HandlerMethod handlerMethod,
+											 ICubeException cubeException) {
+
+		ExceptionContent out = new ExceptionContent();
 		Map<String,Object> model = new HashMap<String,Object>(1);
 		
 		if(null != exceptionCodeMappings){

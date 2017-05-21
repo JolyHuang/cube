@@ -1,22 +1,20 @@
 package com.sharingif.cube.web.springmvc.servlet.handler;
 
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.sharingif.cube.core.exception.handler.AbstractCubeExceptionHandler;
+import com.sharingif.cube.core.exception.handler.ExceptionContent;
+import com.sharingif.cube.core.handler.HandlerMethod;
+import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.web.exception.handler.WebRequestInfo;
+import com.sharingif.cube.web.springmvc.http.SpringMVCHttpRequest;
+import com.sharingif.cube.web.springmvc.http.SpringMVCHttpResponse;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.util.UrlPathHelper;
 
-import com.sharingif.cube.core.exception.handler.AbstractCubeExceptionHandler;
-import com.sharingif.cube.core.handler.HandlerMethod;
-import com.sharingif.cube.core.request.RequestInfo;
-import com.sharingif.cube.web.exception.handler.WebExceptionContent;
-import com.sharingif.cube.web.exception.handler.WebRequestInfo;
-import com.sharingif.cube.web.springmvc.http.SpringMVCHttpRequest;
-import com.sharingif.cube.web.springmvc.http.SpringMVCHttpResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Locale;
 
 /**
  * SimpleHandlerExceptionResolver
@@ -28,13 +26,13 @@ import com.sharingif.cube.web.springmvc.http.SpringMVCHttpResponse;
 public class SimpleHandlerExceptionResolver extends AbstractHandlerExceptionResolver {
 	
 	private String exceptionAttribute="_exception";
-	private AbstractCubeExceptionHandler<WebRequestInfo, WebExceptionContent, HandlerMethod> cubeExceptionHandler;
+	private AbstractCubeExceptionHandler<WebRequestInfo, HandlerMethod> cubeExceptionHandler;
 	private UrlPathHelper urlPathHelper = new UrlPathHelper();
 	
-	public AbstractCubeExceptionHandler<WebRequestInfo, WebExceptionContent, HandlerMethod> getCubeExceptionHandler() {
+	public AbstractCubeExceptionHandler<WebRequestInfo, HandlerMethod> getCubeExceptionHandler() {
 		return cubeExceptionHandler;
 	}
-	public void setCubeExceptionHandler(AbstractCubeExceptionHandler<WebRequestInfo, WebExceptionContent, HandlerMethod> cubeExceptionHandler) {
+	public void setCubeExceptionHandler(AbstractCubeExceptionHandler<WebRequestInfo, HandlerMethod> cubeExceptionHandler) {
 		this.cubeExceptionHandler = cubeExceptionHandler;
 	}
 	public String getExceptionAttribute() {
@@ -65,8 +63,8 @@ public class SimpleHandlerExceptionResolver extends AbstractHandlerExceptionReso
 		if(hm != null) {
 			handlerMethod = new HandlerMethod(hm.getBean(), hm.getMethod());
 		}
-		
-		WebExceptionContent outContent = cubeExceptionHandler.handler(requestInfo, handlerMethod, ex);
+
+		ExceptionContent outContent = cubeExceptionHandler.handler(requestInfo, handlerMethod, ex);
 		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName(outContent.getViewName());

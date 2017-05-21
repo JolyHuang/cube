@@ -1,9 +1,9 @@
 package com.sharingif.cube.core.exception.handler;
 
-import java.util.Locale;
-
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.request.RequestInfo;
+
+import java.util.Locale;
 
 
 /**   
@@ -17,11 +17,11 @@ import com.sharingif.cube.core.request.RequestInfo;
  * @Version:      [v1.0] 
  *    
  */
-public interface IExceptionHandler<RI,O extends Object,H extends Object> {
+public interface IExceptionHandler<RI,H extends Object> {
 	
 	/**
 	 * 判断是否支持
-	 * @param cubeException
+	 * @param exception
 	 * @return
 	 */
 	boolean supports(Exception exception);
@@ -46,7 +46,6 @@ public interface IExceptionHandler<RI,O extends Object,H extends Object> {
 	 * @param requestInfo : 请求信息
 	 * @param handler : 请求处理器
 	 * @param cubeException : cube异常
-	 * @param locale : 语言环境
 	 */
 	void wirteLog(RequestInfo<RI> requestInfo, H handler, ICubeException cubeException);
 	
@@ -55,9 +54,8 @@ public interface IExceptionHandler<RI,O extends Object,H extends Object> {
 	 * @param requestInfo : 请求信息
 	 * @param handler : 请求处理器
 	 * @param cubeException : cube异常
-	 * @param locale : 语言环境
 	 * @return O : 异常处理结果
 	 */
-	O handlerException(RequestInfo<RI> requestInfo, H handler, ICubeException cubeException);
+	ExceptionContent handlerException(RequestInfo<RI> requestInfo, H handler, ICubeException cubeException);
 
 }

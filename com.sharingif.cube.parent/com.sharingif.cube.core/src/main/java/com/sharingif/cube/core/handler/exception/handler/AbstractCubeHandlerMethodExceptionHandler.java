@@ -1,10 +1,5 @@
 package com.sharingif.cube.core.handler.exception.handler;
 
-import java.util.Locale;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.handler.AbstractCubeExceptionHandler;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
@@ -12,6 +7,10 @@ import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.handler.request.RequestLocalContextHolder;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.core.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Locale;
 
 /**
  * AbstractCubeExceptionHandler
@@ -20,7 +19,7 @@ import com.sharingif.cube.core.util.StringUtils;
  * @version v1.0
  * @since v1.0
  */
-public abstract class AbstractCubeHandlerMethodExceptionHandler<RI,O extends ExceptionContent> extends AbstractCubeExceptionHandler<RI,O,HandlerMethod> {
+public abstract class AbstractCubeHandlerMethodExceptionHandler<RI> extends AbstractCubeExceptionHandler<RI,HandlerMethod> {
 	
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -94,13 +93,12 @@ public abstract class AbstractCubeHandlerMethodExceptionHandler<RI,O extends Exc
 	}
 	
 	/**
-	 * @param obj : 错误输入信息
-	 * @param H handler : 请求处理器
+	 * @param requestInfo : 错误输入信息
+	 * @param handlerMethod : 请求处理器
 	 * @param exception : 异常
-	 * @param locale : 语言环境
 	 * @return O : 异常处理结果
 	 */
-	public O handler(RequestInfo<RI> requestInfo, HandlerMethod handlerMethod, Exception exception) {
+	public ExceptionContent handler(RequestInfo<RI> requestInfo, HandlerMethod handlerMethod, Exception exception) {
 		
 		if(supports(exception)){
 			ICubeException cubeException = convertException(exception);
@@ -108,8 +106,8 @@ public abstract class AbstractCubeHandlerMethodExceptionHandler<RI,O extends Exc
 			resolverMessages(cubeException, requestInfo.getLocale());
 			
 			wirteLog(requestInfo, handlerMethod, cubeException);
-			
-			O result = handlerException(requestInfo, handlerMethod, cubeException);
+
+			ExceptionContent result = handlerException(requestInfo, handlerMethod, cubeException);
 			result.setCubeException(cubeException);
 			
 			return result;
