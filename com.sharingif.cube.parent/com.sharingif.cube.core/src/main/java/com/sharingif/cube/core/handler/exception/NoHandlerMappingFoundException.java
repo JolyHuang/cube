@@ -11,6 +11,8 @@ import com.sharingif.cube.core.exception.CubeRuntimeException;
  */
 public class NoHandlerMappingFoundException extends CubeRuntimeException {
 
+    private static final long serialVersionUID = 4144535686116058815L;
+
     public NoHandlerMappingFoundException() {
         super("no handlerMapping found");
     }

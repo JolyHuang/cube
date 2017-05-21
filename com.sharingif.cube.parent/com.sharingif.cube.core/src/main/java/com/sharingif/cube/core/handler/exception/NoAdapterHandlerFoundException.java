@@ -11,6 +11,8 @@ import com.sharingif.cube.core.exception.CubeRuntimeException;
  */
 public class NoAdapterHandlerFoundException extends CubeRuntimeException {
 
+    private static final long serialVersionUID = -6912602577063395810L;
+
     public NoAdapterHandlerFoundException() {
         super("no adapterHandler found");
     }

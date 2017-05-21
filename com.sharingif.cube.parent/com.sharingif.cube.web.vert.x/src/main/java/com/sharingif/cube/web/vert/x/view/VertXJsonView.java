@@ -1,11 +1,10 @@
 package com.sharingif.cube.web.vert.x.view;
 
-import org.springframework.http.MediaType;
 
+import com.sharingif.cube.communication.MediaType;
 import com.sharingif.cube.communication.view.AbstractJsonView;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.web.exception.handler.WebExceptionContent;
-
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.ext.web.RoutingContext;

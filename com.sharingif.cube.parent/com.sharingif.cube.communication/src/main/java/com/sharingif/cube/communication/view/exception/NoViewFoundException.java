@@ -11,7 +11,9 @@ import com.sharingif.cube.core.exception.CubeRuntimeException;
  */
 public class NoViewFoundException extends CubeRuntimeException {
 
-    public NoViewFoundException() {
+	private static final long serialVersionUID = 8096404939862711228L;
+
+	public NoViewFoundException() {
         super("no viewFound exception");
     }
 }

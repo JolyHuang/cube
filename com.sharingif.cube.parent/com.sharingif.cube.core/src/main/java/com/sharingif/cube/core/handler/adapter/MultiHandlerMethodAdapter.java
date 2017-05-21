@@ -1,7 +1,6 @@
 package com.sharingif.cube.core.handler.adapter;
 
 import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.handler.exception.NoHandlerMappingFoundException;
 import com.sharingif.cube.core.request.RequestInfo;
 import org.slf4j.Logger;

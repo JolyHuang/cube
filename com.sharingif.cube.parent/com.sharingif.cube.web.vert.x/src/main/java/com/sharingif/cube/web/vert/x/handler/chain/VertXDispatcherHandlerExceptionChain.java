@@ -28,7 +28,8 @@ public class VertXDispatcherHandlerExceptionChain extends AbstractHandlerMethodC
 
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void exception(HandlerMethodContent content, Exception exception) throws CubeException {
         RequestInfo<RoutingContext> requestInfo = (RequestInfo<RoutingContext>) content.getRequestInfo();
 

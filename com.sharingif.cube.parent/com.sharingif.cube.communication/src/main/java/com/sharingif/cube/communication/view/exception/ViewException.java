@@ -12,7 +12,9 @@ import com.sharingif.cube.core.exception.CubeRuntimeException;
  */
 public class ViewException extends CubeRuntimeException {
 
-    public ViewException(Throwable cause) {
+	private static final long serialVersionUID = -3986579921533402039L;
+
+	public ViewException(Throwable cause) {
         super("handler view error", cause);
     }
 }
