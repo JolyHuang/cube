@@ -1,20 +1,18 @@
 package com.sharingif.cube.web.handler.adapter;
 
-import java.util.Collections;
-import java.util.Map;
-
-import org.springframework.core.MethodParameter;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.util.AntPathMatcher;
-import org.springframework.util.PathMatcher;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ValueConstants;
-
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
 import com.sharingif.cube.core.handler.bind.annotation.PathVariable;
 import com.sharingif.cube.core.handler.bind.annotation.RequestMapping;
 import com.sharingif.cube.core.request.RequestInfo;
+import org.springframework.core.MethodParameter;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
+import org.springframework.util.StringUtils;
+
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * PathVariableMethodArgumentResolver
@@ -91,7 +89,7 @@ public class PathVariableMethodArgumentResolver extends AbstractNamedValueMethod
 	private static class PathVariableNamedValueInfo extends NamedValueInfo {
 
 		public PathVariableNamedValueInfo(PathVariable annotation) {
-			super(annotation.value(), true, ValueConstants.DEFAULT_NONE);
+			super(annotation.value(), true, DEFAULT_NONE);
 		}
 	}
 	

@@ -1,54 +1,28 @@
 package com.sharingif.cube.web.handler.adapter;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
+import com.sharingif.cube.core.exception.CubeException;
+import com.sharingif.cube.core.handler.adapter.HandlerMethodArgumentResolver;
+import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
+import com.sharingif.cube.core.request.RequestInfo;
 import org.springframework.beans.factory.config.BeanExpressionContext;
 import org.springframework.beans.factory.config.BeanExpressionResolver;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.core.MethodParameter;
 import org.springframework.validation.DataBinder;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.ValueConstants;
-import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.context.request.RequestScope;
-import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.handler.adapter.HandlerMethodArgumentResolver;
-import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
-import com.sharingif.cube.core.request.RequestInfo;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Abstract base class for resolving method arguments from a named value.
- * Request parameters, request headers, and path variables are examples of named
- * values. Each may have a name, a required flag, and a default value.
- * <p>Subclasses define how to do the following:
- * <ul>
- * <li>Obtain named value information for a method parameter
- * <li>Resolve names into argument values
- * <li>Handle missing argument values when argument values are required
- * <li>Optionally handle a resolved value
- * </ul>
- * <p>A default value string can contain ${...} placeholders and Spring Expression
- * Language #{...} expressions. For this to work a
- * {@link ConfigurableBeanFactory} must be supplied to the class constructor.
- * <p>A {@link WebDataBinder} is created to apply type conversion to the resolved
- * argument value if it doesn't match the method parameter type.
- *
- * @author Arjen Poutsma
- * @author Rossen Stoyanchev
- * @since 3.1
- */
 public abstract class AbstractNamedValueMethodArgumentResolver implements HandlerMethodArgumentResolver {
-	
+
 	private final ConfigurableBeanFactory configurableBeanFactory;
 
 	private final BeanExpressionContext expressionContext;
-	
+
 	private Map<MethodParameter, NamedValueInfo> namedValueInfoCache = new ConcurrentHashMap<MethodParameter, NamedValueInfo>(256);
-	
-	
+
+	protected static final String DEFAULT_NONE = "\n\t\t\n\t\t\n\uE000\uE001\uE002\n\t\t\t\t\n";
+
 	public AbstractNamedValueMethodArgumentResolver() {
 		this.configurableBeanFactory = null;
 		this.expressionContext = null;
@@ -61,15 +35,15 @@ public abstract class AbstractNamedValueMethodArgumentResolver implements Handle
 	 */
 	public AbstractNamedValueMethodArgumentResolver(ConfigurableBeanFactory beanFactory) {
 		this.configurableBeanFactory = beanFactory;
-		this.expressionContext = (beanFactory != null ? new BeanExpressionContext(beanFactory, new RequestScope()) : null);
+		this.expressionContext = (beanFactory != null ? new BeanExpressionContext(beanFactory, null) : null);
 	}
 
 	@Override
 	public Object resolveArgument(MethodParameter parameter, RequestInfo<?> requestInfo, DataBinderFactory dataBinderFactory) throws CubeException {
-		
+
 		Class<?> paramType = parameter.getParameterType();
 		NamedValueInfo namedValueInfo = getNamedValueInfo(parameter);
-		
+
 		Object arg = resolveName(namedValueInfo.name, parameter, requestInfo);
 		if (arg == null) {
 			if (namedValueInfo.defaultValue != null) {
@@ -93,7 +67,7 @@ public abstract class AbstractNamedValueMethodArgumentResolver implements Handle
 
 		return arg;
 	}
-	
+
 	/**
 	 * Obtain the named value for the given method parameter.
 	 */
@@ -106,7 +80,7 @@ public abstract class AbstractNamedValueMethodArgumentResolver implements Handle
 		}
 		return namedValueInfo;
 	}
-	
+
 	/**
 	 * Create the {@link NamedValueInfo} object for the given method parameter. Implementations typically
 	 * retrieve the method annotation by means of {@link MethodParameter#getParameterAnnotation(Class)}.
@@ -127,18 +101,10 @@ public abstract class AbstractNamedValueMethodArgumentResolver implements Handle
 						"] not available, and parameter name information not found in class file either.");
 			}
 		}
-		String defaultValue = (ValueConstants.DEFAULT_NONE.equals(info.defaultValue) ? null : info.defaultValue);
+		String defaultValue = (DEFAULT_NONE.equals(info.defaultValue) ? null : info.defaultValue);
 		return new NamedValueInfo(name, info.required, defaultValue);
 	}
-	
-	/**
-	 * Resolves the given parameter type and value name into an argument value.
-	 * @param name the name of the value being resolved
-	 * @param parameter the method parameter to resolve to an argument value
-	 * @param request the current request
-	 * @return the resolved argument. May be {@code null}
-	 * @throws Exception in case of errors
-	 */
+
 	protected abstract Object resolveName(String name, MethodParameter parameter, RequestInfo<?> requestInfo)
 			throws CubeException;
 
@@ -157,12 +123,6 @@ public abstract class AbstractNamedValueMethodArgumentResolver implements Handle
 		return exprResolver.evaluate(placeholdersResolved, this.expressionContext);
 	}
 
-	/**
-	 * Invoked when a named value is required, but {@link #resolveName(String, MethodParameter, NativeWebRequest)}
-	 * returned {@code null} and there is no default value. Subclasses typically throw an exception in this case.
-	 * @param name the name for the value
-	 * @param parameter the method parameter
-	 */
 	protected abstract void handleMissingValue(String name, MethodParameter parameter) throws CubeException;
 
 	/**
@@ -182,18 +142,10 @@ public abstract class AbstractNamedValueMethodArgumentResolver implements Handle
 		return value;
 	}
 
-	/**
-	 * Invoked after a value is resolved.
-	 * @param arg the resolved argument value
-	 * @param name the argument name
-	 * @param parameter the argument parameter type
-	 * @param mavContainer the {@link ModelAndViewContainer}, which may be {@code null}
-	 * @param webRequest the current request
-	 */
 	protected void handleResolvedValue(Object arg, String name, MethodParameter parameter,
 			RequestInfo<?> requestInfo) {
 	}
-	
+
 	/**
 	 * Represents the information about a named value, including name, whether it's required and a default value.
 	 */
