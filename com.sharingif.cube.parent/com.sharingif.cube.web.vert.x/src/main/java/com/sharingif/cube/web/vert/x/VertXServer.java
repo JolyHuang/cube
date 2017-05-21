@@ -39,7 +39,7 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 		((ThymeleafTemplateEngine)templateEngine).getThymeleafTemplateEngine().setTemplateResolver(new ClassLoaderTemplateResolver());
 		
 		vertxOptions = new VertxOptions();
-		vertxOptions.setWorkerPoolSize(200).setInternalBlockingPoolSize(100);
+		vertxOptions.setWorkerPoolSize(200);
 
 		host = "localhost";
 	}
@@ -104,9 +104,8 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 					ctx.request().setExpectMultipart(true);
 					ctx.next();
 				}).blockingHandler(routingContext -> {
-			System.out.println(Thread.currentThread().getId());
 			getDispatcherHandler().doDispatch(new ExtendedRoutingContext(getContextPath(), routingContext));
-		});
+		},false);
 		
 		server.requestHandler(router::accept).listen(getPort(),getHost());
 	}
@@ -117,7 +116,7 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 		StaticHandler staticHandler = StaticHandler.create();
 		staticHandler.setWebRoot(getStaticPath());
 		
-		router.route(path).blockingHandler(staticHandler);
+		router.route(path).blockingHandler(staticHandler,false);
 	}
 	
 	protected void webViewRouter(Router router, String basePath) {
@@ -134,7 +133,7 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 					routingContext.fail(res.cause());
 		        }
 			});
-		});
+		},false);
 		
 	}
 	
