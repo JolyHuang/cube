@@ -1,8 +1,9 @@
 package com.sharingif.cube.web.springmvc.handler.annotation;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
+import com.sharingif.cube.web.springmvc.handler.SpringMVCHandlerMethodContent;
+import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.MediaTypeMethodProcessor;
+import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.container.DataContainerMethodProcessor;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
@@ -10,10 +11,8 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBody
 import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod;
 import org.springframework.web.servlet.mvc.method.annotation.ServletModelAttributeMethodProcessor;
 
-import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
-import com.sharingif.cube.web.springmvc.handler.SpringMVCHandlerMethodContent;
-import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.MediaTypeMethodProcessor;
-import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.container.DataContainerMethodProcessor;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 扩展RequestMappingHandlerAdapter，添加HandlerMethodChain、MediaTypeMethodProcessor、DataContainerMethodProcessor功能
@@ -48,9 +47,7 @@ public class ExtendedRequestMappingHandlerAdapter extends RequestMappingHandlerA
 		if(null == resolvers) {
 			resolvers = new ArrayList<HandlerMethodArgumentResolver>();
 		}
-		
-		resolvers.add(new DataContainerMethodProcessor());
-		
+
 		resolvers.add(new MediaTypeMethodProcessor(
 				true,
 				new RequestResponseBodyMethodProcessor(getMessageConverters()),
@@ -60,6 +57,8 @@ public class ExtendedRequestMappingHandlerAdapter extends RequestMappingHandlerA
 		this.setCustomArgumentResolvers(resolvers);
 		
 		super.afterPropertiesSet();
+
+		this.getArgumentResolvers().add(0,new DataContainerMethodProcessor());
 	}
 	
 	
