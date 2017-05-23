@@ -58,7 +58,9 @@ public class ExtendedRequestMappingHandlerAdapter extends RequestMappingHandlerA
 		
 		super.afterPropertiesSet();
 
-		this.getArgumentResolvers().add(0,new DataContainerMethodProcessor());
+		List<HandlerMethodArgumentResolver> argumentResolvers = this.getArgumentResolvers();
+
+		argumentResolvers.add(0,new DataContainerMethodProcessor());
 	}
 	
 	
