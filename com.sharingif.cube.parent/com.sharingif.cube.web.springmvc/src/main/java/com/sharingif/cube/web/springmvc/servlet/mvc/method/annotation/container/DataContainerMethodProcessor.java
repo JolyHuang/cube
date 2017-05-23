@@ -1,15 +1,14 @@
 package com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.container;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.sharingif.cube.core.handler.bind.annotation.DataContainer;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.sharingif.cube.core.handler.bind.annotation.DataContainer;
+import java.util.ArrayList;
+import java.util.List;
 
 /**   
  *  
@@ -38,6 +37,7 @@ public class DataContainerMethodProcessor implements HandlerMethodArgumentResolv
 		
 		dataContainerMethodArgumentResolvers.add(new CoreUserDataContainerMethodArgumentResolver());
 		dataContainerMethodArgumentResolvers.add(new HttpChannelContextDataContainerMethodArgumentResolver());
+		dataContainerMethodArgumentResolvers.add(new SessionDataContainerMethodArgumentResolver());
 	}
 
 	@Override

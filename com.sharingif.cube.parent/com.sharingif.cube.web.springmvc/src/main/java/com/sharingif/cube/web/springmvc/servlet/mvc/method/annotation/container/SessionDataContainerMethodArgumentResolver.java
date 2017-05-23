@@ -24,7 +24,7 @@ import java.util.Map;
 public class SessionDataContainerMethodArgumentResolver implements DataContainerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(Class<?> parameterType) {
-        return false;
+        return true;
     }
 
     @Override
