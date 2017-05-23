@@ -30,7 +30,7 @@ public class SessionDataContainerMethodArgumentResolver implements DataContainer
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 
-        DataContainer dataContainer = parameter.getMethodAnnotation(DataContainer.class);
+        DataContainer dataContainer = parameter.getParameterAnnotation(DataContainer.class);
 
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         HttpSession session = request.getSession();
