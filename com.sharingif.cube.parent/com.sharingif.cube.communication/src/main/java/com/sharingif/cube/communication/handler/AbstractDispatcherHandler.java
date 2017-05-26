@@ -9,7 +9,6 @@ import com.sharingif.cube.communication.view.exception.NoViewFoundException;
 import com.sharingif.cube.communication.view.exception.ViewException;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
 import com.sharingif.cube.core.exception.handler.IExceptionResolver;
-import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.handler.HandlerMethodContent;
 import com.sharingif.cube.core.handler.adapter.MultiHandlerMethodAdapter;
 import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
@@ -24,45 +23,50 @@ import com.sharingif.cube.core.request.RequestInfoResolver;
  * @version v1.0
  * @since v1.0
  */
-public abstract class AbstractDispatcherHandler<I,RI,H extends HandlerMethod> implements DispatcherHandler<I> {
+public abstract class AbstractDispatcherHandler<I> implements DispatcherHandler<I> {
 	
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
-	private RequestInfoResolver<I,RI> requestInfoResolver;
-	private MultiHandlerMapping<H> multiHandlerMapping;
-	private MultiHandlerMethodAdapter<H> multiHandlerMethodAdapter;
-	private IExceptionResolver<RI,H> exceptionResolver;
-	private MultiViewResolver<RI> multiViewResolver;
+	@SuppressWarnings("rawtypes")
+	private RequestInfoResolver requestInfoResolver;
+	private MultiHandlerMapping multiHandlerMapping;
+	private MultiHandlerMethodAdapter multiHandlerMethodAdapter;
+	private IExceptionResolver<Object,Object> exceptionResolver;
+	private MultiViewResolver multiViewResolver;
 	private HandlerMethodChain<HandlerMethodContent> handlerMethodChain;
 	
-	public RequestInfoResolver<I, RI> getRequestInfoResolver() {
+	@SuppressWarnings("rawtypes")
+	public RequestInfoResolver getRequestInfoResolver() {
 		return requestInfoResolver;
 	}
-	public void setRequestInfoResolver(RequestInfoResolver<I, RI> requestInfoResolver) {
+	@SuppressWarnings("rawtypes")
+	public void setRequestInfoResolver(RequestInfoResolver requestInfoResolver) {
 		this.requestInfoResolver = requestInfoResolver;
 	}
-	public MultiHandlerMapping<H> getMultiHandlerMapping() {
+	public MultiHandlerMapping getMultiHandlerMapping() {
 		return multiHandlerMapping;
 	}
-	public void setMultiHandlerMapping(MultiHandlerMapping<H> multiHandlerMapping) {
+	public void setMultiHandlerMapping(MultiHandlerMapping multiHandlerMapping) {
 		this.multiHandlerMapping = multiHandlerMapping;
 	}
-	public MultiHandlerMethodAdapter<H> getMultiHandlerMethodAdapter() {
+	public MultiHandlerMethodAdapter getMultiHandlerMethodAdapter() {
 		return multiHandlerMethodAdapter;
 	}
-	public void setMultiHandlerMethodAdapter(MultiHandlerMethodAdapter<H> multiHandlerMethodAdapter) {
+	public void setMultiHandlerMethodAdapter(MultiHandlerMethodAdapter multiHandlerMethodAdapter) {
 		this.multiHandlerMethodAdapter = multiHandlerMethodAdapter;
 	}
-	public IExceptionResolver<RI, H> getExceptionResolver() {
+	@SuppressWarnings("rawtypes")
+	public IExceptionResolver getExceptionResolver() {
 		return exceptionResolver;
 	}
-	public void setExceptionResolver(IExceptionResolver<RI,H> exceptionResolver) {
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void setExceptionResolver(IExceptionResolver exceptionResolver) {
 		this.exceptionResolver = exceptionResolver;
 	}
-	public MultiViewResolver<RI> getMultiViewResolver() {
+	public MultiViewResolver getMultiViewResolver() {
 		return multiViewResolver;
 	}
-	public void setMultiViewResolver(MultiViewResolver<RI> multiViewResolver) {
+	public void setMultiViewResolver(MultiViewResolver multiViewResolver) {
 		this.multiViewResolver = multiViewResolver;
 	}
 	public HandlerMethodChain<HandlerMethodContent> getHandlerMethodChain() {
@@ -103,10 +107,11 @@ public abstract class AbstractDispatcherHandler<I,RI,H extends HandlerMethod> im
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected void doDispatchInternal(I request) {
 
-		RequestInfo<RI> requestInfo = null;
-		H handler = null;
+		RequestInfo<Object> requestInfo = null;
+		Object handler = null;
 		Object returnValue = null;
 		ExceptionContent exceptionContent = null;
 		try {
@@ -119,16 +124,16 @@ public abstract class AbstractDispatcherHandler<I,RI,H extends HandlerMethod> im
 
 		} catch (Exception e) {
 			logger.error("do dispatch error", e);
-			exceptionContent = exceptionResolver.resolverException(requestInfo, handler, e);
+			exceptionContent = getExceptionResolver().resolverException(requestInfo, handler, e);
 		}
 
 		handlerView(requestInfo,returnValue,exceptionContent);
 
 	}
 
-	protected void handlerView(RequestInfo<RI> requestInfo, Object returnValue, ExceptionContent exceptionContent) {
+	protected void handlerView(RequestInfo<Object> requestInfo, Object returnValue, ExceptionContent exceptionContent) {
 		try {
-			View<RI> view = getMultiViewResolver().resolveView(requestInfo, returnValue, exceptionContent);
+			View<Object> view = getMultiViewResolver().resolveView(requestInfo, returnValue, exceptionContent);
 		
 			view.view(requestInfo, returnValue, exceptionContent);
 		} catch (NoViewFoundException exception) {

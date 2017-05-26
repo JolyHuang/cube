@@ -1,12 +1,13 @@
 package com.sharingif.cube.core.handler.mapping;
 
-import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.handler.exception.NoHandlerMappingFoundException;
-import com.sharingif.cube.core.request.RequestInfo;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import com.sharingif.cube.core.exception.CubeException;
+import com.sharingif.cube.core.handler.exception.NoHandlerMappingFoundException;
+import com.sharingif.cube.core.request.RequestInfo;
 
 /**
  * HandlerMapping 集合
@@ -15,24 +16,28 @@ import java.util.List;
  * @version v1.0
  * @since v1.0
  */
-public class MultiHandlerMapping<T> implements HandlerMapping<T> {
+public class MultiHandlerMapping implements HandlerMapping<Object,Object> {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private List<HandlerMapping<T>> handlerMappings;
+    @SuppressWarnings("rawtypes")
+	private List<HandlerMapping> handlerMappings;
 
-    public List<HandlerMapping<T>> getHandlerMappings() {
+    @SuppressWarnings("rawtypes")
+    public List<HandlerMapping> getHandlerMappings() {
         return handlerMappings;
     }
 
-    public void setHandlerMappings(List<HandlerMapping<T>> handlerMappings) {
+    @SuppressWarnings("rawtypes")
+    public void setHandlerMappings(List<HandlerMapping> handlerMappings) {
         this.handlerMappings = handlerMappings;
     }
 
-    @Override
-    public T getHandler(RequestInfo<?> requestInfo) throws CubeException {
-        for (HandlerMapping<T> hm : getHandlerMappings()) {
-            T handler = hm.getHandler(requestInfo);
+    @SuppressWarnings("unchecked")
+	@Override
+    public Object getHandler(RequestInfo<Object> requestInfo) throws CubeException {
+        for (HandlerMapping<Object,Object> hm : getHandlerMappings()) {
+            Object handler = hm.getHandler(requestInfo);
             if (handler != null) {
                 return handler;
             }

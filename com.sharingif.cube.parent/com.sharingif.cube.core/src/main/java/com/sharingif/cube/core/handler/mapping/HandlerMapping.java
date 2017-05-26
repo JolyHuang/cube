@@ -12,7 +12,7 @@ import com.sharingif.cube.core.request.RequestInfo;
  * [@version v1.0]
  * [@since v1.0]
  */
-public interface HandlerMapping<T> {
+public interface HandlerMapping<RI,T> {
 	
 	/**
 	 * 返回handler
@@ -20,6 +20,6 @@ public interface HandlerMapping<T> {
 	 * @return
 	 * @throws CubeException
 	 */
-	T getHandler(RequestInfo<?> request) throws CubeException;
+	T getHandler(RequestInfo<RI> request) throws CubeException;
 	
 }

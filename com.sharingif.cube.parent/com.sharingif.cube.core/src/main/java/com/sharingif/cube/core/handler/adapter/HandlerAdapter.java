@@ -10,7 +10,7 @@ import com.sharingif.cube.core.request.RequestInfo;
  * [@version v1.0]
  * [@since v1.0]
  */
-public interface HandlerAdapter<H> {
+public interface HandlerAdapter<RI,H> {
 	
 	/**
 	 * Given a handler instance, return whether or not this HandlerAdapter can
@@ -32,6 +32,6 @@ public interface HandlerAdapter<H> {
 	 * @return
 	 * @throws CubeException
 	 */
-	Object handle(RequestInfo<?> request, H handler)throws CubeException;
+	Object handle(RequestInfo<RI> request, H handler)throws CubeException;
 
 }

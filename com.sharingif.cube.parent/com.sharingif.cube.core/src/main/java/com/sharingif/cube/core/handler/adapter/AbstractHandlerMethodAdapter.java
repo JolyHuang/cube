@@ -15,7 +15,7 @@ import com.sharingif.cube.core.request.RequestInfo;
  * @author Arjen Poutsma
  * @since 3.1
  */
-public abstract class AbstractHandlerMethodAdapter implements HandlerAdapter<HandlerMethod>, ApplicationContextAware {
+public abstract class AbstractHandlerMethodAdapter implements HandlerAdapter<Object,HandlerMethod>, ApplicationContextAware {
 
 
 	/**
@@ -36,7 +36,7 @@ public abstract class AbstractHandlerMethodAdapter implements HandlerAdapter<Han
 	protected abstract boolean supportsInternal(HandlerMethod handlerMethod);
 	
 	@Override
-	public Object handle(RequestInfo<?> request, HandlerMethod handlerMethod) throws CubeException {
+	public Object handle(RequestInfo<Object> request, HandlerMethod handlerMethod) throws CubeException {
 		return handleInternal(request, handlerMethod);
 	}
 

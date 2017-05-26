@@ -1,10 +1,10 @@
 package com.sharingif.cube.core.handler.mapping;
 
-import java.util.Comparator;
-import java.util.Set;
-
 import com.sharingif.cube.core.handler.request.RequestMappingInfo;
 import com.sharingif.cube.core.request.RequestInfo;
+
+import java.util.Comparator;
+import java.util.Set;
 
 /**
  * Abstract base class for classes for which {@link RequestMappingInfo} defines
@@ -32,7 +32,7 @@ public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMe
 	 * @return an info in case of a match; or {@code null} otherwise.
 	 */
 	@Override
-	protected RequestMappingInfo getMatchingMapping(RequestMappingInfo info, RequestInfo<?> requestInfo) {
+	protected RequestMappingInfo getMatchingMapping(RequestMappingInfo info, RequestInfo<Object> requestInfo) {
 		return info.getMatchingCondition(requestInfo);
 	}
 	
@@ -40,7 +40,7 @@ public abstract class RequestMappingInfoHandlerMapping extends AbstractHandlerMe
 	 * Provide a Comparator to sort RequestMappingInfos matched to a request.
 	 */
 	@Override
-	protected Comparator<RequestMappingInfo> getMappingComparator(final RequestInfo<?> requestInfo) {
+	protected Comparator<RequestMappingInfo> getMappingComparator(final RequestInfo<Object> requestInfo) {
 		return new Comparator<RequestMappingInfo>() {
 			@Override
 			public int compare(RequestMappingInfo info1, RequestMappingInfo info2) {

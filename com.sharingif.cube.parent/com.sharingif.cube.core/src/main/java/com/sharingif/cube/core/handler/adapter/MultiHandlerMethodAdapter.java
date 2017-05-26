@@ -15,17 +15,20 @@ import java.util.List;
  * @version v1.0
  * @since v1.0
  */
-public class MultiHandlerMethodAdapter<T> implements HandlerAdapter<T> {
+public class MultiHandlerMethodAdapter implements HandlerAdapter<Object,Object> {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private List<HandlerAdapter<T>> handlerAdapters;
+    @SuppressWarnings("rawtypes")
+	private List<HandlerAdapter> handlerAdapters;
 
-    public List<HandlerAdapter<T>> getHandlerAdapters() {
+    @SuppressWarnings("rawtypes")
+	public List<HandlerAdapter> getHandlerAdapters() {
         return handlerAdapters;
     }
 
-    public void setHandlerAdapters(List<HandlerAdapter<T>> handlerAdapters) {
+    @SuppressWarnings("rawtypes")
+	public void setHandlerAdapters(List<HandlerAdapter> handlerAdapters) {
         this.handlerAdapters = handlerAdapters;
     }
 
@@ -34,10 +37,11 @@ public class MultiHandlerMethodAdapter<T> implements HandlerAdapter<T> {
         return true;
     }
 
-    @Override
-    public Object handle(RequestInfo<?> request, T handler) throws CubeException {
+    @SuppressWarnings("unchecked")
+	@Override
+    public Object handle(RequestInfo<Object> request, Object handler) throws CubeException {
 
-        for (HandlerAdapter<T> ha : getHandlerAdapters()) {
+        for (HandlerAdapter<Object,Object> ha : getHandlerAdapters()) {
             if (logger.isTraceEnabled()) {
                 logger.trace("Testing handler adapter [" + ha + "]");
             }

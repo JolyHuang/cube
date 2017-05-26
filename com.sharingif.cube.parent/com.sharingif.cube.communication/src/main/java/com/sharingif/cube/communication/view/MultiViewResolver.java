@@ -16,24 +16,28 @@ import java.util.List;
  * @version v1.0
  * @since v1.0
  */
-public class MultiViewResolver<T> implements ViewResolver<T> {
+public class MultiViewResolver implements ViewResolver<Object> {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private List<ViewResolver<T>> viewResolvers;
+    @SuppressWarnings("rawtypes")
+	private List<ViewResolver> viewResolvers;
 
-    public List<ViewResolver<T>> getViewResolvers() {
+    @SuppressWarnings("rawtypes")
+	public List<ViewResolver> getViewResolvers() {
         return viewResolvers;
     }
 
-    public void setViewResolvers(List<ViewResolver<T>> viewResolvers) {
+    @SuppressWarnings("rawtypes")
+	public void setViewResolvers(List<ViewResolver> viewResolvers) {
         this.viewResolvers = viewResolvers;
     }
 
-    @Override
-    public View<T> resolveView(RequestInfo<T> requestInfo, Object returnValue, ExceptionContent exceptionContent) {
-        for(ViewResolver<T> viewResolver : getViewResolvers()) {
-            View<T> view = viewResolver.resolveView(requestInfo, returnValue, exceptionContent);
+    @SuppressWarnings("unchecked")
+	@Override
+    public View<Object> resolveView(RequestInfo<Object> requestInfo, Object returnValue, ExceptionContent exceptionContent) {
+        for(ViewResolver<Object> viewResolver : getViewResolvers()) {
+            View<Object> view = viewResolver.resolveView(requestInfo, returnValue, exceptionContent);
             if(view != null){
                 return view;
             }
