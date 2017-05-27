@@ -8,11 +8,7 @@ import io.vertx.core.VertxOptions;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
-import io.vertx.ext.web.handler.StaticHandler;
-import io.vertx.ext.web.templ.TemplateEngine;
-import io.vertx.ext.web.templ.ThymeleafTemplateEngine;
 import org.springframework.beans.factory.InitializingBean;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 /**
  * Vert.x服务 2016年12月7日 下午8:45:29
@@ -28,19 +24,14 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 	private String contextPath;
 	private String staticPath;
 	private DispatcherHandler<ExtendedRoutingContext> dispatcherHandler;
-	private TemplateEngine templateEngine;
-	
+
 	private VertxOptions vertxOptions;
 	
 	public VertXServer() {
-		staticPath = "static";
-		templateEngine = ThymeleafTemplateEngine.create();
-		((ThymeleafTemplateEngine)templateEngine).getThymeleafTemplateEngine().setTemplateResolver(new ClassLoaderTemplateResolver());
-		
+
 		vertxOptions = new VertxOptions();
 		vertxOptions.setWorkerPoolSize(200);
 
-		host = "localhost";
 	}
 	
 	public String getHost() {
@@ -73,12 +64,6 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 	public void setDispatcherHandler(DispatcherHandler<ExtendedRoutingContext> dispatcherHandler) {
 		this.dispatcherHandler = dispatcherHandler;
 	}
-	public TemplateEngine getTemplateEngine() {
-		return templateEngine;
-	}
-	public void setTemplateEngine(TemplateEngine templateEngine) {
-		this.templateEngine = templateEngine;
-	}
 	public VertxOptions getVertxOptions() {
 		return vertxOptions;
 	}
@@ -95,8 +80,6 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 		
 		String basePath = new StringBuilder("/").append(getContextPath()).toString();
 
-		staticRouter(router, basePath);
-
 		router.post().handler(BodyHandler.create());
 		router.put().handler(BodyHandler.create());
 		String allPath = new StringBuilder(basePath).append("/*").toString();
@@ -111,15 +94,6 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 		server.requestHandler(router::accept).listen(getPort(),getHost());
 	}
 	
-	protected void staticRouter(Router router, String basePath) {
-		String path = new StringBuilder(basePath).append("/").append(getStaticPath()).append("/*").toString();
-
-		StaticHandler staticHandler = StaticHandler.create();
-		staticHandler.setWebRoot(getStaticPath());
-
-		router.route(path).blockingHandler(staticHandler,false);
-	}
-
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		final Vertx vertx = Vertx.vertx(getVertxOptions());
