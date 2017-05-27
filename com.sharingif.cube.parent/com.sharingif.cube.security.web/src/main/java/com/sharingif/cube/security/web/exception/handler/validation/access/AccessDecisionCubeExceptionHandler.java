@@ -17,15 +17,6 @@ import com.sharingif.cube.web.exception.handler.validation.ValidationCubeExcepti
  */
 public class AccessDecisionCubeExceptionHandler extends ValidationCubeExceptionHandler {
 
-	private String defaultErrorView;
-	
-	public String getDefaultErrorView() {
-		return defaultErrorView;
-	}
-	public void setDefaultErrorView(String defaultErrorView) {
-		this.defaultErrorView = defaultErrorView;
-	}
-	
 	@Override
 	public boolean supports(Exception exception) {
 		return exception instanceof AccessDecisionCubeException;
@@ -37,7 +28,7 @@ public class AccessDecisionCubeExceptionHandler extends ValidationCubeExceptionH
 			ICubeException cubeException) {
 
 		ExceptionContent out = new ExceptionContent();
-		out.setViewName(defaultErrorView);
+		out.setViewName(getDefaultErrorView());
 		
 		return out;
 	}

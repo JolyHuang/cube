@@ -6,7 +6,6 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
 import io.vertx.core.http.HttpServer;
-import io.vertx.core.http.HttpServerRequest;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.StaticHandler;
@@ -96,6 +95,8 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 		
 		String basePath = new StringBuilder("/").append(getContextPath()).toString();
 
+		staticRouter(router, basePath);
+
 		router.post().handler(BodyHandler.create());
 		router.put().handler(BodyHandler.create());
 		String allPath = new StringBuilder(basePath).append("/*").toString();
@@ -112,31 +113,13 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 	
 	protected void staticRouter(Router router, String basePath) {
 		String path = new StringBuilder(basePath).append("/").append(getStaticPath()).append("/*").toString();
-		
+
 		StaticHandler staticHandler = StaticHandler.create();
 		staticHandler.setWebRoot(getStaticPath());
-		
+
 		router.route(path).blockingHandler(staticHandler,false);
 	}
-	
-	protected void webViewRouter(Router router, String basePath) {
-		String webViewPath = new StringBuilder(basePath).append(".*\\.html").toString();
-		
-		router.routeWithRegex(webViewPath).blockingHandler(routingContext -> {
-			HttpServerRequest httpServerRequest = routingContext.request();
-			String templatePath = httpServerRequest.path().replace(new StringBuilder("/").append(getContextPath()).toString(), "");
-			
-			templateEngine.render(routingContext, templatePath, res -> {
-				if (res.succeeded()) {
-					routingContext.response().end(res.result());
-				} else {
-					routingContext.fail(res.cause());
-		        }
-			});
-		},false);
-		
-	}
-	
+
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		final Vertx vertx = Vertx.vertx(getVertxOptions());
