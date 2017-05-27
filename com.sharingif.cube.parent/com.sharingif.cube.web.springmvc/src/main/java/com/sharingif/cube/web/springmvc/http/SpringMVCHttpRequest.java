@@ -1,12 +1,11 @@
 package com.sharingif.cube.web.springmvc.http;
 
-import java.util.Enumeration;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import com.sharingif.cube.communication.http.HttpRequest;
 import com.sharingif.cube.communication.http.HttpSession;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
+import java.util.Map;
 
 /**
  * SpringMVCHttpRequest
@@ -93,17 +92,18 @@ public class SpringMVCHttpRequest implements HttpRequest {
 	@Override
 	public HttpSession getSession(boolean create) {
 		if(httpSession == null) {
-			httpSession = new SpringMVCHttpSession(getRequest().getSession(create));
+			javax.servlet.http.HttpSession httpServletSession = getRequest().getSession(create);
+			if(httpServletSession == null) {
+				return null;
+			}
+			httpSession = new SpringMVCHttpSession(httpServletSession);
 		}
 		return httpSession;
 	}
 
 	@Override
 	public HttpSession getSession() {
-		if(httpSession == null) {
-			httpSession = new SpringMVCHttpSession(getRequest().getSession());
-		}
-		return httpSession;
+		return getSession(false);
 	}
 
 	@Override
