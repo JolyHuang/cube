@@ -43,6 +43,10 @@ public class DataBaseSequenceGenerator extends AbstractSequenceGenerator<String>
         this.length = length;
         this.maxId = ((long)Math.pow(10, this.length));
 
+        this.selectSql = selectSql;
+        this.updateSql = updateSql;
+        this.dataSource = dataSource;
+
         this.getNextIdFromDb();
     }
 
