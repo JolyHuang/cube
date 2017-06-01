@@ -1,7 +1,7 @@
 package com.sharingif.cube.communication.transport;
 
 import com.sharingif.cube.communication.exception.BusinessCommunicationException;
-import com.sharingif.cube.communication.transport.transform.MethodParameterArgument;
+import com.sharingif.cube.core.transport.transform.MethodParameterArgument;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.handler.HandlerMethodContent;

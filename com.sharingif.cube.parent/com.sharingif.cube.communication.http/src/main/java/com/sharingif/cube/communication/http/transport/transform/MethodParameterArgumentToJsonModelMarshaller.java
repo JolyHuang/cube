@@ -21,7 +21,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharingif.cube.communication.JsonModel;
-import com.sharingif.cube.communication.transport.transform.MethodParameterArgument;
+import com.sharingif.cube.core.transport.transform.MethodParameterArgument;
 import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.exception.CubeRuntimeException;

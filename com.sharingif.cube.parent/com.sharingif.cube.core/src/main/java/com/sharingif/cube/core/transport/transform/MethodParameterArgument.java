@@ -1,4 +1,4 @@
-package com.sharingif.cube.communication.transport.transform;
+package com.sharingif.cube.core.transport.transform;
 
 import org.springframework.core.MethodParameter;
 
