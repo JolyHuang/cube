@@ -92,12 +92,12 @@ public class DateUtils {
 	}
 
 	/**
-	 * 当前时间添加指定分钟
+	 * 时间添加指定分钟
 	 * @param date : 日期
 	 * @param amount : 分钟
 	 * @return
 	 */
-	public static Date addCurrentDateMinute(Date date, int amount) {
+	public static Date addDateMinute(Date date, int amount) {
 		return add(date, Calendar.MINUTE, amount);
 	}
 
