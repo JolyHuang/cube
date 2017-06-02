@@ -100,14 +100,4 @@ public class DateUtils {
 		return add(new Date(), Calendar.MINUTE, amount);
 	}
 
-	/**
-	 * 比较日期A是否大于日期B
-	 * @param a
-	 * @param b
-	 * @return
-	 */
-	public static boolean greaterThan(Date a, Date b) {
-		return a.compareTo(b)>-1;
-	}
-
 }
