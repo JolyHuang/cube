@@ -42,6 +42,7 @@ public class MockMappingJackson2JsonView extends MappingJackson2JsonView {
 
     @Override
     public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        response.setContentType("application/json");
         String lookupPath = urlPathHelper.getLookupPathForRequest(request);
         String value = (String) properties.get(lookupPath);
         response.getOutputStream().write(value.getBytes(CubeConfigure.DEFAULT_ENCODING));
