@@ -33,7 +33,12 @@ public class BigDecimalUtil {
 	public static boolean isGreaterThanZero(BigDecimal value){
 		return isGreaterThan(value, BigDecimal.ZERO);
 	}
-	
+
+	/**
+	 * 判断是否等于空或零
+	 * @param value : 值
+	 * @return
+	 */
 	public static boolean isNullOrZero(BigDecimal value){
 		return (value == null || value.compareTo(BigDecimal.ZERO)==0);
 	}

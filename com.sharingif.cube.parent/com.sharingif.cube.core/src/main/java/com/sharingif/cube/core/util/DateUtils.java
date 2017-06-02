@@ -2,6 +2,7 @@ package com.sharingif.cube.core.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -73,6 +74,40 @@ public class DateUtils {
 	public static String getDate(String date,String fromFormat,String toFormat) throws ParseException{
 		Date fromDate=getDate(date, fromFormat);
 		return new SimpleDateFormat(toFormat).format(fromDate);
+	}
+
+	/**
+	 * 添加或减去指定的时间给定日历字段
+	 * @param date : 日期
+	 * @param field :
+	 * @param amount :
+	 * @return
+	 */
+	public static Date add(Date date, int field, int amount) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(field, amount);
+
+		return calendar.getTime();
+	}
+
+	/**
+	 * 当前时间添加指定分钟
+	 * @param amount : 分钟
+	 * @return
+	 */
+	public static Date addCurrentDateMinute(int amount) {
+		return add(new Date(), Calendar.MINUTE, amount);
+	}
+
+	/**
+	 * 比较日期A是否大于日期B
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public static boolean greaterThan(Date a, Date b) {
+		return a.compareTo(b)>-1;
 	}
 
 }
