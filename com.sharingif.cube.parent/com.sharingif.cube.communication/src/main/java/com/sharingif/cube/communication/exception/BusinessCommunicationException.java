@@ -15,4 +15,8 @@ public class BusinessCommunicationException extends CommunicationException {
 		super(message);
 	}
 
+	public BusinessCommunicationException(String message, Object[] args){
+		super(message,args);
+	}
+
 }
