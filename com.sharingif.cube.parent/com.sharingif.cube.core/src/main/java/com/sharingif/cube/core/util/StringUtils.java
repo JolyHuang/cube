@@ -14,6 +14,15 @@ package com.sharingif.cube.core.util;
  *    
  */
 public class StringUtils extends org.springframework.util.StringUtils {
+
+    /**
+     * 是否为空，null、""、包含空格的""都为空
+     * @param str : 字符串
+     * @return
+     */
+    public static boolean isTrimEmpty(String str) {
+        return isEmpty(str) || "".equals(str.trim());
+    }
 	
 	
 }
