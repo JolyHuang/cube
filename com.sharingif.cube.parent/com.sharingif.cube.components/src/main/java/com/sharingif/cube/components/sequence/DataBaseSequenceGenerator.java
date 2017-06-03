@@ -28,18 +28,16 @@ public class DataBaseSequenceGenerator extends AbstractSequenceGenerator<String>
     private long startId;
     private int step;
     private String type;
-    private String prefix;
     private int length;
 
     private String selectSql;
     private String updateSql;
     private DataSource dataSource;
 
-    public DataBaseSequenceGenerator(long startId,int step,String type,String prefix,int length,String selectSql,String updateSql,DataSource dataSource) {
+    public DataBaseSequenceGenerator(long startId,int step,String type,int length,String selectSql,String updateSql,DataSource dataSource) {
         this.startId = startId;
         this.step = step;
         this.type = type;
-        this.prefix = prefix;
         this.length = length;
         this.maxId = ((long)Math.pow(10, this.length));
 
@@ -61,8 +59,7 @@ public class DataBaseSequenceGenerator extends AbstractSequenceGenerator<String>
         String str = Long.toString(currentId);
 
         StringBuffer strbuf = new StringBuffer();
-        strbuf.append(prefix);
-        for (int i = 0; i < length - (str.length()+prefix.length()); i++) {
+        for (int i = 0; i < length - str.length(); i++) {
             strbuf.append("0");
         }
         strbuf.append(str);
