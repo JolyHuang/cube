@@ -1,5 +1,6 @@
 package com.sharingif.cube.web.springmvc.servlet.view.json;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharingif.cube.communication.JsonModel;
 import com.sharingif.cube.core.config.CubeConfigure;
@@ -7,11 +8,13 @@ import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.UnknownCubeException;
 import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -98,7 +101,14 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 				resultMap.put(getExceptionMessageName(), exception.getMessage());
 
 				if(value instanceof BindValidationCubeException) {
-					resultMap.put(getExceptionLocalizedMessageName(), ((BindValidationCubeException)exception).getLocaleFieldErrors());
+					List<FieldError> localeFieldErrors = ((BindValidationCubeException)exception).getLocaleFieldErrors();
+					String localizedMessage = null;
+					try {
+						localizedMessage = getObjectMapper().writeValueAsString(localeFieldErrors);
+					} catch (JsonProcessingException e) {
+						this.logger.error("format localizedMessage data error", e);
+					}
+					resultMap.put(getExceptionLocalizedMessageName(), localizedMessage);
 				} else {
 					resultMap.put(getExceptionLocalizedMessageName(), exception.getLocalizedMessage());
 				}
