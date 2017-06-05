@@ -1,6 +1,5 @@
 package com.sharingif.cube.web.springmvc.servlet.view.json;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharingif.cube.communication.JsonModel;
 import com.sharingif.cube.core.config.CubeConfigure;
@@ -102,16 +101,10 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 
 				if(value instanceof BindValidationCubeException) {
 					List<FieldError> localeFieldErrors = ((BindValidationCubeException)exception).getLocaleFieldErrors();
-					String localizedMessage = null;
-					try {
-						localizedMessage = getObjectMapper().writeValueAsString(localeFieldErrors);
-					} catch (JsonProcessingException e) {
-						this.logger.error("format localizedMessage data error", e);
-					}
-					resultMap.put(getExceptionLocalizedMessageName(), localizedMessage);
-				} else {
-					resultMap.put(getExceptionLocalizedMessageName(), exception.getLocalizedMessage());
+
+					resultMap.put("_fieldErrors", localeFieldErrors);
 				}
+				resultMap.put(getExceptionLocalizedMessageName(), exception.getLocalizedMessage());
 			} else {
 				
 				if(!(value instanceof BindingResult)) {
