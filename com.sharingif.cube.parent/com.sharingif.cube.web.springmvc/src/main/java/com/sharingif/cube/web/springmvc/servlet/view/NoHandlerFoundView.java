@@ -20,11 +20,12 @@ public class NoHandlerFoundView implements View {
 
     @Override
     public String getContentType() {
-        return MediaType.TEXT_HTML_VALUE;
+        return MediaType.ALL_VALUE;
     }
 
     @Override
     public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setStatus(HttpStatus.NOT_FOUND.value());
     }
+
 }
