@@ -1,20 +1,19 @@
 package com.sharingif.cube.web.springmvc.servlet.view.json;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharingif.cube.communication.JsonModel;
 import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.UnknownCubeException;
+import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TimeZone;
 
 /**   
  *  
@@ -90,13 +89,19 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 			if(value instanceof Exception){
 				tranStatusFlag=false;
 				
-				if (!(value instanceof ICubeException))
+				if (!(value instanceof ICubeException)) {
 					value = new UnknownCubeException((Exception)value);
-				
+				}
+
 				ICubeException exception = (ICubeException)value;
 				
 				resultMap.put(getExceptionMessageName(), exception.getMessage());
-				resultMap.put(getExceptionLocalizedMessageName(), exception.getLocalizedMessage());
+
+				if(value instanceof BindValidationCubeException) {
+					resultMap.put(getExceptionLocalizedMessageName(), ((BindValidationCubeException)exception).getLocaleFieldErrors());
+				} else {
+					resultMap.put(getExceptionLocalizedMessageName(), exception.getLocalizedMessage());
+				}
 			} else {
 				
 				if(!(value instanceof BindingResult)) {
