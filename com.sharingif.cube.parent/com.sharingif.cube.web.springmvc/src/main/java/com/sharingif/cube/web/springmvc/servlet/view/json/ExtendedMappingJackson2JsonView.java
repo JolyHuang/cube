@@ -9,7 +9,6 @@ import com.sharingif.cube.core.exception.handler.ExceptionMessageConversion;
 import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -116,9 +115,7 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 
 				String message = exception.getMessage();
 				if(getExceptionMessageConversion() != null) {
-					try {
-						message = getExceptionMessageConversion().convert(message, RequestContextUtils.getLocale(request));
-					}catch (Exception e) {}
+					message = getExceptionMessageConversion().convert(message);
 				}
 				resultMap.put(getExceptionMessageName(), message);
 

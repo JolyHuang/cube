@@ -1,12 +1,12 @@
 package com.sharingif.cube.core.config;
 
-import java.io.InputStream;
-import java.util.Properties;
-
+import com.sharingif.cube.core.exception.CubeRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sharingif.cube.core.exception.CubeRuntimeException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 /**
  * 加载cube系统文件
@@ -24,13 +24,22 @@ public final class CubeConfigure {
 	
 	static{
 		Properties properties = null;
+		InputStream in = null;
 		try {
-			InputStream in = CubeConfigure.class.getClassLoader().getResourceAsStream("config/app/CubeConfigure.properties");
+			in = CubeConfigure.class.getClassLoader().getResourceAsStream("config/app/CubeConfigure.properties");
 			properties = new Properties();
 			properties.load(in);
 		} catch (Exception e) {
 			logger.error("config.app.CubeConfigure file not found");
 			throw new CubeRuntimeException(e);
+		} finally {
+			if(in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					logger.error("close InputStream error");
+				}
+			}
 		}
 		
 		String defaultEncoding = null;
