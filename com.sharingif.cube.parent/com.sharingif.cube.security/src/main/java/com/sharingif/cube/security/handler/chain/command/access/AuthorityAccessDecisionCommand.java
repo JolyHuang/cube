@@ -43,7 +43,7 @@ public class AuthorityAccessDecisionCommand extends AbstractHandlerMethodCommand
 	@Override
 	public void execute(HandlerMethodContent content) throws CubeException {
 		ICoreUser coreUser = getCoreUser();
-		authorityAccessDecisionHandler.handleAuthorityAccessDecision((IAuthorityRepertory<?>)coreUser, StringUtils.replace(getAuthorityCode(content), replaceContent, ""));
+		authorityAccessDecisionHandler.handleAuthorityAccessDecision((IAuthorityRepertory<?>)coreUser, getAuthorityCode(content));
 	}
 	
 	protected ICoreUser getCoreUser() {
@@ -51,7 +51,14 @@ public class AuthorityAccessDecisionCommand extends AbstractHandlerMethodCommand
 	}
 	
 	protected String getAuthorityCode(HandlerMethodContent content) {
-		return (new StringBuilder().append(content.getObj().getClass().getName()).append(".").append(content.getMethod().getName())).toString();
+
+		String authorityCode = new StringBuilder().append(content.getObj().getClass().getName()).append(".").append(content.getMethod().getName()).toString();
+
+		if(getReplaceContent() == null) {
+			return authorityCode;
+		}
+
+		return StringUtils.replace(authorityCode, replaceContent, "");
 	}
 	
 }
