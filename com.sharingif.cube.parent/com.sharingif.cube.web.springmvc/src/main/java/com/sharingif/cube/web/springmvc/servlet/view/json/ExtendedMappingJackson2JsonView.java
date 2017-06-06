@@ -5,9 +5,11 @@ import com.sharingif.cube.communication.JsonModel;
 import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.UnknownCubeException;
+import com.sharingif.cube.core.exception.handler.ExceptionMessageConversion;
 import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,8 +33,11 @@ import java.util.TimeZone;
 public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 	private String exceptionMessageName = JsonModel.EXCEPTION_MESSAGE;
 	private String exceptionLocalizedMessageName = JsonModel.EXCEPTION_LOCALIZED_MESSAGE;
+	private String fieldErrorsName = JsonModel.FIELD_ERRORS;
 	private String tranStatusName = JsonModel.TRAN_STATUS;
 	private String dataName = JsonModel.DATA;
+
+	private ExceptionMessageConversion exceptionMessageConversion;
 
 	public ExtendedMappingJackson2JsonView(){
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -59,6 +64,12 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 			String exceptionLocalizedMessageName) {
 		this.exceptionLocalizedMessageName = exceptionLocalizedMessageName;
 	}
+	public String getFieldErrorsName() {
+		return fieldErrorsName;
+	}
+	public void setFieldErrorsName(String fieldErrorsName) {
+		this.fieldErrorsName = fieldErrorsName;
+	}
 	public String getTranStatusName() {
 		return tranStatusName;
 	}
@@ -71,7 +82,13 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 	public void setDataName(String dataName) {
 		this.dataName = dataName;
 	}
-	
+	public ExceptionMessageConversion getExceptionMessageConversion() {
+		return exceptionMessageConversion;
+	}
+	public void setExceptionMessageConversion(ExceptionMessageConversion exceptionMessageConversion) {
+		this.exceptionMessageConversion = exceptionMessageConversion;
+	}
+
 	@Override
 	protected void renderMergedOutputModel(Map<String, Object> model,HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Map<String, Object> resultMap = renderMergedOutputModelException(model, request, response);
@@ -96,13 +113,19 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 				}
 
 				ICubeException exception = (ICubeException)value;
-				
-				resultMap.put(getExceptionMessageName(), exception.getMessage());
+
+				String message = exception.getMessage();
+				if(getExceptionMessageConversion() != null) {
+					try {
+						message = getExceptionMessageConversion().convert(message, RequestContextUtils.getLocale(request));
+					}catch (Exception e) {}
+				}
+				resultMap.put(getExceptionMessageName(), message);
 
 				if(value instanceof BindValidationCubeException) {
 					List<FieldError> localeFieldErrors = ((BindValidationCubeException)exception).getLocaleFieldErrors();
 
-					resultMap.put("_fieldErrors", localeFieldErrors);
+					resultMap.put(getFieldErrorsName(), localeFieldErrors);
 				}
 				resultMap.put(getExceptionLocalizedMessageName(), exception.getLocalizedMessage());
 			} else {

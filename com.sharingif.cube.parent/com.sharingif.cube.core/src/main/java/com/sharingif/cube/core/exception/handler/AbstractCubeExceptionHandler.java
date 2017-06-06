@@ -41,7 +41,7 @@ public abstract class AbstractCubeExceptionHandler<RI, H extends Object> extends
 						continue;
 					}
 					try {
-						args[i] = super.getApplicationContext().getMessage((String)messageKey, null, locale);
+						args[i] = this.getApplicationContext().getMessage((String)messageKey, null, locale);
 					} catch (Exception e) {
 						this.logger.error("ICubeExceptionResolver error,message args key {} is not find in the locale source file", messageKey);
 					}

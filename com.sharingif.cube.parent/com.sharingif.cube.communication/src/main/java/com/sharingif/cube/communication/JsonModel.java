@@ -14,6 +14,7 @@ public class JsonModel<T> {
 	public static final String TRAN_STATUS = "_tranStatus";
 	public static final String EXCEPTION_MESSAGE = "_exceptionMessage";
 	public static final String EXCEPTION_LOCALIZED_MESSAGE = "_exceptionLocalizedMessage";
+	public static final String FIELD_ERRORS = "_fieldErrors";
 	public static final String DATA = "_data";
 	
 	private Boolean _tranStatus;
