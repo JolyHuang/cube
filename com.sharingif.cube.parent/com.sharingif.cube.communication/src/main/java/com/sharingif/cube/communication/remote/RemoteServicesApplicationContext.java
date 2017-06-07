@@ -4,11 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.aspectj.lang.annotation.After;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
@@ -26,15 +24,13 @@ import com.sharingif.cube.core.handler.bind.support.DefaultDataBinderFactory;
  * @version v1.0
  * @since v1.0
  */
-public class RemoteServicesApplicationContext implements BeanDefinitionRegistryPostProcessor, InitializingBean {
+public class RemoteServicesApplicationContext implements BeanDefinitionRegistryPostProcessor {
 	
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private BindingInitializer bindingInitializer;
 	private List<RemoteServices> remoteServices;
 	private Map<String, Object> remoteServiceMap = new HashMap<String,Object>(128);
-
-	private BeanDefinitionRegistry registry;
 
 	
 	public BindingInitializer getBindingInitializer() {
@@ -78,13 +74,6 @@ public class RemoteServicesApplicationContext implements BeanDefinitionRegistryP
 	}
 	@Override
 	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-		this.registry = registry;
-
-		// 这里不能直接调用init()初始化，会导致配置文件没有加载，@Value注解失效
-	}
-
-	@Override
-	public void afterPropertiesSet() throws Exception {
 		try {
 			init();
 		} catch (ClassNotFoundException e) {
@@ -98,7 +87,8 @@ public class RemoteServicesApplicationContext implements BeanDefinitionRegistryP
 			genericBeanDefinition.setBeanClass(RemoteServiceFactoryBean.class);
 			genericBeanDefinition.getConstructorArgumentValues().addGenericArgumentValue(proxyObject);
 			genericBeanDefinition.setLazyInit(true);
-			this.registry.registerBeanDefinition(beanName, genericBeanDefinition);
+			registry.registerBeanDefinition(beanName, genericBeanDefinition);
 		}
 	}
+
 }
