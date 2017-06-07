@@ -55,7 +55,6 @@
 
 		<module>com.sharingif.cube.web.vert.x</module>
 		<module>com.sharingif.cube.web.springmvc</module>
-        <module>com.sharingif.cube.spring.boot.components</module>
 
     </modules>
 
