@@ -150,8 +150,6 @@ public abstract class AbstractDispatcherHandler<I> implements DispatcherHandler<
 				null,
 				null,
 				null,
-				null,
-				null,
 				new RequestInfo<I>(null,null,null,null,request));
 	}
 	

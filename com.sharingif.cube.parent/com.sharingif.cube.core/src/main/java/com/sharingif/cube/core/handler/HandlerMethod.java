@@ -1,8 +1,7 @@
 package com.sharingif.cube.core.handler;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-
+import com.sharingif.cube.core.handler.bind.annotation.Setting;
+import com.sharingif.cube.core.handler.bind.annotation.Settings;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.BeanFactory;
@@ -11,6 +10,11 @@ import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Encapsulates information about a handler method consisting of a
@@ -43,6 +47,8 @@ public class HandlerMethod {
 
 	private final MethodParameter[] parameters;
 
+	private final Map<String,String> settings;
+
 
 	/**
 	 * Create an instance from a bean instance and a method.
@@ -56,6 +62,8 @@ public class HandlerMethod {
 		this.method = method;
 		this.bridgedMethod = BridgeMethodResolver.findBridgedMethod(method);
 		this.parameters = initMethodParameters();
+		this.settings = initSettings(method);
+
 	}
 
 	/**
@@ -71,6 +79,7 @@ public class HandlerMethod {
 		this.method = bean.getClass().getMethod(methodName, parameterTypes);
 		this.bridgedMethod = BridgeMethodResolver.findBridgedMethod(this.method);
 		this.parameters = initMethodParameters();
+		this.settings = initSettings(method);
 	}
 
 	/**
@@ -88,6 +97,7 @@ public class HandlerMethod {
 		this.method = method;
 		this.bridgedMethod = BridgeMethodResolver.findBridgedMethod(method);
 		this.parameters = initMethodParameters();
+		this.settings = initSettings(method);
 	}
 
 	/**
@@ -101,6 +111,7 @@ public class HandlerMethod {
 		this.method = handlerMethod.method;
 		this.bridgedMethod = handlerMethod.bridgedMethod;
 		this.parameters = handlerMethod.parameters;
+		this.settings = initSettings(method);
 	}
 
 	/**
@@ -115,8 +126,20 @@ public class HandlerMethod {
 		this.method = handlerMethod.method;
 		this.bridgedMethod = handlerMethod.bridgedMethod;
 		this.parameters = handlerMethod.parameters;
+		this.settings = initSettings(method);
 	}
 
+	protected Map<String,String> initSettings(Method method) {
+		Settings settingsAnnotation = method.getAnnotation(Settings.class);
+		if(null == settingsAnnotation){
+			return null;
+		}
+		Map<String,String> settings = new HashMap<String,String>(settingsAnnotation.settings().length);
+		for(Setting s : settingsAnnotation.settings()) {
+			settings.put(s.name(),s.value());
+		}
+		return settings;
+	}
 
 	private MethodParameter[] initMethodParameters() {
 		int count = this.bridgedMethod.getParameterTypes().length;
@@ -272,4 +295,7 @@ public class HandlerMethod {
 		}
 	}
 
+	public Map<String, String> getSettings() {
+		return settings;
+	}
 }

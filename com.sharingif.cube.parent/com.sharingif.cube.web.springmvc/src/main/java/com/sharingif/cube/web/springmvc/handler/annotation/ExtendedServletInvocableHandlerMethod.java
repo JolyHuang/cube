@@ -1,15 +1,10 @@
 package com.sharingif.cube.web.springmvc.handler.annotation;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.sharingif.cube.core.handler.bind.annotation.Setting;
-import com.sharingif.cube.core.handler.bind.annotation.Settings;
+import com.sharingif.cube.core.exception.CubeException;
+import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
+import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.util.CubeExceptionUtil;
+import com.sharingif.cube.web.springmvc.handler.SpringMVCHandlerMethodContent;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
@@ -23,14 +18,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHan
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.util.UrlPathHelper;
 
-import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
-import com.sharingif.cube.core.request.RequestInfo;
-import com.sharingif.cube.core.util.CubeExceptionUtil;
-import com.sharingif.cube.web.springmvc.handler.SpringMVCHandlerMethodContent;
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Locale;
 
 /**
- * TODO
+ * ExtendedServletInvocableHandlerMethod
  * 2017年4月30日 下午3:39:04
  * @author Joly
  * @version v1.0
@@ -38,20 +32,10 @@ import com.sharingif.cube.web.springmvc.handler.SpringMVCHandlerMethodContent;
  */
 public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandlerMethod {
 
-	private Map<String,String> settings;
-	
+	private com.sharingif.cube.core.handler.HandlerMethod cubeHandlerMethod;
+
 	private UrlPathHelper urlPathHelper = new UrlPathHelper();
 
-	public ExtendedServletInvocableHandlerMethod(HandlerMethod handlerMethod) {
-		super(handlerMethod);
-		setSettings(handlerMethod.getMethod());
-	}
-
-	public ExtendedServletInvocableHandlerMethod(Object handler, Method method) {
-		super(handler, method);
-		setSettings(method);
-	}
-	
 	private WebDataBinderFactory dataBinderFactory;
 
 	private HandlerMethodArgumentResolverComposite argumentResolvers = new HandlerMethodArgumentResolverComposite();
@@ -60,15 +44,14 @@ public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandl
 	
 	private HandlerMethodChain<SpringMVCHandlerMethodContent> handlerMethodChain;
 
-	protected void setSettings(Method method) {
-		Settings settingsAnnotation = method.getAnnotation(Settings.class);
-		if(null == settingsAnnotation){
-			return;
-		}
-		settings = new HashMap<String,String>(settingsAnnotation.settings().length);
-		for(Setting s : settingsAnnotation.settings()) {
-			settings.put(s.name(),s.value());
-		}
+	public ExtendedServletInvocableHandlerMethod(HandlerMethod handlerMethod) {
+		super(handlerMethod);
+		cubeHandlerMethod = new com.sharingif.cube.core.handler.HandlerMethod(null,handlerMethod.getMethod());
+	}
+
+	public ExtendedServletInvocableHandlerMethod(Object handler, Method method) {
+		super(handler, method);
+		cubeHandlerMethod = new com.sharingif.cube.core.handler.HandlerMethod(handler,method);
 	}
 
 	public WebDataBinderFactory getDataBinderFactory() {
@@ -124,11 +107,9 @@ public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandl
 		SpringMVCHandlerMethodContent handlerMethodContent = null;
 		if(handlerMethodChainIsNotEmpty) {
 			handlerMethodContent = new SpringMVCHandlerMethodContent(
-					getBean()
-					,super.getMethod()
+					this.cubeHandlerMethod
 					,args
 					,null
-					,super.getMethodParameters()
 					,RequestContextUtils.getLocale(request.getNativeRequest(HttpServletRequest.class))
 					,getRequestInfo(request.getNativeRequest(HttpServletRequest.class))
 					,request

@@ -42,9 +42,9 @@ public class AnnotationHandlerMethodChain<T extends HandlerMethodContent> extend
 	@SuppressWarnings("unchecked")
 	protected Chain<? super T> getBeforeSimpleChain(HandlerMethodContent handlerMethodContent) throws CubeException {
 		
-		Method method = handlerMethodContent.getMethod();
+		Method method = handlerMethodContent.getHandlerMethod().getMethod();
 		
-		String chainMapKey = new StringBuilder(BEFORE_SIMPLECHAIN_PREFIX).append(handlerMethodContent.getObj().getClass().getName()).append(".").append(method.getName()).toString();
+		String chainMapKey = new StringBuilder(BEFORE_SIMPLECHAIN_PREFIX).append(handlerMethodContent.getHandlerMethod().getBean().getClass().getName()).append(".").append(method.getName()).toString();
 		
 		Chain<? super T> simpleChain = cacheChainMap.get(chainMapKey);
 		
@@ -83,9 +83,9 @@ public class AnnotationHandlerMethodChain<T extends HandlerMethodContent> extend
 	@SuppressWarnings("unchecked")
 	protected Chain<? super T> getAfterSimpleChain(HandlerMethodContent handlerMethodContent) throws CubeException {
 		
-		Method method = handlerMethodContent.getMethod();
+		Method method = handlerMethodContent.getHandlerMethod().getMethod();
 		
-		String chainMapKey = new StringBuilder().append(AFTER_SIMPLECHAIN_PREFIX).append(handlerMethodContent.getObj().getClass().getName()).append(".").append(method.getName()).toString();
+		String chainMapKey = new StringBuilder().append(AFTER_SIMPLECHAIN_PREFIX).append(handlerMethodContent.getHandlerMethod().getBean().getClass().getName()).append(".").append(method.getName()).toString();
 		
 		Chain<? super T> simpleChain = cacheChainMap.get(chainMapKey);
 		

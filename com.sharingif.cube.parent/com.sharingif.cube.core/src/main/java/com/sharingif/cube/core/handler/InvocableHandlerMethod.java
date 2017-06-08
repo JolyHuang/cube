@@ -1,16 +1,5 @@
 package com.sharingif.cube.core.handler;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-
-import org.springframework.core.DefaultParameterNameDiscoverer;
-import org.springframework.core.GenericTypeResolver;
-import org.springframework.core.MethodParameter;
-import org.springframework.core.ParameterNameDiscoverer;
-import org.springframework.util.ReflectionUtils;
-import org.springframework.validation.DataBinder;
-
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.adapter.HandlerMethodArgumentResolver;
 import com.sharingif.cube.core.handler.adapter.HandlerMethodArgumentResolverComposite;
@@ -18,23 +7,18 @@ import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
 import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.core.util.CubeExceptionUtil;
+import org.springframework.core.DefaultParameterNameDiscoverer;
+import org.springframework.core.GenericTypeResolver;
+import org.springframework.core.MethodParameter;
+import org.springframework.core.ParameterNameDiscoverer;
+import org.springframework.util.ReflectionUtils;
+import org.springframework.validation.DataBinder;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
 
 
-/**
- * Provides a method for invoking the handler method for a given request after resolving its
- * method argument values through registered {@link HandlerMethodArgumentResolver}s.
- *
- * <p>Argument resolution often requires a {@link WebDataBinder} for data binding or for type
- * conversion. Use the {@link #setDataBinderFactory(WebDataBinderFactory)} property to supply
- * a binder factory to pass to argument resolvers.
- *
- * <p>Use {@link #setHandlerMethodArgumentResolvers(HandlerMethodArgumentResolverComposite)}
- * to customize the list of argument resolvers.
- *
- * @author Rossen Stoyanchev
- * @author Juergen Hoeller
- * @since 3.1
- */
 public class InvocableHandlerMethod extends HandlerMethod {
 	
 	private DataBinderFactory dataBinderFactory;
@@ -91,20 +75,6 @@ public class InvocableHandlerMethod extends HandlerMethod {
 		this.handlerMethodChain = handlerMethodChain;
 	}
 
-	/**
-	 * Invoke the method after resolving its argument values in the context of the given request.
-	 * <p>Argument values are commonly resolved through {@link HandlerMethodArgumentResolver}s.
-	 * The {@code provideArgs} parameter however may supply argument values to be used directly,
-	 * i.e. without argument resolution. Examples of provided argument values include a
-	 * {@link WebDataBinder}, a {@link SessionStatus}, or a thrown exception instance.
-	 * Provided argument values are checked before argument resolvers.
-	 * @param request the current request
-	 * @param mavContainer the ModelAndViewContainer for this request
-	 * @param providedArgs "given" arguments matched by type, not resolved
-	 * @return the raw value returned by the invoked method
-	 * @exception Exception raised if no suitable argument resolver can be found,
-	 * or if the method raised an exception
-	 */
 	public Object invokeForRequest(RequestInfo<?> requestInfo) throws CubeException {
 
 		Object[] args = getMethodArgumentValues(requestInfo);
@@ -119,7 +89,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 		boolean handlerMethodChainIsNotEmpty = (null != getHandlerMethodChain());
 		HandlerMethodContent handlerMethodContent = null;
 		if(handlerMethodChainIsNotEmpty) {
-			handlerMethodContent = new HandlerMethodContent(getBean(), super.getMethod(), args, null, super.getMethodParameters(), requestInfo.getLocale(), requestInfo);
+			handlerMethodContent = new HandlerMethodContent(this, args, null, requestInfo.getLocale(), requestInfo);
 			getHandlerMethodChain().before(handlerMethodContent);
 		}
 		

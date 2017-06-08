@@ -1,22 +1,20 @@
 package com.sharingif.cube.web.springmvc.servlet;
 
-import java.util.Locale;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.servlet.DispatcherServlet;
-import org.springframework.web.servlet.support.RequestContextUtils;
-import org.springframework.web.util.UrlPathHelper;
-
 import com.sharingif.cube.communication.http.handler.HttpHandlerMethodContent;
 import com.sharingif.cube.core.handler.HandlerMethodContent;
 import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.web.springmvc.http.SpringMVCHttpRequest;
 import com.sharingif.cube.web.springmvc.http.SpringMVCHttpResponse;
+import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.util.UrlPathHelper;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Locale;
 
 /**
  * 扩展DispatcherServlet，重写父类doService方法,添加initContextHolders、resetContextHolders方法。
@@ -85,8 +83,7 @@ public class ExtendedDispatcherServlet extends DispatcherServlet {
 				,null
 				,null
 				,null
-				,null
-				,null, getRequestInfo(request)
+				,getRequestInfo(request)
 				,new SpringMVCHttpRequest(request)
 				,new SpringMVCHttpResponse(response)
 		);

@@ -3,6 +3,7 @@ package com.sharingif.cube.communication.http.handler;
 import java.lang.reflect.Method;
 import java.util.Locale;
 
+import com.sharingif.cube.core.handler.HandlerMethod;
 import org.springframework.core.MethodParameter;
 
 import com.sharingif.cube.communication.http.HttpRequest;
@@ -20,17 +21,15 @@ import com.sharingif.cube.core.request.RequestInfo;
 public class HttpHandlerMethodContent extends HandlerMethodContent {
 
 	public HttpHandlerMethodContent(
-			Object obj
-			,Method method
+			HandlerMethod handlerMethod
 			,Object[] args
 			,Object returnValue
-			,MethodParameter[] parameters
 			,Locale locale
 			,RequestInfo<?> requestInfo
 			,HttpRequest request
 			,HttpResponse response
 			) {
-		super(obj, method, args, returnValue, parameters, locale, requestInfo);
+		super(handlerMethod,args, returnValue, locale, requestInfo);
 		
 		this.request = request;
 		this.response = response;

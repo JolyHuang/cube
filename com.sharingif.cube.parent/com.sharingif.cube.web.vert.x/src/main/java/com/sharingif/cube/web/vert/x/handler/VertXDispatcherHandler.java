@@ -7,7 +7,6 @@ import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.web.vert.x.http.VertXHttpRequest;
 import com.sharingif.cube.web.vert.x.http.VertXHttpResponse;
 import com.sharingif.cube.web.vert.x.request.ExtendedRoutingContext;
-
 import io.vertx.ext.web.RoutingContext;
 
 /**
@@ -23,8 +22,6 @@ public class VertXDispatcherHandler extends AbstractDispatcherHandler<ExtendedRo
 	protected HandlerMethodContent getHandlerMethodContent(ExtendedRoutingContext request) {
 		HttpHandlerMethodContent webHandlerMethodContent = new HttpHandlerMethodContent(
 				null
-				,null
-				,null
 				,null
 				,null
 				,null

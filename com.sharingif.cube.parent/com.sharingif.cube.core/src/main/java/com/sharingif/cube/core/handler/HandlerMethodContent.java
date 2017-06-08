@@ -14,45 +14,32 @@ public class HandlerMethodContent {
 	
 	
 	public HandlerMethodContent(
-			Object obj
-			,Method method
+			HandlerMethod handlerMethod
 			,Object[] args
 			,Object returnValue
-			,MethodParameter[] parameters
 			,Locale locale
 			,RequestInfo<?> requestInfo
 	) {
-		this.obj = obj;
-		this.method = method;
+		this.handlerMethod = handlerMethod;
 		this.args = args;
 		this.returnValue = returnValue;
-		this.parameters = parameters;
 		this.locale = locale;
 		this.requestInfo = requestInfo;
 	}
-	
-	private Object obj;
-	private Method method;
+
+	private HandlerMethod handlerMethod;
 	private Object args[];
 	private Object returnValue;
-	private MethodParameter[] parameters;
 	private Locale locale;
 	private RequestInfo<?> requestInfo;
 	
 	private String viewName;
-	
-	
-	public Object getObj() {
-		return obj;
+
+	public HandlerMethod getHandlerMethod() {
+		return handlerMethod;
 	}
-	public void setObj(Object obj) {
-		this.obj = obj;
-	}
-	public Method getMethod() {
-		return method;
-	}
-	public void setMethod(Method method) {
-		this.method = method;
+	public void setHandlerMethod(HandlerMethod handlerMethod) {
+		this.handlerMethod = handlerMethod;
 	}
 	public Object[] getArgs() {
 		return args;
@@ -65,12 +52,6 @@ public class HandlerMethodContent {
 	}
 	public void setReturnValue(Object returnValue) {
 		this.returnValue = returnValue;
-	}
-	public MethodParameter[] getParameters() {
-		return parameters;
-	}
-	public void setParameters(MethodParameter[] parameters) {
-		this.parameters = parameters;
 	}
 	public Locale getLocale() {
 		return locale;
@@ -107,7 +88,6 @@ public class HandlerMethodContent {
 	/**
 	 * 更改调用方法值
 	 * @param obj
-	 * @param content
 	 */
 	public void changeArgsValue(Object obj) {
 		for(int i = 0; i<args.length; i++){

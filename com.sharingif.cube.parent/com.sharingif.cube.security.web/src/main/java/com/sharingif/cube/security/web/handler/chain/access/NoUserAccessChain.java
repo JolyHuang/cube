@@ -56,7 +56,7 @@ public class NoUserAccessChain extends AbstractHandlerMethodChain<HttpHandlerMet
     }
 
     protected String getAuthorityCode(HandlerMethodContent content) {
-        String authorityCode = new StringBuilder().append(content.getObj().getClass().getName()).append(".").append(content.getMethod().getName()).toString();
+        String authorityCode = new StringBuilder().append(content.getHandlerMethod().getBean().getClass().getName()).append(".").append(content.getHandlerMethod().getMethod().getName()).toString();
 
         if(getReplaceContent() == null) {
             return authorityCode;

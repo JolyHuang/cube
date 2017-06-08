@@ -6,6 +6,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sharingif.cube.core.handler.HandlerMethod;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
@@ -26,18 +27,16 @@ import com.sharingif.cube.web.springmvc.http.SpringMVCHttpRequest;
 public class SpringMVCHandlerMethodContent extends HttpHandlerMethodContent {
 
 	public SpringMVCHandlerMethodContent(
-			Object obj
-			,Method method
+			HandlerMethod handlerMethod
 			,Object[] args
 			,Object returnValue
-			,MethodParameter[] parameters
 			,Locale locale
 			,RequestInfo<?> requestInfo
 			,NativeWebRequest nativeWebRequest
 			,ModelAndViewContainer mavContainer
 			,Object[] providedArgs
 			) {
-		super(obj, method, args, returnValue, parameters, locale, requestInfo, new SpringMVCHttpRequest(nativeWebRequest.getNativeRequest(HttpServletRequest.class)), new SpringMVCHttpResponse(nativeWebRequest.getNativeResponse(HttpServletResponse.class)));
+		super(handlerMethod, args, returnValue, locale, requestInfo, new SpringMVCHttpRequest(nativeWebRequest.getNativeRequest(HttpServletRequest.class)), new SpringMVCHttpResponse(nativeWebRequest.getNativeResponse(HttpServletResponse.class)));
 		
 		
 		this.nativeWebRequest = nativeWebRequest;

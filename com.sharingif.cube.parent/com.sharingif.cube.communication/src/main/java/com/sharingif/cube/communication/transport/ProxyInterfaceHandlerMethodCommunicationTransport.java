@@ -1,12 +1,12 @@
 package com.sharingif.cube.communication.transport;
 
 import com.sharingif.cube.communication.exception.BusinessCommunicationException;
-import com.sharingif.cube.core.transport.transform.MethodParameterArgument;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.handler.HandlerMethodContent;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.core.transport.exception.MarshallerException;
+import com.sharingif.cube.core.transport.transform.MethodParameterArgument;
 import com.sharingif.cube.core.util.CubeExceptionUtil;
 
 /**
@@ -27,7 +27,7 @@ public class ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> extends
 	public Object doTransport(RequestInfo<Object[]> requestInfo) throws CubeException {
 		
 		boolean handlerMethodChainIsNotEmpty = (null != getHandlerMethodChain());
-		HandlerMethodContent handlerMethodContent = new HandlerMethodContent(getBean(), getMethod(), requestInfo.getRequest(), null, getMethodParameters(), requestInfo.getLocale(), requestInfo);
+		HandlerMethodContent handlerMethodContent = new HandlerMethodContent(this, requestInfo.getRequest(), null, requestInfo.getLocale(), requestInfo);
 		
 		if(handlerMethodChainIsNotEmpty) {
 			getHandlerMethodChain().before(handlerMethodContent);
