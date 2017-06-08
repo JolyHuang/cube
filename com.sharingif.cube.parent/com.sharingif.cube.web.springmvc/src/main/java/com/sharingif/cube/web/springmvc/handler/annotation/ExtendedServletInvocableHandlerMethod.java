@@ -46,7 +46,7 @@ public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandl
 
 	public ExtendedServletInvocableHandlerMethod(HandlerMethod handlerMethod) {
 		super(handlerMethod);
-		cubeHandlerMethod = new com.sharingif.cube.core.handler.HandlerMethod(null,handlerMethod.getMethod());
+		cubeHandlerMethod = new com.sharingif.cube.core.handler.HandlerMethod(handlerMethod.getBean(),handlerMethod.getMethod());
 	}
 
 	public ExtendedServletInvocableHandlerMethod(Object handler, Method method) {
