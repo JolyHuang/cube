@@ -2,10 +2,14 @@ package com.sharingif.cube.web.springmvc.handler.annotation;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.sharingif.cube.core.handler.bind.annotation.Setting;
+import com.sharingif.cube.core.handler.bind.annotation.Settings;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
@@ -33,15 +37,19 @@ import com.sharingif.cube.web.springmvc.handler.SpringMVCHandlerMethodContent;
  * @since v1.0
  */
 public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandlerMethod {
+
+	private Map<String,String> settings;
 	
 	private UrlPathHelper urlPathHelper = new UrlPathHelper();
 
 	public ExtendedServletInvocableHandlerMethod(HandlerMethod handlerMethod) {
 		super(handlerMethod);
+		setSettings(handlerMethod.getMethod());
 	}
-	
+
 	public ExtendedServletInvocableHandlerMethod(Object handler, Method method) {
 		super(handler, method);
+		setSettings(method);
 	}
 	
 	private WebDataBinderFactory dataBinderFactory;
@@ -51,6 +59,17 @@ public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandl
 	private ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
 	
 	private HandlerMethodChain<SpringMVCHandlerMethodContent> handlerMethodChain;
+
+	protected void setSettings(Method method) {
+		Settings settingsAnnotation = method.getAnnotation(Settings.class);
+		if(null == settingsAnnotation){
+			return;
+		}
+		settings = new HashMap<String,String>(settingsAnnotation.settings().length);
+		for(Setting s : settingsAnnotation.settings()) {
+			settings.put(s.name(),s.value());
+		}
+	}
 
 	public WebDataBinderFactory getDataBinderFactory() {
 		return dataBinderFactory;
@@ -119,7 +138,7 @@ public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandl
 			getHandlerMethodChain().before(handlerMethodContent);
 		}
 		
-		Object returnValue = null;
+		Object returnValue;
 		try {
 			returnValue = doInvoke(handlerMethodContent.getArgs());
 		} catch (Exception exception) {
