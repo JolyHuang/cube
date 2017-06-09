@@ -1,17 +1,13 @@
 package com.sharingif.cube.core.handler;
 
-import java.lang.reflect.Method;
-import java.util.Locale;
-import java.util.Map;
-
-import org.springframework.core.MethodParameter;
-
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
 import com.sharingif.cube.core.request.RequestInfo;
 
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
 public class HandlerMethodContent {
-	
-	
 	
 	public HandlerMethodContent(
 			HandlerMethod handlerMethod
@@ -32,8 +28,11 @@ public class HandlerMethodContent {
 	private Object returnValue;
 	private Locale locale;
 	private RequestInfo<?> requestInfo;
-	
+
 	private String viewName;
+
+
+	private Map<String,Object> cacheDataMap = new HashMap<String,Object>();
 
 	public HandlerMethod getHandlerMethod() {
 		return handlerMethod;
@@ -115,6 +114,12 @@ public class HandlerMethodContent {
 	public String getViewName() {
 		return viewName;
 	}
-	
+
+	public void addacheData(String key, Object obj) {
+		cacheDataMap.put(key,obj);
+	}
+	public <T> T getCacheData(String key) {
+		return (T)cacheDataMap .get(key);
+	}
 
 }

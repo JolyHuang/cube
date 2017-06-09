@@ -1,7 +1,10 @@
 package com.sharingif.cube.components.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.exception.CubeRuntimeException;
+
+import java.util.TimeZone;
 
 /**
  *
@@ -16,7 +19,12 @@ import com.sharingif.cube.core.exception.CubeRuntimeException;
  */
 public class JacksonJsonService implements IJsonService {
 	
-	private ObjectMapper objectMapper = new ObjectMapper();
+	private ObjectMapper objectMapper;
+
+	public JacksonJsonService() {
+		objectMapper = new ObjectMapper();
+		objectMapper.setTimeZone(TimeZone.getTimeZone(CubeConfigure.DEFAULT_TIME_ZONE));
+	}
 	
 	public ObjectMapper getObjectMapper() {
 		return objectMapper;

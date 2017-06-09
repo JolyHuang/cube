@@ -46,16 +46,16 @@ public class ExtendedRequestMappingHandlerAdapter extends RequestMappingHandlerA
 		
 		if(null == customArgumentResolvers) {
 			customArgumentResolvers = new ArrayList<HandlerMethodArgumentResolver>();
+
+			customArgumentResolvers.add(new MediaTypeMethodProcessor(
+					true,
+					new RequestResponseBodyMethodProcessor(getMessageConverters()),
+					new ServletModelAttributeMethodProcessor(false))
+			);
+
+			this.setCustomArgumentResolvers(customArgumentResolvers);
 		}
 
-		customArgumentResolvers.add(new MediaTypeMethodProcessor(
-				true,
-				new RequestResponseBodyMethodProcessor(getMessageConverters()),
-				new ServletModelAttributeMethodProcessor(false))
-		);
-		
-		this.setCustomArgumentResolvers(customArgumentResolvers);
-		
 		super.afterPropertiesSet();
 
 		List<HandlerMethodArgumentResolver> argumentResolvers = this.getArgumentResolvers();

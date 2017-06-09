@@ -12,8 +12,8 @@ import com.sharingif.cube.core.handler.HandlerMethodContent;
  */
 public class MonitorPerformanceChain extends AbstractHandlerMethodChain<HandlerMethodContent> {
 	
-	private static final ThreadLocal<String> CONTEXT_HOLDER = new ThreadLocal<String>();
-	
+	private static final String BEGIN_CURRENT_TIME = "_beginCurrentTime";
+
 	private String name = "controller";
 	
 	public String getName() {
@@ -26,8 +26,8 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain<HandlerM
 	@Override
 	public void before(HandlerMethodContent content) throws CubeException {
 		Long beginCurrentTime = System.currentTimeMillis();
-		CONTEXT_HOLDER.set(String.valueOf(beginCurrentTime));
-		
+		content.addacheData(BEGIN_CURRENT_TIME, beginCurrentTime);
+
 		this.logger.info("{} begin===> ThdId:{}, method:{}, TrsId:{}"
 				,name
 				,Thread.currentThread().getId()
@@ -39,7 +39,7 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain<HandlerM
 
 	@Override
 	public void after(HandlerMethodContent content) throws CubeException {
-		Long beginCurrentTime = Long.valueOf(CONTEXT_HOLDER.get());
+		Long beginCurrentTime = content.getCacheData(BEGIN_CURRENT_TIME);
 		
 		Long endCurrentTime = System.currentTimeMillis();
 		
@@ -56,7 +56,7 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain<HandlerM
 	@Override
 	public void exception(HandlerMethodContent content, Exception exception) throws CubeException {
 		
-		Long beginCurrentTime = Long.valueOf(CONTEXT_HOLDER.get());
+		Long beginCurrentTime = content.getCacheData(BEGIN_CURRENT_TIME);
 		
 		Long endCurrentTime = System.currentTimeMillis();
 		
