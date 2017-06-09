@@ -240,7 +240,7 @@ public abstract class CubeMyBatisDAOImpl<T, ID extends Serializable> extends Abs
 		private static final void addObjectOperationHistory(Object obj){
 			
 			if(obj instanceof IObjectDateOperationHistory) {
-				IObjectDateOperationHistory objectDateOperationHistory = (IObjectOperationHistory)obj;
+				IObjectDateOperationHistory objectDateOperationHistory = (IObjectDateOperationHistory)obj;
 				objectDateOperationHistory.setCreateTime(new Date(System.currentTimeMillis()));
 			}
 
