@@ -14,22 +14,6 @@ import java.util.Date;
  *
  */
 
-public interface IObjectOperationHistory {
+public interface IObjectOperationHistory extends IObjectUserOperationHistory, IObjectDateOperationHistory {
 	
-	void setCreateUser(String value);
-	
-	String getCreateUser();
-	
-	void setModifyUser(String value);
-	
-	String getModifyUser();
-	
-	void setCreateTime(Date value);
-	
-	Date getCreateTime();
-	
-	void setModifyTime(Date value);
-	
-	Date getModifyTime();
-
 }

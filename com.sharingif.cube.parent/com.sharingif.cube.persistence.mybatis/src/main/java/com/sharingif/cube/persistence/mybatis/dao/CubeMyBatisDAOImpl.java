@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.sharingif.cube.components.monitor.IObjectDateOperationHistory;
+import com.sharingif.cube.components.monitor.IObjectUserOperationHistory;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -237,36 +239,43 @@ public abstract class CubeMyBatisDAOImpl<T, ID extends Serializable> extends Abs
 		
 		private static final void addObjectOperationHistory(Object obj){
 			
-			if(!(obj instanceof IObjectOperationHistory))
-				return;
-			
-			IObjectOperationHistory objectOperation = (IObjectOperationHistory)obj;
-			objectOperation.setCreateTime(new Date(System.currentTimeMillis()));
-			
-			ICoreUser coreUser = CoreUserContextHolder.getContext();
-			
-			if(null == coreUser)
-				return;
-			
-			objectOperation.setCreateUser(coreUser.getUsername());
-				
+			if(obj instanceof IObjectDateOperationHistory) {
+				IObjectDateOperationHistory objectDateOperationHistory = (IObjectOperationHistory)obj;
+				objectDateOperationHistory.setCreateTime(new Date(System.currentTimeMillis()));
+			}
+
+			if(obj instanceof IObjectUserOperationHistory) {
+				ICoreUser coreUser = CoreUserContextHolder.getContext();
+
+				if(null == coreUser)
+					return;
+
+				IObjectUserOperationHistory objectUserOperationHistory = (IObjectUserOperationHistory)obj;
+
+				objectUserOperationHistory.setCreateUser(coreUser.getUsername());
+			}
+
 		}
 		
 		private static final void updateObjectOperationHistory(Object obj){
 			
-			if(!(obj instanceof IObjectOperationHistory))
-				return;
-			
-			IObjectOperationHistory objectOperation = (IObjectOperationHistory)obj;
-			objectOperation.setModifyTime(new Date(System.currentTimeMillis()));
-			
-			ICoreUser coreUser = CoreUserContextHolder.getContext();
-			
-			if(null == coreUser)
-				return;
-			
-			objectOperation.setModifyUser(coreUser.getUsername());
-				
+			if(obj instanceof IObjectDateOperationHistory) {
+				IObjectDateOperationHistory objectDateOperationHistory = (IObjectDateOperationHistory)obj;
+				objectDateOperationHistory.setModifyTime(new Date(System.currentTimeMillis()));
+
+			}
+
+			if(obj instanceof IObjectUserOperationHistory) {
+				ICoreUser coreUser = CoreUserContextHolder.getContext();
+
+				if(null == coreUser)
+					return;
+
+				IObjectUserOperationHistory objectUserOperationHistory = (IObjectUserOperationHistory)obj;
+
+				objectUserOperationHistory.setModifyUser(coreUser.getUsername());
+			}
+
 		}
 		
 	}
