@@ -1,15 +1,16 @@
 package com.sharingif.cube.web.springmvc.servlet.view.referer;
 
-import java.util.Map;
+import com.sharingif.cube.core.config.CubeConfigure;
+import com.sharingif.cube.web.servlet.view.ViewCacheControl;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.view.InternalResourceView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.view.InternalResourceView;
-
-import com.sharingif.cube.web.servlet.view.ViewCacheControl;
+import java.net.URLDecoder;
+import java.util.Map;
 
 
 /**   
@@ -29,7 +30,18 @@ public class RefererView extends InternalResourceView{
 		super(url);
 	}
 
-	
+	@Override
+	public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String url = getUrl();
+		URLDecoder.decode(url, CubeConfigure.DEFAULT_ENCODING);
+		if(url.indexOf("./") != -1) {
+			response.setStatus(HttpStatus.NOT_FOUND.value());
+			return;
+		}
+
+		this.render(model,request,response);
+	}
+
 	@Override
 	protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		HttpServletRequest wrapper = new HttpMethodRequestWrapper(request, RequestMethod.GET.toString());
