@@ -5,7 +5,7 @@ import org.junit.Test;
 import com.sharingif.cube.security.confidentiality.encrypt.digest.MD5Encryptor;
 
 /**
- * TODO
+ * MD5EncryptorTest
  * 2016年1月30日 下午7:55:18
  * @author Joly
  * @version v1.0

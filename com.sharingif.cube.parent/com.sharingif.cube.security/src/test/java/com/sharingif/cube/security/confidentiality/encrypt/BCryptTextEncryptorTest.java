@@ -9,7 +9,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
 /**
- * TODO description
+ * BCryptTextEncryptorTest
  * 2015年8月30日 下午8:05:03
  * @author Joly
  * @version v1.0

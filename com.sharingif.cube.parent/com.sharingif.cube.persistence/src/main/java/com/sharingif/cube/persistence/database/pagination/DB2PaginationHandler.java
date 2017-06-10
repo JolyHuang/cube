@@ -26,7 +26,6 @@ public class DB2PaginationHandler implements IPaginationHandler {
 	
 	@Override
 	public String createCountSql(String sql) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -6,7 +6,7 @@ import com.sharingif.cube.security.binary.Base64Coder;
 import com.sharingif.cube.security.binary.HexCoder;
 
 /**
- * TODO
+ * AESCBCEncryptorTest
  * 2016年1月29日 下午8:49:03
  * @author Joly
  * @version v1.0

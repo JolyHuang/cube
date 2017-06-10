@@ -11,7 +11,7 @@ import java.nio.channels.SocketChannel;
 import java.nio.channels.WritableByteChannel;
 
 /**
- * TODO
+ * TestSocketChannel
  * 2016年4月17日 下午8:29:00
  * @author Joly
  * @version v1.0

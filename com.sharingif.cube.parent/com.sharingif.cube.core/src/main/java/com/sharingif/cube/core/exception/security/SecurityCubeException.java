@@ -3,7 +3,7 @@ package com.sharingif.cube.core.exception.security;
 import com.sharingif.cube.core.exception.CubeRuntimeException;
 
 /**
- * TODO description
+ * 安全类异常，可对此类异常进行跟踪，生成安全监控系统
  * 2015年8月2日 下午11:03:33
  * @author Joly
  * @version v1.0

@@ -1,7 +1,7 @@
 package org.com.sharingif.cube.communication.tcp.netty;
 
 /**
- * TODO
+ * TestNettyNioTcpClient
  * 2016年4月12日 下午9:59:02
  * @author Joly
  * @version v1.0

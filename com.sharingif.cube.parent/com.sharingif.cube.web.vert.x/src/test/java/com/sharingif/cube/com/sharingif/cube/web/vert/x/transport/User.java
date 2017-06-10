@@ -5,7 +5,7 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * TODO description
+ * User
  * 2015年7月3日 下午11:02:18
  * @author Joly
  * @version v1.0

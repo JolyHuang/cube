@@ -41,7 +41,6 @@ public class ChinaPayRefundService implements IRefundService<ChinaPayRefund> {
 	
 	@Override
 	public ChinaPayRefund convertCallBackData(Map<String, Object> refundResponseMap) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
