@@ -117,7 +117,7 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 				String message = exception.getMessage();
 				if(getExceptionMessageConversion() != null) {
 					String convertMessage = getExceptionMessageConversion().convert(message);
-					if(StringUtils.isEmpty(convertMessage)) {
+					if(!StringUtils.isEmpty(convertMessage)) {
 						message = convertMessage;
 					}
 				}
