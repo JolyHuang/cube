@@ -7,6 +7,7 @@ import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.UnknownCubeException;
 import com.sharingif.cube.core.exception.handler.ExceptionMessageConversion;
 import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
+import com.sharingif.cube.core.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -115,7 +116,10 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 
 				String message = exception.getMessage();
 				if(getExceptionMessageConversion() != null) {
-					message = getExceptionMessageConversion().convert(message);
+					String convertMessage = getExceptionMessageConversion().convert(message);
+					if(StringUtils.isEmpty(convertMessage)) {
+						message = convertMessage;
+					}
 				}
 				resultMap.put(getExceptionMessageName(), message);
 
