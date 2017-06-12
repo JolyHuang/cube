@@ -47,12 +47,7 @@ public class ExceptionMessageConversion {
     }
 
     public String convert(String message){
-
-        try {
-            return properties.getProperty(message);
-        } catch (Exception e) {}
-
-        return message;
+        return properties.getProperty(message);
     }
 
 }
