@@ -1,21 +1,20 @@
 package com.sharingif.cube.communication.remote;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
-import org.springframework.beans.factory.support.GenericBeanDefinition;
-
 import com.sharingif.cube.core.exception.CubeRuntimeException;
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
 import com.sharingif.cube.core.handler.bind.support.BindingInitializer;
 import com.sharingif.cube.core.handler.bind.support.DefaultDataBinderFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.GenericBeanDefinition;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ApplicationObjectSupport;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * RemoteServicesApplicationContext
@@ -24,7 +23,7 @@ import com.sharingif.cube.core.handler.bind.support.DefaultDataBinderFactory;
  * @version v1.0
  * @since v1.0
  */
-public class RemoteServicesApplicationContext implements BeanDefinitionRegistryPostProcessor {
+public class RemoteServicesApplicationContext extends ApplicationObjectSupport implements InitializingBean {
 	
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -67,13 +66,12 @@ public class RemoteServicesApplicationContext implements BeanDefinitionRegistryP
 	public Object getRemoteService(String key){
 		return remoteServiceMap.get(key);
 	}
-	
+
 	@Override
-	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-		
-	}
-	@Override
-	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
+	public void afterPropertiesSet() throws Exception {
+
+		BeanDefinitionRegistry registry = (BeanDefinitionRegistry) ((ConfigurableApplicationContext) getApplicationContext()).getBeanFactory();
+
 		try {
 			init();
 		} catch (ClassNotFoundException e) {
@@ -90,5 +88,4 @@ public class RemoteServicesApplicationContext implements BeanDefinitionRegistryP
 			registry.registerBeanDefinition(beanName, genericBeanDefinition);
 		}
 	}
-
 }
