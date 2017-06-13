@@ -70,6 +70,17 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O> {
 
     private Map<String,String> headers;
 
+    public AbstractHttpConnection(String address, String contextPath) {
+        this.address = address;
+        this.contextPath = contextPath;
+    }
+
+    public AbstractHttpConnection(String host, int port, String contextPath) {
+        this.host = host;
+        this.port = port;
+        this.contextPath = contextPath;
+    }
+
     public String getHost() {
         return host;
     }

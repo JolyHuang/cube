@@ -29,8 +29,14 @@ import java.io.IOException;
  *    
  */
 public class HttpJsonConnection extends AbstractHttpConnection<RequestInfo<String>, String> implements InitializingBean {
-	
 
+	public HttpJsonConnection(String address, String contextPath) {
+		super(address,contextPath);
+	}
+
+	public HttpJsonConnection(String host, int port, String contextPath) {
+		super(host,port,contextPath);
+	}
 
 	@Override
 	public String connect(RequestInfo<String> httpContext) throws CommunicationException {
