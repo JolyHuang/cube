@@ -12,6 +12,7 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.config.*;
 import org.apache.http.conn.HttpConnectionFactory;
 import org.apache.http.conn.ManagedHttpClientConnection;
@@ -48,6 +49,7 @@ import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.CodingErrorAction;
+import java.util.Map;
 
 /**   
  *  
@@ -64,8 +66,6 @@ public class HttpJsonConnection implements Connection<RequestInfo<String>, Strin
 	
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
-	private static final Header APPLICATION_JSON_CONTENT_TYPE = new BasicHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
-
 	private CloseableHttpClient httpclient;
 	private String host;
 	private int port;
@@ -81,6 +81,8 @@ public class HttpJsonConnection implements Connection<RequestInfo<String>, Strin
 	private String encoding = CubeConfigure.DEFAULT_ENCODING;
 	
 	private boolean debug = true;
+
+	private Map<String,String> headers;
 	
 	public HttpJsonConnection(String address, String contextPath) {
 		this.address = address;
@@ -157,6 +159,13 @@ public class HttpJsonConnection implements Connection<RequestInfo<String>, Strin
 		this.encoding = encoding;
 	}
 
+	public Map<String, String> getHeaders() {
+		return headers;
+	}
+	public void setHeaders(Map<String, String> headers) {
+		this.headers = headers;
+	}
+
 	@Override
 	public String connect(RequestInfo<String> httpContext) throws CommunicationException {
 		
@@ -223,12 +232,12 @@ public class HttpJsonConnection implements Connection<RequestInfo<String>, Strin
 		
 		if(httpContext.getMethod().equals(HttpMethod.GET.name())) {
 			HttpGet httpGet = new HttpGet(path);
-			httpGet.addHeader(APPLICATION_JSON_CONTENT_TYPE);
+			addHeader(httpGet);
 			return httpclient.execute(httpHost, httpGet);
 		}
 		if(httpContext.getMethod().equals(HttpMethod.POST.name())) {
 			HttpPost httpPost = new HttpPost(path);
-			httpPost.addHeader(APPLICATION_JSON_CONTENT_TYPE);
+			addHeader(httpPost);
 			if(!StringUtils.isEmpty(httpContext.getRequest())) {
 				httpPost.setEntity(new StringEntity(httpContext.getRequest(), ContentType.APPLICATION_JSON));
 			}
@@ -259,7 +268,19 @@ public class HttpJsonConnection implements Connection<RequestInfo<String>, Strin
 		}
 		
 	}
-	
+
+	protected void addHeader(HttpRequestBase httpRequest) {
+
+		httpRequest.addHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
+
+		if(getHeaders() == null) {
+			return;
+		}
+
+		for(String key : getHeaders().keySet()) {
+			httpRequest.addHeader(key, getHeaders().get(key));
+		}
+	}
 	
 	@Override
 	public void afterPropertiesSet() throws Exception {
