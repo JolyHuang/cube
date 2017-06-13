@@ -18,8 +18,9 @@ import java.util.Properties;
 public final class CubeConfigure {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CubeConfigure.class);
-	
+
 	public static final String DEFAULT_ENCODING;
+	public static final String EXTERNAL_CONFIGURE;
 	public static final String DEFAULT_TIME_ZONE;
 	
 	static{
@@ -44,15 +45,17 @@ public final class CubeConfigure {
 		
 		String defaultEncoding = null;
 		try {
-			defaultEncoding = properties.getProperty("app.default.encoding").trim();
+			defaultEncoding = properties.getProperty("cube.default.encoding").trim();
 		} catch (Exception e) {
 			defaultEncoding = "UTF-8";
 		}
 		DEFAULT_ENCODING = defaultEncoding;
+
+		EXTERNAL_CONFIGURE = properties.getProperty("cube.external.configure").trim();
 		
 		String defaultTimeZone = null;
 		try {
-			defaultTimeZone = properties.getProperty("app.default.time.zone").trim();
+			defaultTimeZone = properties.getProperty("cube.default.time.zone").trim();
 		} catch (Exception e) {
 			defaultTimeZone = "GMT+0800";// 中国上海
 		}
