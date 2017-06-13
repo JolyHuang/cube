@@ -8,12 +8,11 @@ import org.apache.http.*;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.config.*;
-import org.apache.http.conn.*;
+import org.apache.http.conn.ManagedHttpClientConnection;
 import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.entity.ContentType;
 import org.apache.http.impl.DefaultHttpResponseFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -29,7 +28,6 @@ import org.apache.http.io.SessionInputBuffer;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicLineParser;
 import org.apache.http.message.LineParser;
-import org.apache.http.protocol.HTTP;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.CharArrayBuffer;
 import org.slf4j.Logger;
@@ -195,8 +193,6 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O> {
     }
 
     protected void addHeader(HttpRequestBase httpRequest) {
-
-        httpRequest.addHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
 
         if(getHeaders() == null) {
             return;

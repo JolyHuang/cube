@@ -10,8 +10,10 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -111,12 +113,16 @@ public class HttpJsonConnection extends AbstractHttpConnection<RequestInfo<Strin
 		this.logger.error("method type error, method value:{}", httpContext.getMethod());
 		throw new CommunicationException("method type error");
 	}
-	
+
+	@Override
+	protected void addHeader(HttpRequestBase httpRequest) {
+		httpRequest.addHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
+		super.addHeader(httpRequest);
+	}
+
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		init();
 	}
-	
-
 	
 }
