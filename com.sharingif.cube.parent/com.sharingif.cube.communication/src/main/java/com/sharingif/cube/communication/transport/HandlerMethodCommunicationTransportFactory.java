@@ -9,8 +9,8 @@ import java.lang.reflect.Method;
  * @version v1.0
  * @since v1.0
  */
-public interface HandlerMethodCommunicationTransportFactory<MI, MO, CO, UI, UO> {
+public interface HandlerMethodCommunicationTransportFactory<MI,MO,CI,CO,UI,UO> {
 	
-	AbstractHandlerMethodCommunicationTransport<MI,MO,CO,UI,UO>  createHandlerMethodCommunicationTransport(Object bean, Method method);
+	AbstractHandlerMethodCommunicationTransport<MI,MO,CI,CO,UI,UO>  createHandlerMethodCommunicationTransport(Object bean, Method method);
 
 }

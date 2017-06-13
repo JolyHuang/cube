@@ -2,7 +2,6 @@ package com.sharingif.cube.communication.transport;
 
 import com.sharingif.cube.communication.exception.IBusinessCommunicationExceptionHandler;
 import com.sharingif.cube.core.handler.HandlerMethod;
-import com.sharingif.cube.core.request.RequestInfo;
 
 /**
  * AbstractHandlerMethodCommunicationTransport
@@ -11,19 +10,19 @@ import com.sharingif.cube.core.request.RequestInfo;
  * @version v1.0
  * @since v1.0
  */
-public abstract class AbstractHandlerMethodCommunicationTransport<MI,MO,CO,UI,UO> extends AbstractHandlerMethodTransport<MI, MO, UI, UO> implements CommunicationTransport<MI,MO,CO,UI,UO> {
+public abstract class AbstractHandlerMethodCommunicationTransport<MI,MO,CI,CO,UI,UO> extends AbstractHandlerMethodTransport<MI,MO,UI,UO> implements CommunicationTransport<MI,MO,CI,CO,UI,UO> {
 
 	protected AbstractHandlerMethodCommunicationTransport(HandlerMethod handlerMethod) {
 		super(handlerMethod);
 	}
 
-	private Connection<RequestInfo<MO>,CO> connection;
+	private Connection<CI,CO> connection;
 	private IBusinessCommunicationExceptionHandler<UO> businessCommunicationExceptionHandler;
 
-	public void setConnection(Connection<RequestInfo<MO>, CO> connection) {
+	public void setConnection(Connection<CI, CO> connection) {
 		this.connection = connection;
 	}
-	public Connection<RequestInfo<MO>, CO> getConnection() {
+	public Connection<CI, CO> getConnection() {
 		return connection;
 	}
 	public IBusinessCommunicationExceptionHandler<UO> getBusinessCommunicationExceptionHandler() {

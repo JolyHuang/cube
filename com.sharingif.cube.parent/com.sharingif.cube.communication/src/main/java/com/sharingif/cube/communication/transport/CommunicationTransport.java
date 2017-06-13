@@ -1,6 +1,5 @@
 package com.sharingif.cube.communication.transport;
 
-import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.core.transport.Transport;
 
 /**
@@ -10,8 +9,8 @@ import com.sharingif.cube.core.transport.Transport;
  * @version v1.0
  * @since v1.0
  */
-public interface CommunicationTransport<MI,MO,CO,UI,UO> extends Transport<MI,MO,UI,UO> {
+public interface CommunicationTransport<MI,MO,CI,CO,UI,UO> extends Transport<MI,MO,UI,UO> {
 
-	void setConnection(Connection<RequestInfo<MO>,CO> connection);
+	void setConnection(Connection<CI,CO> connection);
 
 }

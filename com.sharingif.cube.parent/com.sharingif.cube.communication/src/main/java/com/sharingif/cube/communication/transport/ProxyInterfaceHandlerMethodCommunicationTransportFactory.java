@@ -2,6 +2,7 @@ package com.sharingif.cube.communication.transport;
 
 import java.lang.reflect.Method;
 
+import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.core.transport.transform.MethodParameterArgument;
 import com.sharingif.cube.core.handler.HandlerMethod;
 
@@ -12,7 +13,7 @@ import com.sharingif.cube.core.handler.HandlerMethod;
  * @version v1.0
  * @since v1.0
  */
-public class ProxyInterfaceHandlerMethodCommunicationTransportFactory<MO,CO,UO> extends AbstractHandlerMethodCommunicationTransportFactory<Object[],MO,CO,MethodParameterArgument<Object[],CO>,UO> {
+public class ProxyInterfaceHandlerMethodCommunicationTransportFactory<MO,CO,UO> extends AbstractHandlerMethodCommunicationTransportFactory<Object[],MO,RequestInfo<MO>,CO,MethodParameterArgument<Object[],CO>,UO> {
 
 	@Override
 	public ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> createHandlerMethodCommunicationTransport(Object bean, Method method) {

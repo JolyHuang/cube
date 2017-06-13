@@ -32,10 +32,10 @@ public class RemoteServices {
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private RequestInfoResolver<Object[], ?> requestInfoResolver;
-	private AbstractHandlerMethodCommunicationTransportFactory<?,?,?,?,?> handlerMethodCommunicationTransportFactory;
+	private AbstractHandlerMethodCommunicationTransportFactory<?,?,?,?,?,?> handlerMethodCommunicationTransportFactory;
 	private List<String> services;
 	
-	private Map<String, AbstractHandlerMethodCommunicationTransport<?,?,?,?,?>> cacheHandlerMethodCommunicationTransportMap = new HashMap<String,AbstractHandlerMethodCommunicationTransport<?,?,?,?,?>>(128);
+	private Map<String, AbstractHandlerMethodCommunicationTransport<?,?,?,?,?,?>> cacheHandlerMethodCommunicationTransportMap = new HashMap<String,AbstractHandlerMethodCommunicationTransport<?,?,?,?,?,?>>(128);
 	
 	public RequestInfoResolver<Object[], ?> getRequestInfoResolver() {
 		return requestInfoResolver;
@@ -43,11 +43,11 @@ public class RemoteServices {
 	public void setRequestInfoResolver(RequestInfoResolver<Object[], ?> requestInfoResolver) {
 		this.requestInfoResolver = requestInfoResolver;
 	}
-	public AbstractHandlerMethodCommunicationTransportFactory<?,?,?,?,?> getHandlerMethodCommunicationTransportFactory() {
+	public AbstractHandlerMethodCommunicationTransportFactory<?,?,?,?,?,?> getHandlerMethodCommunicationTransportFactory() {
 		return handlerMethodCommunicationTransportFactory;
 	}
 	public void setHandlerMethodCommunicationTransportFactory(
-			AbstractHandlerMethodCommunicationTransportFactory<?,?,?,?,?> handlerMethodCommunicationTransportFactory) {
+			AbstractHandlerMethodCommunicationTransportFactory<?,?,?,?,?,?> handlerMethodCommunicationTransportFactory) {
 		this.handlerMethodCommunicationTransportFactory = handlerMethodCommunicationTransportFactory;
 	}
 	public List<String> getServices() {

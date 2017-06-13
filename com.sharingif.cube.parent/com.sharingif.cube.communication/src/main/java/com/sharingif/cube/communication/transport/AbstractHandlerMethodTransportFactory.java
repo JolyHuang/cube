@@ -15,7 +15,7 @@ import com.sharingif.cube.core.transport.transform.Transform;
  * @version v1.0
  * @since v1.0
  */
-public abstract class AbstractHandlerMethodTransportFactory<MI,MO,CO,UI,UO> implements HandlerMethodCommunicationTransportFactory<MI,MO,CO,UI,UO>  {
+public abstract class AbstractHandlerMethodTransportFactory<MI,MO,CI,CO,UI,UO> implements HandlerMethodCommunicationTransportFactory<MI,MO,CI,CO,UI,UO>  {
 	
 	private Transform<MI,MO,UI,UO> transform;
 	

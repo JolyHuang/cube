@@ -16,7 +16,7 @@ import com.sharingif.cube.core.util.CubeExceptionUtil;
  * @version v1.0
  * @since v1.0
  */
-public class ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> extends AbstractHandlerMethodCommunicationTransport<Object[],MO,CO,MethodParameterArgument<Object[],CO>,UO> {
+public class ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> extends AbstractHandlerMethodCommunicationTransport<Object[],MO,RequestInfo<MO>,CO,MethodParameterArgument<Object[],CO>,UO> {
 
 	public ProxyInterfaceHandlerMethodCommunicationTransport(HandlerMethod handlerMethod) {
 		super(handlerMethod);
