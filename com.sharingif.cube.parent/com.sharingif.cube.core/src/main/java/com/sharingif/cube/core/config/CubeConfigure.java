@@ -50,8 +50,10 @@ public final class CubeConfigure {
 			defaultEncoding = "UTF-8";
 		}
 		DEFAULT_ENCODING = defaultEncoding;
+		logger.info("system initialization parameter DEFAULT_ENCODING=[{}]",DEFAULT_ENCODING);
 
 		EXTERNAL_CONFIGURE = properties.getProperty("cube.external.configure").trim();
+		logger.info("system initialization parameter EXTERNAL_CONFIGURE=[{}]",EXTERNAL_CONFIGURE);
 		
 		String defaultTimeZone = null;
 		try {
@@ -60,6 +62,7 @@ public final class CubeConfigure {
 			defaultTimeZone = "GMT+0800";// 中国上海
 		}
 		DEFAULT_TIME_ZONE = defaultTimeZone;
+		logger.info("system initialization parameter DEFAULT_TIME_ZONE=[{}]",DEFAULT_TIME_ZONE);
 		
 	}
 	

@@ -61,14 +61,14 @@ public class BindValidationCubeExceptionHandler extends ValidationCubeExceptionH
 	@Override
 	public void wirteLogInternal(RequestInfo<WebRequestInfo> requestInfo, HandlerMethod handlerMethod, ICubeException cubeException, Locale locale, Long exTime) {
 		
-		String loggerMessage = "transaction error===> ThdId:{}, TrsId:{}.{}, ExTime:{} \nmessage:{} \nlocalizedMessage:{}";
+		String loggerMessage = "transaction error===> ThdId:{}, method:{}, TrsId:{}, ExTime:{} \nmessage:{} \nlocalizedMessage:{}";
 		
 		if(null == ((Exception)cubeException).getCause()){
 			
 			this.logger.error(loggerMessage
 					,Thread.currentThread().getId()
-					,handlerMethod.getBean().getClass().getName()
-					,handlerMethod.getMethod().getName()
+					,requestInfo.getMethod()
+					,requestInfo.getLookupPath()
 					,exTime
 					,cubeException.getMessage()
 					,((BindValidationCubeException)cubeException).getFieldErrors()
@@ -78,8 +78,8 @@ public class BindValidationCubeExceptionHandler extends ValidationCubeExceptionH
 		
 		this.logger.error(loggerMessage
 				,Thread.currentThread().getId()
-				,handlerMethod.getBean().getClass().getName()
-				,handlerMethod.getMethod().getName()
+				,requestInfo.getMethod()
+				,requestInfo.getLookupPath()
 				,exTime
 				,cubeException.getMessage()
 				,cubeException.getLocalizedMessage()
