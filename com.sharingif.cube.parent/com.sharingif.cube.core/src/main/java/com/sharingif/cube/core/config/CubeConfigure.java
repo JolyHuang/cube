@@ -22,7 +22,11 @@ public final class CubeConfigure {
 	public static final String DEFAULT_ENCODING;
 	public static final String EXTERNAL_CONFIGURE;
 	public static final String DEFAULT_TIME_ZONE;
-	
+
+	private static final String DEFAULT_ENCODING_KEY = "cube.default.encoding";
+	private static final String EXTERNAL_CONFIGURE_KEY = "cube.external.configure";
+	private static final String DEFAULT_TIME_ZONE_KEY = "cube.default.time.zone";
+
 	static{
 		Properties properties = null;
 		InputStream in = null;
@@ -45,27 +49,35 @@ public final class CubeConfigure {
 		
 		String defaultEncoding = null;
 		try {
-			defaultEncoding = properties.getProperty("cube.default.encoding").trim();
+			defaultEncoding = properties.getProperty(DEFAULT_ENCODING_KEY).trim();
 		} catch (Exception e) {
-			logger.warn("Could not find key 'cube.default.encoding' in CubeConfigure.properties");
+			notFindLogger(DEFAULT_ENCODING_KEY);
 			defaultEncoding = "UTF-8";
 		}
 		DEFAULT_ENCODING = defaultEncoding;
-		logger.info("system initialization parameter DEFAULT_ENCODING=[{}]",DEFAULT_ENCODING);
+		initParameterLogger(DEFAULT_ENCODING);
 
-		EXTERNAL_CONFIGURE = properties.getProperty("cube.external.configure").trim();
-		logger.info("system initialization parameter EXTERNAL_CONFIGURE=[{}]",EXTERNAL_CONFIGURE);
-		
+		EXTERNAL_CONFIGURE = properties.getProperty(EXTERNAL_CONFIGURE_KEY).trim();
+		initParameterLogger(EXTERNAL_CONFIGURE);
+
 		String defaultTimeZone = null;
 		try {
-			defaultTimeZone = properties.getProperty("cube.default.time.zone").trim();
+			defaultTimeZone = properties.getProperty(DEFAULT_TIME_ZONE_KEY).trim();
 		} catch (Exception e) {
-			logger.warn("Could not find key 'cube.default.time.zone' in CubeConfigure.properties");
+			notFindLogger(DEFAULT_TIME_ZONE_KEY);
 			defaultTimeZone = "GMT+0800";// 中国上海
 		}
 		DEFAULT_TIME_ZONE = defaultTimeZone;
-		logger.info("system initialization parameter DEFAULT_TIME_ZONE=[{}]",DEFAULT_TIME_ZONE);
-		
+		initParameterLogger(DEFAULT_TIME_ZONE);
+
+	}
+
+	private static void notFindLogger(String key) {
+		logger.warn("Could not find key '{}' in CubeConfigure.properties", key);
+	}
+
+	private static void initParameterLogger(String value) {
+		logger.info("system initialization parameter DEFAULT_TIME_ZONE=[{}]", value);
 	}
 	
 }
