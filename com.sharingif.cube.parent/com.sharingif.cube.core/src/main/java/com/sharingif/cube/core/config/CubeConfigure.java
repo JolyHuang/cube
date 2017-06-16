@@ -47,6 +47,7 @@ public final class CubeConfigure {
 		try {
 			defaultEncoding = properties.getProperty("cube.default.encoding").trim();
 		} catch (Exception e) {
+			logger.warn("Could not find key 'cube.default.encoding' in CubeConfigure.properties");
 			defaultEncoding = "UTF-8";
 		}
 		DEFAULT_ENCODING = defaultEncoding;
@@ -59,6 +60,7 @@ public final class CubeConfigure {
 		try {
 			defaultTimeZone = properties.getProperty("cube.default.time.zone").trim();
 		} catch (Exception e) {
+			logger.warn("Could not find key 'cube.default.time.zone' in CubeConfigure.properties");
 			defaultTimeZone = "GMT+0800";// 中国上海
 		}
 		DEFAULT_TIME_ZONE = defaultTimeZone;
