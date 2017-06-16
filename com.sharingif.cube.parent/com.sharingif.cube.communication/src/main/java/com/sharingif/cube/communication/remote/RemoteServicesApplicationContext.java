@@ -6,7 +6,9 @@ import com.sharingif.cube.core.handler.bind.support.BindingInitializer;
 import com.sharingif.cube.core.handler.bind.support.DefaultDataBinderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -23,7 +25,7 @@ import java.util.Map;
  * @version v1.0
  * @since v1.0
  */
-public class RemoteServicesApplicationContext extends ApplicationObjectSupport implements InitializingBean {
+public class RemoteServicesApplicationContext extends ApplicationObjectSupport implements BeanPostProcessor, InitializingBean {
 	
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -88,4 +90,15 @@ public class RemoteServicesApplicationContext extends ApplicationObjectSupport i
 			registry.registerBeanDefinition(beanName, genericBeanDefinition);
 		}
 	}
+
+	@Override
+	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+		return bean;
+	}
+
+	@Override
+	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+		return bean;
+	}
+
 }
