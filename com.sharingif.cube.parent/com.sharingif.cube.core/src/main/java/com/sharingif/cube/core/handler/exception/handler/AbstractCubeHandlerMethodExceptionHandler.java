@@ -54,7 +54,7 @@ public abstract class AbstractCubeHandlerMethodExceptionHandler<RI> extends Abst
 	}
 	
 	public void wirteLogInternal(RequestInfo<RI> requestInfo, HandlerMethod handlerMethod, ICubeException cubeException, Locale locale, Long exTime) {
-		String loggerMessage = "transaction error===> ThdId:{}, method:{}, TrsId:{}, ExTime:{} \nmessage:{} \nlocalizedMessage:{}";
+		String loggerMessage = "transaction error===> ThdId:{}, method:{}, TrsId:{}, ExTime:{} message:{} localizedMessage:{}";
 		
 		
 		if(null == ((Exception)cubeException).getCause()){

@@ -60,7 +60,7 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain<HandlerM
 		
 		Long endCurrentTime = System.currentTimeMillis();
 		
-		String loggerMessage = "{} error===> ThdId:{}, method:{}, TrsId:{}, ExTime:{} \nmessage:{} \nlocalizedMessage:{}";
+		String loggerMessage = "{} error===> ThdId:{}, method:{}, TrsId:{}, ExTime:{} message:{}";
 			
 		this.logger.error(loggerMessage
 				,name
@@ -69,7 +69,6 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain<HandlerM
 				,content.getRequestInfo().getLookupPath()
 				,(endCurrentTime-beginCurrentTime)
 				,exception.getMessage()
-				,exception.getLocalizedMessage()
 				);
 		
 	}
