@@ -35,7 +35,7 @@ public class WebCubeExceptionHandler extends AbstractCubeHandlerMethodExceptionH
 	 * @param exception : 异常
 	 */
 	@Override
-	public ICubeException convertException(Exception exception) {
+	protected ICubeException convertExceptionInternal(Exception exception) {
 		if(exception instanceof ICubeException)
 			return (ICubeException)exception;
 			

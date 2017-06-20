@@ -1,12 +1,14 @@
 package com.sharingif.cube.core.exception.handler;
 
 import com.sharingif.cube.core.exception.ICubeException;
+import com.sharingif.cube.core.exception.UnknownCubeException;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.core.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ApplicationObjectSupport;
 
+import java.lang.reflect.Field;
 import java.util.Locale;
 
 /**
@@ -19,10 +21,52 @@ import java.util.Locale;
 public abstract class AbstractCubeExceptionHandler<RI, H extends Object> extends ApplicationObjectSupport implements IExceptionHandler<RI,H> {
 	
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
-	
+
+	private ExceptionMessageConversion exceptionMessageConversion;
+
+	public ExceptionMessageConversion getExceptionMessageConversion() {
+		return exceptionMessageConversion;
+	}
+	public void setExceptionMessageConversion(ExceptionMessageConversion exceptionMessageConversion) {
+		this.exceptionMessageConversion = exceptionMessageConversion;
+	}
+
 	@Override
 	public ICubeException convertException(Exception exception) {
+		ICubeException cubeException = convertExceptionInternal(exception);
+		convertExceptionMessage(cubeException);
+		return cubeException;
+	}
+
+	protected ICubeException convertExceptionInternal(Exception exception) {
 		return (ICubeException)exception;
+	}
+
+	protected void convertExceptionMessage(ICubeException exception) {
+		if(exceptionMessageConversion == null) {
+			return;
+		}
+
+		String message = exceptionMessageConversion.convert(exception.getMessage());
+		if(StringUtils.isTrimEmpty(message)) {
+			return;
+		}
+
+		try {
+			Field detailMessage = exception.getClass().getDeclaredField("detailMessage");
+
+			detailMessage.setAccessible(true);
+
+			detailMessage.set(exception, message);
+
+		} catch (NoSuchFieldException e) {
+			logger.error("no such field exception", e);
+			throw new UnknownCubeException();
+		} catch (IllegalAccessException e) {
+			logger.error("illegal access exception", e);
+			throw new UnknownCubeException();
+		}
+
 	}
 
 	@Override

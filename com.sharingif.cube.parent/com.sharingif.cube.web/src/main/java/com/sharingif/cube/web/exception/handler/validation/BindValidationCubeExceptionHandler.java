@@ -36,7 +36,7 @@ public class BindValidationCubeExceptionHandler extends ValidationCubeExceptionH
 	}
 	
 	@Override
-	public ICubeException convertException(Exception exception) {
+	protected ICubeException convertExceptionInternal(Exception exception) {
 		return new BindValidationCubeException((BindException)exception);
 	}
 	

@@ -5,9 +5,7 @@ import com.sharingif.cube.communication.JsonModel;
 import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.UnknownCubeException;
-import com.sharingif.cube.core.exception.handler.ExceptionMessageConversion;
 import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
-import com.sharingif.cube.core.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -37,7 +35,6 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 	private String tranStatusName = JsonModel.TRAN_STATUS;
 	private String dataName = JsonModel.DATA;
 
-	private ExceptionMessageConversion exceptionMessageConversion;
 
 	public ExtendedMappingJackson2JsonView(){
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -82,12 +79,6 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 	public void setDataName(String dataName) {
 		this.dataName = dataName;
 	}
-	public ExceptionMessageConversion getExceptionMessageConversion() {
-		return exceptionMessageConversion;
-	}
-	public void setExceptionMessageConversion(ExceptionMessageConversion exceptionMessageConversion) {
-		this.exceptionMessageConversion = exceptionMessageConversion;
-	}
 
 	@Override
 	protected void renderMergedOutputModel(Map<String, Object> model,HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -115,12 +106,7 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 				ICubeException exception = (ICubeException)value;
 
 				String message = exception.getMessage();
-				if(getExceptionMessageConversion() != null) {
-					String convertMessage = getExceptionMessageConversion().convert(message);
-					if(!StringUtils.isEmpty(convertMessage)) {
-						message = convertMessage;
-					}
-				}
+
 				resultMap.put(getExceptionMessageName(), message);
 
 				if(value instanceof BindValidationCubeException) {

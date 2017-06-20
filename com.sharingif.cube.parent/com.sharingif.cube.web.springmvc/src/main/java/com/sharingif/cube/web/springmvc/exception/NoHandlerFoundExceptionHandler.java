@@ -25,7 +25,7 @@ public class NoHandlerFoundExceptionHandler extends ValidationCubeExceptionHandl
     }
 
     @Override
-    public ICubeException convertException(Exception exception) {
+    protected ICubeException convertExceptionInternal(Exception exception) {
         return new NoHandlerMappingFoundException();
     }
 

@@ -24,11 +24,6 @@ public abstract class AbstractCubeHandlerMethodExceptionHandler<RI> extends Abst
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@Override
-	public ICubeException convertException(Exception exception) {
-		return (ICubeException)exception;
-	}
-
-	@Override
 	public void resolverMessages(ICubeException cubeException, Locale locale) {
 		
 		if(!StringUtils.isEmpty(cubeException.getLocalizedMessage())&&!(cubeException.getMessage().equals(cubeException.getLocalizedMessage()))){

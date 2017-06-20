@@ -21,7 +21,7 @@ public class MethodArgumentNotValidExceptionHandler extends BindValidationCubeEx
 	}
 	
 	@Override
-	public ICubeException convertException(Exception exception) {
+	protected ICubeException convertExceptionInternal(Exception exception) {
 		MethodArgumentNotValidException methodArgumentNotValidException = (MethodArgumentNotValidException)exception;
 		return new BindValidationCubeException(methodArgumentNotValidException.getBindingResult());
 	}

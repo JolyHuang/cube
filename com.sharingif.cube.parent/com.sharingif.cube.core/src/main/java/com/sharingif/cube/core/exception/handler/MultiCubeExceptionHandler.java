@@ -2,6 +2,7 @@ package com.sharingif.cube.core.exception.handler;
 
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.request.RequestInfo;
+import org.springframework.beans.factory.InitializingBean;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,11 +16,12 @@ import java.util.Map;
  * @version v1.0
  * @since v1.0
  */
-public class MultiCubeExceptionHandler<RI, H extends Object> extends AbstractCubeExceptionHandler<RI,H> {
+public class MultiCubeExceptionHandler<RI, H extends Object> extends AbstractCubeExceptionHandler<RI,H> implements InitializingBean {
 	
 	private Map<String,AbstractCubeExceptionHandler<RI,H>> cacheExceptionHandlers = new HashMap<String,AbstractCubeExceptionHandler<RI,H>>(20);
 	
 	private List<AbstractCubeExceptionHandler<RI,H>> cubeExceptionHandlers;
+	private ExceptionMessageConversion exceptionMessageConversion;
 	
 	public List<AbstractCubeExceptionHandler<RI,H>> getCubeExceptionHandlers() {
 		return cubeExceptionHandlers;
@@ -27,6 +29,12 @@ public class MultiCubeExceptionHandler<RI, H extends Object> extends AbstractCub
 
 	public void setCubeExceptionHandlers(List<AbstractCubeExceptionHandler<RI,H>> cubeExceptionHandlers) {
 		this.cubeExceptionHandlers = cubeExceptionHandlers;
+	}
+	public ExceptionMessageConversion getExceptionMessageConversion() {
+		return exceptionMessageConversion;
+	}
+	public void setExceptionMessageConversion(ExceptionMessageConversion exceptionMessageConversion) {
+		this.exceptionMessageConversion = exceptionMessageConversion;
 	}
 
 	@Override
@@ -77,5 +85,12 @@ public class MultiCubeExceptionHandler<RI, H extends Object> extends AbstractCub
 		
 		return null;
 	}
-	
+
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		for(AbstractCubeExceptionHandler<RI,H> abstractCubeExceptionHandler : getCubeExceptionHandlers()) {
+			abstractCubeExceptionHandler.setExceptionMessageConversion(getExceptionMessageConversion());
+		}
+	}
 }
