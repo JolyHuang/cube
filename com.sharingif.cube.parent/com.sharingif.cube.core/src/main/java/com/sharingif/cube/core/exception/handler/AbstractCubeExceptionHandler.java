@@ -19,7 +19,18 @@ import java.util.Locale;
  * @since v1.0
  */
 public abstract class AbstractCubeExceptionHandler<RI, H extends Object> extends ApplicationObjectSupport implements IExceptionHandler<RI,H> {
-	
+
+
+	private static final Field DETAIL_MESSAGE_FIELD;
+
+	static {
+		try {
+			DETAIL_MESSAGE_FIELD = Throwable.class.getDeclaredField("detailMessage");
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
 	private ExceptionMessageConversion exceptionMessageConversion;
@@ -53,15 +64,11 @@ public abstract class AbstractCubeExceptionHandler<RI, H extends Object> extends
 		}
 
 		try {
-			Field detailMessage = exception.getClass().getDeclaredField("detailMessage");
 
-			detailMessage.setAccessible(true);
+			DETAIL_MESSAGE_FIELD.setAccessible(true);
 
-			detailMessage.set(exception, message);
+			DETAIL_MESSAGE_FIELD.set(exception, message);
 
-		} catch (NoSuchFieldException e) {
-			logger.error("no such field exception", e);
-			throw new UnknownCubeException();
 		} catch (IllegalAccessException e) {
 			logger.error("illegal access exception", e);
 			throw new UnknownCubeException();
@@ -71,7 +78,7 @@ public abstract class AbstractCubeExceptionHandler<RI, H extends Object> extends
 
 	@Override
 	public void resolverMessages(ICubeException cubeException, Locale locale) {
-		
+
 		if(!StringUtils.isEmpty(cubeException.getLocalizedMessage())&&!(cubeException.getMessage().equals(cubeException.getLocalizedMessage()))){
 			return;
 		}
@@ -97,7 +104,7 @@ public abstract class AbstractCubeExceptionHandler<RI, H extends Object> extends
 			this.logger.error("ICubeExceptionResolver error,message {} is not find in the locale source file", cubeException.getMessage());
 		}
 	}
-	
+
 	/**
 	 * @param requestInfo : 错误输入信息
 	 * @param handler : 请求处理器
@@ -105,23 +112,23 @@ public abstract class AbstractCubeExceptionHandler<RI, H extends Object> extends
 	 * @return O : 异常处理结果
 	 */
 	public ExceptionContent handler(RequestInfo<RI> requestInfo, H handler, Exception exception) {
-		
+
 		if(supports(exception)){
 			ICubeException cubeException = convertException(exception);
-			
+
 			resolverMessages(cubeException, requestInfo.getLocale());
-			
+
 			wirteLog(requestInfo, handler, cubeException);
 
 			ExceptionContent result = handlerException(requestInfo, handler, cubeException);
 			result.setCubeException(cubeException);
-			
+
 			return result;
 		}
-		
+
 		return null;
 	}
-	
-	
+
+
 
 }
