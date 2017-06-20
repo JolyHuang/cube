@@ -89,8 +89,10 @@ public class MultiCubeExceptionHandler<RI, H extends Object> extends AbstractCub
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		for(AbstractCubeExceptionHandler<RI,H> abstractCubeExceptionHandler : getCubeExceptionHandlers()) {
-			abstractCubeExceptionHandler.setExceptionMessageConversion(getExceptionMessageConversion());
+		if((getCubeExceptionHandlers() != null) && (getExceptionMessageConversion() != null)) {
+			for(AbstractCubeExceptionHandler<RI,H> abstractCubeExceptionHandler : getCubeExceptionHandlers()) {
+				abstractCubeExceptionHandler.setExceptionMessageConversion(getExceptionMessageConversion());
+			}
 		}
 	}
 }
