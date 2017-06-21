@@ -21,19 +21,19 @@ public class AESECBEncryptor extends AbstractAESEncryptor implements TextEncrypt
     // 加解密算法/工作模式/填充方式,Java6.0支持PKCS5Padding填充方式,BouncyCastle支持PKCS7Padding填充方式
     private static final String CIPHER_ALGORITHM = "AES/ECB/PKCS5Padding";
 	
-	public AESECBEncryptor() {
-		super(CIPHER_ALGORITHM);
+	public AESECBEncryptor(byte[] secretKey) throws UnsupportedEncodingException {
+		super(CIPHER_ALGORITHM, secretKey);
 	}
 	
-	public AESECBEncryptor(BinaryCoder binaryCoder) {
-		super(CIPHER_ALGORITHM, binaryCoder);
-	}
-	
-	@Override
-	protected IvParameterSpec createIvParameterSpec(SecretKey secretKey) {
-		return null;
+	public AESECBEncryptor(byte[] secretKey, BinaryCoder binaryCoder) throws UnsupportedEncodingException {
+		super(CIPHER_ALGORITHM, secretKey, binaryCoder);
 	}
 
+	@Override
+	protected IvParameterSpec createIvParameterSpec(byte[] key) {
+		return null;
+	}
+	
 	@Override
 	public String encrypt(String text) {
 		return getBinaryCoder().encode(encryptAES(text));

@@ -5,6 +5,8 @@ import org.junit.Test;
 import com.sharingif.cube.security.binary.Base64Coder;
 import com.sharingif.cube.security.binary.HexCoder;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * AESECBEncryptorTest
  * 2016年1月29日 下午8:48:47
@@ -15,24 +17,33 @@ import com.sharingif.cube.security.binary.HexCoder;
 public class AESECBEncryptorTest {
 	
 	@Test
-	public void testAESECBHexEncryptor(){
-		AESECBEncryptor encryptor = new AESECBEncryptor(new HexCoder());
+	public void testAESECBHexEncryptor() throws UnsupportedEncodingException {
+
+		byte[] secretKey = AESCBCEncryptor.generateSecretKey(128);
+
+		System.out.println(secretKey);
+
+		AESECBEncryptor encryptor = new AESECBEncryptor(secretKey, new HexCoder());
 		String str = encryptor.encrypt("1111111112300000000000000000000000000000000");
-		System.out.println(str.toUpperCase());
+		System.out.println(str);
 		System.out.println(encryptor.decrypt(str));
-		
+
 		String str2 = encryptor.encrypt("1121111112300000000000000000000000000000000");
 		System.out.println(str2.toUpperCase());
 		System.out.println(encryptor.decrypt(str2));
-		
+
 		String str3 = encryptor.encrypt("1131111112300000000000000000000000000000000");
 		System.out.println(str3.toUpperCase());
 		System.out.println(encryptor.decrypt(str3));
 	}
 	
 	@Test
-	public void testAESECBBase64Encryptor(){
-		AESECBEncryptor encryptor = new AESECBEncryptor(new Base64Coder());
+	public void testAESECBBase64Encryptor() throws UnsupportedEncodingException {
+		byte[] secretKey = AESCBCEncryptor.generateSecretKey(12);
+
+		System.out.println(secretKey);
+
+		AESECBEncryptor encryptor = new AESECBEncryptor(secretKey, new Base64Coder());
 		String str = encryptor.encrypt("1111111112300000000000000000000000000000000");
 		System.out.println(str);
 		System.out.println(encryptor.decrypt(str));

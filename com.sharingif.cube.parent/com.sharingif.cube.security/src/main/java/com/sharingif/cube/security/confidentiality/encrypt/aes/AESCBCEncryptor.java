@@ -18,12 +18,12 @@ public class AESCBCEncryptor extends AbstractAESEncryptor implements TextEncrypt
 	// 加解密算法/工作模式/填充方式,Java6.0支持PKCS5Padding填充方式,BouncyCastle支持PKCS7Padding填充方式
     private static final String CIPHER_ALGORITHM = "AES/CBC/PKCS5Padding";
 	
-	public AESCBCEncryptor() {
-		super(CIPHER_ALGORITHM);
+	public AESCBCEncryptor(byte[] secretKey) throws UnsupportedEncodingException {
+		super(CIPHER_ALGORITHM, secretKey);
 	}
 	
-	public AESCBCEncryptor(BinaryCoder binaryCoder) {
-		super(CIPHER_ALGORITHM, binaryCoder);
+	public AESCBCEncryptor(byte[] secretKey, BinaryCoder binaryCoder) throws UnsupportedEncodingException {
+		super(CIPHER_ALGORITHM, secretKey, binaryCoder);
 	}
 
 	@Override
