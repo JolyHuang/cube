@@ -187,7 +187,7 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O> {
         if(StringUtils.isEmpty(statusCode)) {
             logger.error("client protocol exception, method:{}、url:{},", httpContext.getMethod(), url.toString());
         } else {
-            logger.error("client protocol exception, statusCode:{}、method:{}、url:{},", statusCode, httpContext.getMethod(), url.toString());
+            logger.error("client protocol exception, statusCode:{}、method:{}、url:{}", statusCode, httpContext.getMethod(), url.toString());
         }
 
     }
