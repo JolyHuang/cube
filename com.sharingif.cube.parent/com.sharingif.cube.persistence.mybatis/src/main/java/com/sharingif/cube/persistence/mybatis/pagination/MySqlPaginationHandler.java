@@ -1,9 +1,11 @@
-package com.sharingif.cube.persistence.database.pagination;
+package com.sharingif.cube.persistence.mybatis.pagination;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
+import com.sharingif.cube.persistence.database.pagination.IPaginationHandler;
+import com.sharingif.cube.persistence.database.pagination.RowBounds;
 
 /**
  *
