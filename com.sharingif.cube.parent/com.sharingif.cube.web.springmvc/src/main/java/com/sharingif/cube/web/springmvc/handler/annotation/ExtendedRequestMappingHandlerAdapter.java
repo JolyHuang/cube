@@ -2,9 +2,11 @@ package com.sharingif.cube.web.springmvc.handler.annotation;
 
 import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
 import com.sharingif.cube.web.springmvc.handler.SpringMVCHandlerMethodContent;
+import com.sharingif.cube.web.springmvc.method.annotation.ExtendedRequestParamMethodArgumentResolver;
 import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.MediaTypeMethodProcessor;
 import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.container.DataContainerMethodProcessor;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.method.annotation.RequestParamMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
@@ -60,6 +62,7 @@ public class ExtendedRequestMappingHandlerAdapter extends RequestMappingHandlerA
 
 		List<HandlerMethodArgumentResolver> argumentResolvers = this.getArgumentResolvers();
 		List<HandlerMethodArgumentResolver> newArgumentResolvers = new ArrayList<HandlerMethodArgumentResolver>(argumentResolvers.size()+1);
+		newArgumentResolvers.add(new ExtendedRequestParamMethodArgumentResolver(getBeanFactory(),false));
 		newArgumentResolvers.add(new DataContainerMethodProcessor());
 		newArgumentResolvers.addAll(argumentResolvers);
 
