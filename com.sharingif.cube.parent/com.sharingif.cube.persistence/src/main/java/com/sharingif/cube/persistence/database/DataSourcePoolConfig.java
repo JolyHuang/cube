@@ -1,13 +1,13 @@
 package com.sharingif.cube.persistence.database;
 
 /**
- * DBCP连接池配置
+ * 数据源连接池配置
  * @author Joly
  * @version v1.0
  * @since v1.0
  * 2017/6/13 下午3:07
  */
-public class DBCPConfig {
+public class DataSourcePoolConfig {
 
     private String jndiName;
     private String type;
@@ -208,7 +208,7 @@ public class DBCPConfig {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("DBCPConfig{");
+        final StringBuilder sb = new StringBuilder("DataSourcePoolConfig{");
         sb.append("jndiName='").append(jndiName).append('\'');
         sb.append(", type='").append(type).append('\'');
         sb.append(", driverClassName='").append(driverClassName).append('\'');
