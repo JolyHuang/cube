@@ -16,26 +16,26 @@ public class DataSourcePoolConfig {
     private String username;
     private String password;
     // 创建连接阶段
-    private String initialSize;							        // 启动时初始化多少连接数
-    private String maxTotal;							        // 连接池中最多能有多少连接数
-    private String maxWaitMillis = "3000";						// 请求连接池最大等待时间，单位：毫秒
-    private String maxIdle;								        // 链接池中最大空闲连接
-    private String minIdle;								        // 链接池中最小空闲连接
+    private int initialSize;							        // 启动时初始化多少连接数
+    private int maxTotal;							            // 连接池中最多能有多少连接数
+    private int maxWaitMillis = 3000;						    // 请求连接池最大等待时间，单位：毫秒
+    private int maxIdle;								        // 链接池中最大空闲连接
+    private int minIdle;								        // 链接池中最小空闲连接
 
     // 程序关闭连接阶段,归还连接到连接池
-    private String removeAbandonedOnBorrow = "true";			// 是否清理被遗弃的连接，和removeAbandonedTimeout一起使用
-    private String removeAbandonedTimeout = "300";				// 清理被遗弃的连接等待时间，单位：秒
+    private boolean removeAbandonedOnBorrow = true;			    // 是否清理被遗弃的连接，和removeAbandonedTimeout一起使用
+    private int removeAbandonedTimeout = 300;				    // 清理被遗弃的连接等待时间，单位：秒
 
     // 空闭连接处理阶段,空闭连接断开从连接池中清处掉
-    private String timeBetweenEvictionRunsMillis = "900000"; 	// 多长时间检查一次连接池中空闲的连接,单位：毫秒
-    private String minEvictableIdleTimeMillis = "1800000";  	// 空闲时间超过多少时间的连接断开,直到连接池中的连接数到minIdle为止，单位：毫秒
-    private String numTestsPerEvictionRun = "20";				// 每次检查连接的数目，建议设置和maxActive一样大
-    private String logAbandoned = "false";						// 接池收回空闲的活动连接时是否打印消息
+    private int timeBetweenEvictionRunsMillis = 900000; 	    // 多长时间检查一次连接池中空闲的连接,单位：毫秒
+    private int minEvictableIdleTimeMillis = 1800000;  	        // 空闲时间超过多少时间的连接断开,直到连接池中的连接数到minIdle为止，单位：毫秒
+    private int numTestsPerEvictionRun = 20;				    // 每次检查连接的数目，建议设置和maxActive一样大
+    private boolean logAbandoned = false;						// 接池收回空闲的活动连接时是否打印消息
 
     // 连接验证阶段,防止mysql主动断开连接
-    private String testOnBorrow = "false";						// 取时检验
-    private String testOnReturn = "false";						// 归还检验
-    private String testWhileIdle = "true";						// 空闲检验
+    private boolean testOnBorrow = false;						// 取时检验
+    private boolean testOnReturn = false;						// 归还检验
+    private boolean testWhileIdle = true;						// 空闲检验
     private String validationQuery = "SELECT 1";				// 验证sql
 
     public String getJndiName() {
@@ -86,115 +86,115 @@ public class DataSourcePoolConfig {
         this.password = password;
     }
 
-    public String getInitialSize() {
+    public int getInitialSize() {
         return initialSize;
     }
 
-    public void setInitialSize(String initialSize) {
+    public void setInitialSize(int initialSize) {
         this.initialSize = initialSize;
     }
 
-    public String getMaxTotal() {
+    public int getMaxTotal() {
         return maxTotal;
     }
 
-    public void setMaxTotal(String maxTotal) {
+    public void setMaxTotal(int maxTotal) {
         this.maxTotal = maxTotal;
     }
 
-    public String getMaxWaitMillis() {
+    public int getMaxWaitMillis() {
         return maxWaitMillis;
     }
 
-    public void setMaxWaitMillis(String maxWaitMillis) {
+    public void setMaxWaitMillis(int maxWaitMillis) {
         this.maxWaitMillis = maxWaitMillis;
     }
 
-    public String getMaxIdle() {
+    public int getMaxIdle() {
         return maxIdle;
     }
 
-    public void setMaxIdle(String maxIdle) {
+    public void setMaxIdle(int maxIdle) {
         this.maxIdle = maxIdle;
     }
 
-    public String getMinIdle() {
+    public int getMinIdle() {
         return minIdle;
     }
 
-    public void setMinIdle(String minIdle) {
+    public void setMinIdle(int minIdle) {
         this.minIdle = minIdle;
     }
 
-    public String getRemoveAbandonedOnBorrow() {
+    public boolean isRemoveAbandonedOnBorrow() {
         return removeAbandonedOnBorrow;
     }
 
-    public void setRemoveAbandonedOnBorrow(String removeAbandonedOnBorrow) {
+    public void setRemoveAbandonedOnBorrow(boolean removeAbandonedOnBorrow) {
         this.removeAbandonedOnBorrow = removeAbandonedOnBorrow;
     }
 
-    public String getRemoveAbandonedTimeout() {
+    public int getRemoveAbandonedTimeout() {
         return removeAbandonedTimeout;
     }
 
-    public void setRemoveAbandonedTimeout(String removeAbandonedTimeout) {
+    public void setRemoveAbandonedTimeout(int removeAbandonedTimeout) {
         this.removeAbandonedTimeout = removeAbandonedTimeout;
     }
 
-    public String getTimeBetweenEvictionRunsMillis() {
+    public int getTimeBetweenEvictionRunsMillis() {
         return timeBetweenEvictionRunsMillis;
     }
 
-    public void setTimeBetweenEvictionRunsMillis(String timeBetweenEvictionRunsMillis) {
+    public void setTimeBetweenEvictionRunsMillis(int timeBetweenEvictionRunsMillis) {
         this.timeBetweenEvictionRunsMillis = timeBetweenEvictionRunsMillis;
     }
 
-    public String getMinEvictableIdleTimeMillis() {
+    public int getMinEvictableIdleTimeMillis() {
         return minEvictableIdleTimeMillis;
     }
 
-    public void setMinEvictableIdleTimeMillis(String minEvictableIdleTimeMillis) {
+    public void setMinEvictableIdleTimeMillis(int minEvictableIdleTimeMillis) {
         this.minEvictableIdleTimeMillis = minEvictableIdleTimeMillis;
     }
 
-    public String getNumTestsPerEvictionRun() {
+    public int getNumTestsPerEvictionRun() {
         return numTestsPerEvictionRun;
     }
 
-    public void setNumTestsPerEvictionRun(String numTestsPerEvictionRun) {
+    public void setNumTestsPerEvictionRun(int numTestsPerEvictionRun) {
         this.numTestsPerEvictionRun = numTestsPerEvictionRun;
     }
 
-    public String getLogAbandoned() {
+    public boolean isLogAbandoned() {
         return logAbandoned;
     }
 
-    public void setLogAbandoned(String logAbandoned) {
+    public void setLogAbandoned(boolean logAbandoned) {
         this.logAbandoned = logAbandoned;
     }
 
-    public String getTestOnBorrow() {
+    public boolean isTestOnBorrow() {
         return testOnBorrow;
     }
 
-    public void setTestOnBorrow(String testOnBorrow) {
+    public void setTestOnBorrow(boolean testOnBorrow) {
         this.testOnBorrow = testOnBorrow;
     }
 
-    public String getTestOnReturn() {
+    public boolean isTestOnReturn() {
         return testOnReturn;
     }
 
-    public void setTestOnReturn(String testOnReturn) {
+    public void setTestOnReturn(boolean testOnReturn) {
         this.testOnReturn = testOnReturn;
     }
 
-    public String getTestWhileIdle() {
+    public boolean isTestWhileIdle() {
         return testWhileIdle;
     }
 
-    public void setTestWhileIdle(String testWhileIdle) {
+    public void setTestWhileIdle(boolean testWhileIdle) {
         this.testWhileIdle = testWhileIdle;
     }
 
@@ -215,20 +215,20 @@ public class DataSourcePoolConfig {
         sb.append(", url='").append(url).append('\'');
         sb.append(", username='").append(username).append('\'');
         sb.append(", password='").append(password).append('\'');
-        sb.append(", initialSize='").append(initialSize).append('\'');
-        sb.append(", maxTotal='").append(maxTotal).append('\'');
-        sb.append(", maxWaitMillis='").append(maxWaitMillis).append('\'');
-        sb.append(", maxIdle='").append(maxIdle).append('\'');
-        sb.append(", minIdle='").append(minIdle).append('\'');
-        sb.append(", removeAbandonedOnBorrow='").append(removeAbandonedOnBorrow).append('\'');
-        sb.append(", removeAbandonedTimeout='").append(removeAbandonedTimeout).append('\'');
-        sb.append(", timeBetweenEvictionRunsMillis='").append(timeBetweenEvictionRunsMillis).append('\'');
-        sb.append(", minEvictableIdleTimeMillis='").append(minEvictableIdleTimeMillis).append('\'');
-        sb.append(", numTestsPerEvictionRun='").append(numTestsPerEvictionRun).append('\'');
-        sb.append(", logAbandoned='").append(logAbandoned).append('\'');
-        sb.append(", testOnBorrow='").append(testOnBorrow).append('\'');
-        sb.append(", testOnReturn='").append(testOnReturn).append('\'');
-        sb.append(", testWhileIdle='").append(testWhileIdle).append('\'');
+        sb.append(", initialSize=").append(initialSize);
+        sb.append(", maxTotal=").append(maxTotal);
+        sb.append(", maxWaitMillis=").append(maxWaitMillis);
+        sb.append(", maxIdle=").append(maxIdle);
+        sb.append(", minIdle=").append(minIdle);
+        sb.append(", removeAbandonedOnBorrow=").append(removeAbandonedOnBorrow);
+        sb.append(", removeAbandonedTimeout=").append(removeAbandonedTimeout);
+        sb.append(", timeBetweenEvictionRunsMillis=").append(timeBetweenEvictionRunsMillis);
+        sb.append(", minEvictableIdleTimeMillis=").append(minEvictableIdleTimeMillis);
+        sb.append(", numTestsPerEvictionRun=").append(numTestsPerEvictionRun);
+        sb.append(", logAbandoned=").append(logAbandoned);
+        sb.append(", testOnBorrow=").append(testOnBorrow);
+        sb.append(", testOnReturn=").append(testOnReturn);
+        sb.append(", testWhileIdle=").append(testWhileIdle);
         sb.append(", validationQuery='").append(validationQuery).append('\'');
         sb.append('}');
         return sb.toString();
