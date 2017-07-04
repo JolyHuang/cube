@@ -12,11 +12,19 @@
 	<url>http://maven.apache.org</url>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>com.sharingif.cube.core</artifactId>
 			<version>${maven.project.com.sharingif.cube.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>${maven.project.springframework.groupId}</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${maven.project.springframework.release.version}</version>
+		</dependency>
+
 	</dependencies>
 	
 </project>

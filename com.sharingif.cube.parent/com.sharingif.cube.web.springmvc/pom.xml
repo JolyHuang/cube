@@ -54,11 +54,6 @@
 		</dependency>
 		<dependency>
 			<groupId>${maven.project.springframework.groupId}</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${maven.project.springframework.release.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${maven.project.springframework.groupId}</groupId>
 			<artifactId>spring-context-support</artifactId>
 			<version>${maven.project.springframework.release.version}</version>
 		</dependency>
