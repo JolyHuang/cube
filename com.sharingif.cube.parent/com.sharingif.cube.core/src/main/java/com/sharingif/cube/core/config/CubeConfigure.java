@@ -55,10 +55,10 @@ public final class CubeConfigure {
 			defaultEncoding = "UTF-8";
 		}
 		DEFAULT_ENCODING = defaultEncoding;
-		initParameterLogger(DEFAULT_ENCODING);
+		initParameterLogger(DEFAULT_ENCODING_KEY, DEFAULT_ENCODING);
 
 		EXTERNAL_CONFIGURE = properties.getProperty(EXTERNAL_CONFIGURE_KEY).trim();
-		initParameterLogger(EXTERNAL_CONFIGURE);
+		initParameterLogger(EXTERNAL_CONFIGURE_KEY, EXTERNAL_CONFIGURE);
 
 		String defaultTimeZone = null;
 		try {
@@ -68,7 +68,7 @@ public final class CubeConfigure {
 			defaultTimeZone = "GMT+0800";// 中国上海
 		}
 		DEFAULT_TIME_ZONE = defaultTimeZone;
-		initParameterLogger(DEFAULT_TIME_ZONE);
+		initParameterLogger(DEFAULT_TIME_ZONE_KEY, DEFAULT_TIME_ZONE);
 
 	}
 
@@ -76,8 +76,8 @@ public final class CubeConfigure {
 		logger.warn("Could not find key '{}' in CubeConfigure.properties", key);
 	}
 
-	private static void initParameterLogger(String value) {
-		logger.info("system initialization parameter DEFAULT_TIME_ZONE=[{}]", value);
+	private static void initParameterLogger(String key, String value) {
+		logger.info("system initialization parameter {}=[{}]", key, value);
 	}
 	
 }
