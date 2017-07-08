@@ -35,7 +35,7 @@ public class DateUtils {
 	 * @param dateFormat
 	 * @return
 	 */
-	public static String getDate(String dateFormat){
+	public static String getCurrentDate(String dateFormat){
 		SimpleDateFormat format = new SimpleDateFormat(dateFormat);
 		return format.format(new Date(System.currentTimeMillis()));
 	}

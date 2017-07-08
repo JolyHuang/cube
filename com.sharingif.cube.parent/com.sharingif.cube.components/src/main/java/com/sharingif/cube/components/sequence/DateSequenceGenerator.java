@@ -19,7 +19,7 @@ public class DateSequenceGenerator extends AbstractSequenceGenerator<String> {
 
     @Override
     public String generateSequence() {
-        return DateUtils.getDate(dateFormat);
+        return DateUtils.getCurrentDate(dateFormat);
     }
 
 }
