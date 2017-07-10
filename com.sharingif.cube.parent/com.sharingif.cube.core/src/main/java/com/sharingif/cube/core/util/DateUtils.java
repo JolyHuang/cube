@@ -110,4 +110,16 @@ public class DateUtils {
 		return add(new Date(), Calendar.MINUTE, amount);
 	}
 
+	/**
+	 * 计算两个日期相差天数
+	 * @param startDate ： 开始日期
+	 * @param endDate	： 结束日期
+	 * @return
+	 */
+	public static int intervalDay(Date startDate, Date endDate) {
+		long intervalDay = (startDate.getTime() - endDate.getTime())/(24*60*60*1000);
+
+		return intervalDay >=0 ? (int)intervalDay : (int)(0-intervalDay);
+	}
+
 }
