@@ -119,7 +119,7 @@ public class DateUtils {
 	public static int intervalDay(Date startDate, Date endDate) {
 		long intervalDay = (startDate.getTime() - endDate.getTime())/(24*60*60*1000);
 
-		return intervalDay >=0 ? (int)intervalDay : (int)(0-intervalDay);
+		return Math.abs((int) intervalDay);
 	}
 
 }
