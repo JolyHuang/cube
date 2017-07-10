@@ -92,13 +92,23 @@ public class DateUtils {
 	}
 
 	/**
-	 * 时间添加指定分钟
+	 * 日期添加指定分钟
 	 * @param date : 日期
 	 * @param amount : 分钟
 	 * @return
 	 */
 	public static Date addDateMinute(Date date, int amount) {
 		return add(date, Calendar.MINUTE, amount);
+	}
+
+	/**
+	 * 日期添加指定天
+	 * @param date : 日期
+	 * @param day : 天
+	 * @return
+	 */
+	public static Date addDateDay(Date date, int day) {
+		return add(date, Calendar.DATE, day);
 	}
 
 	/**
