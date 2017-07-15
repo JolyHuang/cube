@@ -33,20 +33,15 @@ $('#reload-slider').click(function(e){
     var get_longitude = $('#google-map').data('longitude');
 
     function initialize_google_map() {
-        var myLatlng = new google.maps.LatLng(get_latitude, get_longitude);
+        var myLatlng = [get_longitude, get_longitude];
         var mapOptions = {
             zoom: 14,
             scrollwheel: false,
             center: myLatlng
         };
-        var map = new google.maps.Map(document.getElementById('google-map'), mapOptions);
-        var marker = new google.maps.Marker({
-            position: myLatlng,
-            map: map
-        });
+        var map = new AMap.Marker("google-map", mapOptions);
     }
-    google.maps.event.addDomListener(window, 'load', initialize_google_map);
-		
+    initialize_google_map();
 })(jQuery);
 
 
