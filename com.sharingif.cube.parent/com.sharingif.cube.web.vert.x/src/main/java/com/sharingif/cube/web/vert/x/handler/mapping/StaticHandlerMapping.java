@@ -40,7 +40,7 @@ public class StaticHandlerMapping extends AbstractHandlerMapping<RoutingContext,
 
                 StaticHandler staticHandler = urlMap.get(pattern);
 
-                logger.debug("Returning handler method [" + staticHandler.getClass().getSimpleName() + "]");
+                logger.debug("Returning handler method [{}]", staticHandler.getClass().getSimpleName());
 
                 return staticHandler;
             }
