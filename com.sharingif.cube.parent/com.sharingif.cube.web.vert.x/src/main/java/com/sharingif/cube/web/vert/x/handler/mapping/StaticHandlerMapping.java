@@ -9,6 +9,8 @@ import com.sharingif.cube.core.request.RequestInfo;
 
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.StaticHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 处理静态页面
@@ -19,6 +21,8 @@ import io.vertx.ext.web.handler.StaticHandler;
  * @since v1.0
  */
 public class StaticHandlerMapping extends AbstractHandlerMapping<RoutingContext,StaticHandler> {
+
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final Map<String, StaticHandler> urlMap = new LinkedHashMap<String, StaticHandler>();
 
@@ -33,10 +37,17 @@ public class StaticHandlerMapping extends AbstractHandlerMapping<RoutingContext,
     protected StaticHandler getHandlerInternal(RequestInfo<RoutingContext> request) throws CubeException {
         for(String pattern : urlMap.keySet()) {
             if(getPathMatcher().match(pattern, request.getLookupPath())) {
-                return urlMap.get(pattern);
+
+                StaticHandler staticHandler = urlMap.get(pattern);
+
+                logger.debug("Returning handler method [" + staticHandler.getClass().getSimpleName() + "]");
+
+                return staticHandler;
             }
 
         }
+
+        logger.debug("Did not find handler method for [" + request.getLookupPath() + "]");
 
         return null;
     }
