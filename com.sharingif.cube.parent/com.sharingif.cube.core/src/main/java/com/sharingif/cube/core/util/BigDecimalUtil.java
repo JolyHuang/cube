@@ -71,11 +71,11 @@ public class BigDecimalUtil {
 	/**
 	 * 金额格式化
 	 * @param amount ： 金额
-	 * @param patten : 格式
+	 * @param pattern : 格式
 	 * @return
 	 */
-	public static String formatDecimal(BigDecimal amount, String patten) {
-		DecimalFormat decimalFormat = new DecimalFormat(patten);
+	public static String formatDecimal(BigDecimal amount, String pattern) {
+		DecimalFormat decimalFormat = new DecimalFormat(pattern);
 		return decimalFormat.format(amount);
 	}
 
