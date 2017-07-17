@@ -83,11 +83,7 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 		router.post().handler(BodyHandler.create());
 		router.put().handler(BodyHandler.create());
 		String allPath = new StringBuilder(basePath).append("/*").toString();
-		router.route(allPath)
-				.handler(ctx -> {
-					ctx.request().setExpectMultipart(true);
-					ctx.next();
-				}).blockingHandler(routingContext -> {
+		router.route(allPath).blockingHandler(routingContext -> {
 			getDispatcherHandler().doDispatch(new ExtendedRoutingContext(getContextPath(), routingContext));
 		},false);
 		
