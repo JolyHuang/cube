@@ -1,6 +1,7 @@
 package com.sharingif.cube.core.util;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 /**   
  *  
@@ -66,5 +67,16 @@ public class BigDecimalUtil {
 		}
 		return value;
 	}
-	
+
+	/**
+	 * 金额格式化
+	 * @param amount ： 金额
+	 * @param patten : 格式
+	 * @return
+	 */
+	public static String formatDecimal(BigDecimal amount, String patten) {
+		DecimalFormat decimalFormat = new DecimalFormat(patten);
+		return decimalFormat.format(amount);
+	}
+
 }
