@@ -25,7 +25,7 @@ public class VertXDispatcherHandler extends AbstractDispatcherHandler<ExtendedRo
 				,null
 				,null
 				,null
-				,new RequestInfo<RoutingContext>(null,null,null,null,request.getRoutingContext())
+				,new RequestInfo<RoutingContext>(null,request.getContextPath(),null,request.getRoutingContext().request().rawMethod(),request.getRoutingContext())
 				,new VertXHttpRequest(request.getRoutingContext().request())
 				,new VertXHttpResponse(request.getRoutingContext().request().response())
 		);
