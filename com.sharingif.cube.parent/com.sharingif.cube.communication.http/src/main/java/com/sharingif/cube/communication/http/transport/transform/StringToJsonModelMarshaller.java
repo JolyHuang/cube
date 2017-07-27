@@ -1,14 +1,21 @@
 package com.sharingif.cube.communication.http.transport.transform;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.Map;
 import java.util.TimeZone;
 
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.sharingif.cube.communication.JsonModel;
 import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.handler.bind.support.BindingInitializer;
 import com.sharingif.cube.core.transport.exception.MarshallerException;
 import com.sharingif.cube.core.transport.transform.Marshaller;
+import com.sharingif.cube.core.transport.transform.MethodParameterArgument;
+import org.springframework.core.ResolvableType;
 
 /**
  * JsonUnmarshaller
@@ -17,7 +24,7 @@ import com.sharingif.cube.core.transport.transform.Marshaller;
  * @version v1.0
  * @since v1.0
  */
-public class StringToJsonModelMarshaller implements Marshaller<String, JsonModel<Map<String, Object>>> {
+public class StringToJsonModelMarshaller implements Marshaller<MethodParameterArgument<Object[],String>, JsonModel<Object>> {
 	
 	private ObjectMapper objectMapper;
 	private BindingInitializer bindingInitializer;
@@ -39,14 +46,25 @@ public class StringToJsonModelMarshaller implements Marshaller<String, JsonModel
 		this.bindingInitializer = bindingInitializer;
 	}
 
-	@SuppressWarnings("unchecked")
+
 	@Override
-	public JsonModel<Map<String, Object>> marshaller(String data) throws MarshallerException {
+	public JsonModel<Object> marshaller(MethodParameterArgument<Object[], String> methodParameterArgument) throws MarshallerException {
+
+		JavaType javaType = getJavaType(methodParameterArgument.getMethodParameter().getMethod().getReturnType());
+
+		JsonModel<Object> object;
 		try {
-			return new JsonModel<Map<String, Object>>(objectMapper.readValue(data, Map.class));
+			object = objectMapper.readValue(methodParameterArgument.getConnectReturnValue(), javaType);
 		} catch (Exception e) {
 			throw new MarshallerException("marshaller json to object error", e);
 		}
+
+		return object;
 	}
-	
+
+	protected JavaType getJavaType(Type type) {
+		TypeFactory typeFactory = this.objectMapper.getTypeFactory();
+		return typeFactory.constructType(type);
+	}
+
 }
