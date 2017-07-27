@@ -10,10 +10,10 @@ import com.sharingif.cube.communication.JsonModel;
  * @since v1.0
  * 2017/7/27 下午4:21
  */
-public class JsonModelBusinessCommunicationExceptionHandler implements IBusinessCommunicationExceptionHandler<JsonModel> {
+public class JsonModelBusinessCommunicationExceptionHandler implements IBusinessCommunicationExceptionHandler<JsonModel<Object>> {
 
     @Override
-    public void handleCommunicationException(JsonModel jsonModel) throws BusinessCommunicationException {
+    public void handleCommunicationException(JsonModel<Object> jsonModel) throws BusinessCommunicationException {
 
         if(jsonModel.get_tranStatus()) {
             return;
