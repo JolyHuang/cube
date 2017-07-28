@@ -4,10 +4,11 @@ package com.sharingif.cube.security.web.spring.handler.chain.command.access;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sharingif.cube.core.exception.CubeException;
+import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
+import com.sharingif.cube.core.handler.chain.command.AbstractHandlerMethodCommand;
 import com.sharingif.cube.core.util.StringUtils;
 import com.sharingif.cube.security.web.access.INoUserHandler;
-import com.sharingif.cube.web.springmvc.handler.SpringMVCHandlerMethodContent;
-import com.sharingif.cube.web.springmvc.handler.chain.command.AbstractSpringMVCHandlerMethodCommand;
+import com.sharingif.cube.web.springmvc.request.SpringMVCHttpRequestInfo;
 
 /**
  *
@@ -20,7 +21,7 @@ import com.sharingif.cube.web.springmvc.handler.chain.command.AbstractSpringMVCH
  * @Version:      [v1.0]
  *
  */
-public class LoginRefererWebCommand extends AbstractSpringMVCHandlerMethodCommand{
+public class LoginRefererWebCommand extends AbstractHandlerMethodCommand{
 	
 	private INoUserHandler noUserHandler;
 	
@@ -32,14 +33,15 @@ public class LoginRefererWebCommand extends AbstractSpringMVCHandlerMethodComman
 	}
 
 	@Override
-	public void execute(SpringMVCHandlerMethodContent content) throws CubeException {
+	public void execute(HandlerMethodContent content) throws CubeException {
 		Object returnValue = content.getReturnValue();
 		if(!(returnValue instanceof ModelAndView)){
 			return;
 		}
 		
 		ModelAndView modelAndView = (ModelAndView)returnValue;
-		String referer = noUserHandler.handleReferer(content.getRequest());
+		SpringMVCHttpRequestInfo httpRequestInfo = content.getRequestInfo();
+		String referer = noUserHandler.handleReferer(httpRequestInfo.getRequest());
 		if(!StringUtils.isEmpty(referer)){
 			modelAndView.setViewName(referer);
 		}

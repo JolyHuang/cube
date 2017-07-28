@@ -6,11 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.sharingif.cube.communication.http.HttpRequest;
+import com.sharingif.cube.communication.http.HttpResponse;
 import com.sharingif.cube.communication.http.HttpSession;
-import com.sharingif.cube.communication.http.handler.HttpHandlerMethodContent;
+import com.sharingif.cube.communication.http.request.HttpRequestInfo;
 import com.sharingif.cube.core.exception.CubeException;
+import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
+import com.sharingif.cube.core.handler.chain.command.AbstractHandlerMethodCommand;
 import com.sharingif.cube.security.web.access.NoUserHandlerImpl;
-import com.sharingif.cube.web.handler.chain.command.AbstractWebHandlerMethodCommand;
 
 /**   
  *  
@@ -23,7 +26,7 @@ import com.sharingif.cube.web.handler.chain.command.AbstractWebHandlerMethodComm
  * @Version:      [v1.0] 
  *    
  */
-public class InvalidateHttpSessionWebCommand extends AbstractWebHandlerMethodCommand {
+public class InvalidateHttpSessionWebCommand extends AbstractHandlerMethodCommand {
 	
 	private List<String> copyAttributeNames;
 	
@@ -45,8 +48,10 @@ public class InvalidateHttpSessionWebCommand extends AbstractWebHandlerMethodCom
 	}
 
 	@Override
-	public void execute(HttpHandlerMethodContent content) throws CubeException {
-		HttpSession oldSession = content.getRequest().getSession(false);
+	public void execute(HandlerMethodContent content) throws CubeException {
+		HttpRequestInfo<HttpRequest,HttpResponse> httpRequestInfo = content.getRequestInfo();
+		
+		HttpSession oldSession = httpRequestInfo.getRequest().getSession(false);
 		
 		Map<String,Object> attributeMap = new HashMap<String,Object>(copyAttributeNames.size());
 		if(null != oldSession){
@@ -58,7 +63,7 @@ public class InvalidateHttpSessionWebCommand extends AbstractWebHandlerMethodCom
 		if(null != oldSession)
 			oldSession.invalidate();
 		
-		HttpSession newSession = content.getRequest().getSession(true);
+		HttpSession newSession = httpRequestInfo.getRequest().getSession(true);
 		for(String attributeName : copyAttributeNames){
 			newSession.setAttribute(attributeName, attributeMap.get(attributeName));
 		}

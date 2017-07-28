@@ -5,6 +5,7 @@ import com.sharingif.cube.core.handler.adapter.HandlerMethodArgumentResolver;
 import com.sharingif.cube.core.handler.adapter.HandlerMethodArgumentResolverComposite;
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
 import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
+import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.core.util.CubeExceptionUtil;
 import org.springframework.core.DefaultParameterNameDiscoverer;
@@ -27,7 +28,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 	
 	private ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
 	
-	private HandlerMethodChain<HandlerMethodContent> handlerMethodChain;
+	private HandlerMethodChain handlerMethodChain;
 	
 	protected InvocableHandlerMethod(HandlerMethod handlerMethod) {
 		super(handlerMethod);
@@ -67,11 +68,11 @@ public class InvocableHandlerMethod extends HandlerMethod {
 		return parameterNameDiscoverer;
 	}
 
-	public HandlerMethodChain<HandlerMethodContent> getHandlerMethodChain() {
+	public HandlerMethodChain getHandlerMethodChain() {
 		return handlerMethodChain;
 	}
 
-	public void setHandlerMethodChain(HandlerMethodChain<HandlerMethodContent> handlerMethodChain) {
+	public void setHandlerMethodChain(HandlerMethodChain handlerMethodChain) {
 		this.handlerMethodChain = handlerMethodChain;
 	}
 

@@ -1,9 +1,12 @@
 package com.sharingif.cube.communication.http.handler.chain;
 
-import com.sharingif.cube.communication.http.handler.HttpHandlerMethodContent;
+import com.sharingif.cube.communication.http.HttpRequest;
+import com.sharingif.cube.communication.http.HttpResponse;
+import com.sharingif.cube.communication.http.request.HttpRequestInfo;
 import com.sharingif.cube.components.sequence.ISequenceGenerator;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.chain.AbstractHandlerMethodChain;
+import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.core.handler.request.RequestLocalContextHolder;
 import com.sharingif.cube.core.util.StringUtils;
 
@@ -14,7 +17,7 @@ import com.sharingif.cube.core.util.StringUtils;
  * @version v1.0
  * @since v1.0
  */
-public class HttpRequestLocalContextHolderChain extends AbstractHandlerMethodChain<HttpHandlerMethodContent> {
+public class HttpRequestLocalContextHolderChain extends AbstractHandlerMethodChain {
 	
 	private ISequenceGenerator<String> sequenceGenerator;
 	
@@ -26,22 +29,24 @@ public class HttpRequestLocalContextHolderChain extends AbstractHandlerMethodCha
 	}
 
 	@Override
-	public void before(HttpHandlerMethodContent handlerMethodContent) throws CubeException {
+	public void before(HandlerMethodContent handlerMethodContent) throws CubeException {
 		RequestLocalContextHolder.init(getSequence(handlerMethodContent));
 	}
 	
 	@Override
-	public void after(HttpHandlerMethodContent handlerMethodContent) throws CubeException {
+	public void after(HandlerMethodContent handlerMethodContent) throws CubeException {
 		RequestLocalContextHolder.clearContext();
 	}
 	
 	@Override
-	public void exception(HttpHandlerMethodContent handlerMethodContent, Exception exception) {
+	public void exception(HandlerMethodContent handlerMethodContent, Exception exception) {
 		RequestLocalContextHolder.clearContext();
 	}
 	
-	protected String getSequence(HttpHandlerMethodContent handlerMethodContent) {
-		String uniqueNumber = handlerMethodContent.getRequest().getHeader("_uniqueNumber");
+	protected String getSequence(HandlerMethodContent content) {
+		HttpRequestInfo<HttpRequest,HttpResponse> httpRequestInfo = content.getRequestInfo();
+		
+		String uniqueNumber = httpRequestInfo.getRequest().getHeader("_uniqueNumber");
 		if(StringUtils.isEmpty(uniqueNumber)) {
 			uniqueNumber = sequenceGenerator.generateSequence();
 		}

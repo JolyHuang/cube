@@ -6,7 +6,6 @@ import java.util.Map;
 import org.slf4j.MDC;
 
 import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.handler.HandlerMethodContent;
 import com.sharingif.cube.core.handler.request.RequestLocalContextHolder;
 import com.sharingif.cube.core.user.CoreUserContextHolder;
 import com.sharingif.cube.core.user.ICoreUser;
@@ -22,7 +21,7 @@ import com.sharingif.cube.core.user.ICoreUser;
  * @Version:      [v1.0]
  *
  */
-public class MDCChain extends AbstractHandlerMethodChain<HandlerMethodContent> {
+public class MDCChain extends AbstractHandlerMethodChain {
 
 	@Override
 	public void before(HandlerMethodContent handlerMethodContent) throws CubeException {

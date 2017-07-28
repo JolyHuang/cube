@@ -2,7 +2,7 @@ package com.sharingif.cube.communication.handler.chain;
 
 import com.sharingif.cube.communication.JsonModel;
 import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.handler.HandlerMethodContent;
+import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.core.handler.chain.AbstractHandlerMethodChain;
 
 /**
@@ -13,13 +13,14 @@ import com.sharingif.cube.core.handler.chain.AbstractHandlerMethodChain;
  * @since v1.0
  * 2017/7/27 下午4:28
  */
-public class JsonModelTransportChain extends AbstractHandlerMethodChain<HandlerMethodContent> {
+public class JsonModelTransportChain extends AbstractHandlerMethodChain {
     @Override
     public void before(HandlerMethodContent handlerMethodContent) throws CubeException {
 
     }
 
-    @Override
+    @SuppressWarnings("rawtypes")
+	@Override
     public void after(HandlerMethodContent handlerMethodContent) throws CubeException {
         JsonModel jsonModel = (JsonModel) handlerMethodContent.getReturnValue();
 
