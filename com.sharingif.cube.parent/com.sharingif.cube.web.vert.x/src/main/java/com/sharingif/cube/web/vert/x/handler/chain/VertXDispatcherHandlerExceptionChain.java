@@ -1,12 +1,12 @@
 package com.sharingif.cube.web.vert.x.handler.chain;
 
 import com.sharingif.cube.communication.MediaType;
-import com.sharingif.cube.communication.http.handler.HttpHandlerMethodContent;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.chain.AbstractHandlerMethodChain;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
+import com.sharingif.cube.web.vert.x.request.VertXRequestInfo;
+
 import io.vertx.core.http.HttpHeaders;
-import io.vertx.ext.web.RoutingContext;
 
 /**
  * vert.x 处理器异常处理责任链
@@ -16,24 +16,23 @@ import io.vertx.ext.web.RoutingContext;
  * @version v1.0
  * @since v1.0
  */
-public class VertXDispatcherHandlerExceptionChain extends AbstractHandlerMethodChain<HttpHandlerMethodContent> {
+public class VertXDispatcherHandlerExceptionChain extends AbstractHandlerMethodChain {
 
     @Override
-    public void before(HttpHandlerMethodContent handlerMethodContent) throws CubeException {
+    public void before(HandlerMethodContent handlerMethodContent) throws CubeException {
 
     }
 
     @Override
-    public void after(HttpHandlerMethodContent handlerMethodContent) throws CubeException {
+    public void after(HandlerMethodContent handlerMethodContent) throws CubeException {
 
     }
 
-    @SuppressWarnings("unchecked")
 	@Override
-    public void exception(HttpHandlerMethodContent content, Exception exception) throws CubeException {
-        RequestInfo<RoutingContext> requestInfo = (RequestInfo<RoutingContext>) content.getRequestInfo();
+    public void exception(HandlerMethodContent content, Exception exception) throws CubeException {
+    	VertXRequestInfo vertXRequestInfo =  content.getRequestInfo();
 
-        requestInfo.getRequest().response()
+    	vertXRequestInfo.getResponse().getHttpServerResponse()
                 .putHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
                 .setStatusCode(404)
                 .end();

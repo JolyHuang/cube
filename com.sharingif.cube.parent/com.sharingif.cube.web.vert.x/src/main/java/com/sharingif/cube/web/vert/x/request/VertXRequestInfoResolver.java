@@ -1,7 +1,8 @@
 package com.sharingif.cube.web.vert.x.request;
 
-import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.core.request.RequestInfoResolver;
+import com.sharingif.cube.web.vert.x.http.VertXHttpRequest;
+import com.sharingif.cube.web.vert.x.http.VertXHttpResponse;
 
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpServerRequest;
@@ -14,10 +15,10 @@ import io.vertx.ext.web.RoutingContext;
  * @version v1.0
  * @since v1.0
  */
-public class VertXRequestInfoResolver implements RequestInfoResolver<ExtendedRoutingContext, RoutingContext> {
+public class VertXRequestInfoResolver implements RequestInfoResolver<ExtendedRoutingContext, VertXRequestInfo> {
 
 	@Override
-	public RequestInfo<RoutingContext> resolveRequest(ExtendedRoutingContext request) {
+	public VertXRequestInfo resolveRequest(ExtendedRoutingContext request) {
 
 		HttpServerRequest httpServerRequest = request.getRoutingContext().request();
 		
@@ -26,7 +27,13 @@ public class VertXRequestInfoResolver implements RequestInfoResolver<ExtendedRou
 		String method = httpServerRequest.rawMethod();
 		RoutingContext routingContext = request.getRoutingContext();
 		
-		RequestInfo<RoutingContext> requestInfo = new RequestInfo<RoutingContext>(mediaType,lookupPath,null,method,routingContext);
+		VertXRequestInfo requestInfo = new VertXRequestInfo(
+				mediaType
+				,lookupPath
+				,null
+				,method
+				,new VertXHttpRequest(routingContext.request())
+				,new VertXHttpResponse(routingContext.response()));
 		
 		return requestInfo;
 	}

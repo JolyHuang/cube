@@ -1,11 +1,14 @@
 package com.sharingif.cube.web.handler.chain.command.token;
 
-import com.sharingif.cube.communication.http.handler.HttpHandlerMethodContent;
+import com.sharingif.cube.communication.http.HttpRequest;
+import com.sharingif.cube.communication.http.HttpResponse;
+import com.sharingif.cube.communication.http.request.HttpRequestInfo;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.exception.validation.TokenValidationCubeException;
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
+import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
+import com.sharingif.cube.core.handler.chain.command.AbstractHandlerMethodCommand;
 import com.sharingif.cube.web.components.token.WebTokenManager;
-import com.sharingif.cube.web.handler.chain.command.AbstractWebHandlerMethodCommand;
 
 /**   
  *  
@@ -18,7 +21,7 @@ import com.sharingif.cube.web.handler.chain.command.AbstractWebHandlerMethodComm
  * @Version:      [v1.0] 
  *    
  */
-public class VerifyCaptchTokenWebCommand extends AbstractWebHandlerMethodCommand {
+public class VerifyCaptchTokenWebCommand extends AbstractHandlerMethodCommand {
 	
 	private WebTokenManager webTokenManager;
 
@@ -31,13 +34,14 @@ public class VerifyCaptchTokenWebCommand extends AbstractWebHandlerMethodCommand
 
 	/**
 	 * 当token为验证码时抛出ValidationCubeException，跳回原页面显示验证码错误
-	 * @param tokenVerifyFailure
 	 * @return
 	 */
 	@Override
-	public void execute(HttpHandlerMethodContent content) throws CubeException {
+	public void execute(HandlerMethodContent content) throws CubeException {
 		try {
-			webTokenManager.verifyToken(content.getRequest());
+			HttpRequestInfo<HttpRequest,HttpResponse> httpRequestInfo = content.getRequestInfo();
+			
+			webTokenManager.verifyToken(httpRequestInfo.getRequest());
 		} catch (TokenValidationCubeException e) {
 			throw new ValidationCubeException(e.getMessage());
 		}

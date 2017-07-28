@@ -1,12 +1,14 @@
 package com.sharingif.cube.web.vert.x.handler;
 
 import com.sharingif.cube.communication.handler.AbstractDispatcherHandler;
-import com.sharingif.cube.communication.http.handler.HttpHandlerMethodContent;
-import com.sharingif.cube.core.handler.HandlerMethodContent;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.web.vert.x.http.VertXHttpRequest;
 import com.sharingif.cube.web.vert.x.http.VertXHttpResponse;
 import com.sharingif.cube.web.vert.x.request.ExtendedRoutingContext;
+import com.sharingif.cube.web.vert.x.request.VertXRequestInfo;
+
+import io.vertx.core.http.HttpHeaders;
+import io.vertx.core.http.HttpServerRequest;
 import io.vertx.ext.web.RoutingContext;
 
 /**
@@ -20,14 +22,28 @@ public class VertXDispatcherHandler extends AbstractDispatcherHandler<ExtendedRo
 
 	@Override
 	protected HandlerMethodContent getHandlerMethodContent(ExtendedRoutingContext request) {
-		HttpHandlerMethodContent webHandlerMethodContent = new HttpHandlerMethodContent(
+		
+		HttpServerRequest httpServerRequest = request.getRoutingContext().request();
+		
+		String mediaType = httpServerRequest.headers().get(HttpHeaders.CONTENT_TYPE);
+		String lookupPath = httpServerRequest.path().replace(new StringBuilder("/").append(request.getContextPath()).toString(), "");
+		String method = httpServerRequest.rawMethod();
+		RoutingContext routingContext = request.getRoutingContext();
+		
+		VertXRequestInfo requestInfo = new VertXRequestInfo(
+				mediaType
+				,lookupPath
+				,null
+				,method
+				,new VertXHttpRequest(routingContext.request())
+				,new VertXHttpResponse(routingContext.response()));
+		
+		HandlerMethodContent webHandlerMethodContent = new HandlerMethodContent(
 				null
 				,null
 				,null
 				,null
-				,new RequestInfo<RoutingContext>(null,request.getContextPath(),null,request.getRoutingContext().request().rawMethod(),request.getRoutingContext())
-				,new VertXHttpRequest(request.getRoutingContext().request())
-				,new VertXHttpResponse(request.getRoutingContext().request().response())
+				,requestInfo
 		);
 		
 		return webHandlerMethodContent;
