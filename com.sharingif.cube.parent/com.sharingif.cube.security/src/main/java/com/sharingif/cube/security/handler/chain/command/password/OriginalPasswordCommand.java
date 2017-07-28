@@ -2,7 +2,7 @@ package com.sharingif.cube.security.handler.chain.command.password;
 
 import com.sharingif.cube.components.password.IOriginalPassword;
 import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.handler.HandlerMethodContent;
+import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.core.handler.chain.command.AbstractHandlerMethodCommand;
 import com.sharingif.cube.core.user.ICoreUser;
 import com.sharingif.cube.security.authentication.password.IOriginalPasswordHandler;

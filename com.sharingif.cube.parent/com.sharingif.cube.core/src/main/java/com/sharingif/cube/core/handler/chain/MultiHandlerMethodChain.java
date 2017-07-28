@@ -1,10 +1,9 @@
 package com.sharingif.cube.core.handler.chain;
 
-import java.util.List;
-
 import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.handler.HandlerMethodContent;
 import com.sharingif.cube.core.util.CubeExceptionUtil;
+
+import java.util.List;
 
 /**
  * 多种组合HandlerMethodChain
@@ -13,25 +12,25 @@ import com.sharingif.cube.core.util.CubeExceptionUtil;
  * @version v1.0
  * @since v1.0
  */
-public class MultiHandlerMethodChain<T extends HandlerMethodContent> extends AbstractHandlerMethodChain<T> {
+public class MultiHandlerMethodChain extends AbstractHandlerMethodChain {
 	
-	private List<HandlerMethodChain<? super T>> chains;
+	private List<HandlerMethodChain> chains;
 
-	public List<HandlerMethodChain<? super T>> getChains() {
+	public List<HandlerMethodChain> getChains() {
 		return chains;
 	}
-	public void setChains(List<HandlerMethodChain<? super T>> chains) {
+	public void setChains(List<HandlerMethodChain> chains) {
 		this.chains = chains;
 	}
 
 	@Override
-	public void before(T handlerMethodContent) throws CubeException {
+	public void before(HandlerMethodContent handlerMethodContent) throws CubeException {
 		if(null == chains) {
 			return;
 		}
 		
 		for(int i=0; i<chains.size(); i++){
-			HandlerMethodChain<? super T> chain = null;
+			HandlerMethodChain chain = null;
 			try {
 				chain = chains.get(i);
 				chain.before(handlerMethodContent);
@@ -43,13 +42,13 @@ public class MultiHandlerMethodChain<T extends HandlerMethodContent> extends Abs
 	}
 	
 	@Override
-	public void after(T handlerMethodContent) throws CubeException {
+	public void after(HandlerMethodContent handlerMethodContent) throws CubeException {
 		if(null == chains) {
 			return;
 		}
 		
 		for(int i=(chains.size()-1); i>-1; i--){
-			HandlerMethodChain<? super T> chain = null;
+			HandlerMethodChain chain = null;
 			try {
 				chain = chains.get(i);
 				chain.after(handlerMethodContent);
@@ -60,14 +59,14 @@ public class MultiHandlerMethodChain<T extends HandlerMethodContent> extends Abs
 	}
 	
 	@Override
-	public void exception(T handlerMethodContent, Exception exception) throws CubeException {
+	public void exception(HandlerMethodContent handlerMethodContent, Exception exception) throws CubeException {
 		if(null == chains) {
 			return;
 		}
 		
 		
 		for(int i=(chains.size()-1); i>-1; i--){
-			HandlerMethodChain<? super T> chain = null;
+			HandlerMethodChain chain = null;
 			try {
 				chain = chains.get(i);
 				chain.exception(handlerMethodContent, exception);

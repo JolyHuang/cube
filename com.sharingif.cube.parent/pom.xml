@@ -41,9 +41,6 @@
 		<module>com.sharingif.cube.security.web</module>
 		<module>com.sharingif.cube.security.web.spring</module>
 
-		<module>com.sharingif.cube.components.payments</module>
-		<module>com.sharingif.cube.components.payments.chinapay.p2b</module>
-
 		<module>com.sharingif.cube.support</module>
 
 		<module>com.sharingif.cube.communication</module>

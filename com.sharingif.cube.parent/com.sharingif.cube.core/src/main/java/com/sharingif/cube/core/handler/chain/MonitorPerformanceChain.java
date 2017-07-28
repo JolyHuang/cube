@@ -1,7 +1,6 @@
 package com.sharingif.cube.core.handler.chain;
 
 import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.handler.HandlerMethodContent;
 
 /**
  * 日志监控
@@ -10,7 +9,7 @@ import com.sharingif.cube.core.handler.HandlerMethodContent;
  * @version v1.0
  * @since v1.0
  */
-public class MonitorPerformanceChain extends AbstractHandlerMethodChain<HandlerMethodContent> {
+public class MonitorPerformanceChain extends AbstractHandlerMethodChain {
 	
 	private static final String BEGIN_CURRENT_TIME = "_beginCurrentTime";
 
