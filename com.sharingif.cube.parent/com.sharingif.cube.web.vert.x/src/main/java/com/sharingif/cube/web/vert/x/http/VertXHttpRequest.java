@@ -17,7 +17,7 @@ import io.vertx.core.http.HttpServerRequest;
  */
 public class VertXHttpRequest implements HttpRequest {
 	
-	private HttpServerRequest  httpServerRequest;
+	private HttpServerRequest httpServerRequest;
 	
 	public VertXHttpRequest(HttpServerRequest  httpServerRequest) {
 		this.httpServerRequest = httpServerRequest;

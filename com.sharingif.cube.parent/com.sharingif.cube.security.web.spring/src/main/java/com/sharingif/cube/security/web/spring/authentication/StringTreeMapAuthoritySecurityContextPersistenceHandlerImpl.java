@@ -69,7 +69,7 @@ public class StringTreeMapAuthoritySecurityContextPersistenceHandlerImpl impleme
 		
 		ICoreUser coreUser = webUserManage.getUser(request);
 		
-		HttpRequestResponseHolder holder = new HttpRequestResponseHolder(httpRequest.getRequest(), httpResponse.getResponse());
+		HttpRequestResponseHolder holder = new HttpRequestResponseHolder(httpRequest.getHttpServletRequest(), httpResponse.getHttpServletResponse());
 		SecurityContext securityContext = securityContextRepository.loadContext(holder);
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(coreUser, ((IPassword)coreUser).getPassword(), getAuthorities(coreUser)));
         

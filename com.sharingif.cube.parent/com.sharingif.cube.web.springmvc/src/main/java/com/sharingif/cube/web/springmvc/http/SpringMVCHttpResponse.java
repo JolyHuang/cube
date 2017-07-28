@@ -13,24 +13,24 @@ import com.sharingif.cube.communication.http.HttpResponse;
  */
 public class SpringMVCHttpResponse implements HttpResponse {
 	
-	private HttpServletResponse response;
+	private HttpServletResponse httpServletResponse;
 	
-	public SpringMVCHttpResponse(HttpServletResponse response) {
-		this.response = response;
+	public SpringMVCHttpResponse(HttpServletResponse httpServletResponse) {
+		this.httpServletResponse = httpServletResponse;
 	}
 	
-	public HttpServletResponse getResponse() {
-		return response;
+	public HttpServletResponse getHttpServletResponse() {
+		return httpServletResponse;
 	}
 
 	@Override
 	public void addHeader(String name, String value) {
-		getResponse().addHeader(name, value);
+		getHttpServletResponse().addHeader(name, value);
 	}
 
 	@Override
 	public void setStatus(int sc) {
-		getResponse().setStatus(sc);
+		getHttpServletResponse().setStatus(sc);
 	}
 
 }

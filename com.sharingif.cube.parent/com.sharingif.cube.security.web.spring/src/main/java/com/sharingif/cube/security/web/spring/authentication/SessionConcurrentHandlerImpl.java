@@ -43,8 +43,8 @@ public class SessionConcurrentHandlerImpl implements ISessionConcurrentHandler {
 				new UsernamePasswordAuthenticationToken(
 						coreUser
 						,((IPassword)coreUser).getPassword())
-						,((SpringMVCHttpRequest)request).getRequest()
-						,((SpringMVCHttpResponse)response).getResponse()
+						,((SpringMVCHttpRequest)request).getHttpServletRequest()
+						,((SpringMVCHttpResponse)response).getHttpServletResponse()
 		);
 	}
 

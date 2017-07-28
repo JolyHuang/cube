@@ -29,7 +29,7 @@ public class ViewRefererChain extends AbstractHandlerMethodChain {
 		SpringMVCHttpRequestInfo httpRequestInfo = content.getRequestInfo();
 		SpringMVCHttpRequest springMVCHttpRequest = httpRequestInfo.getRequest();
 
-		springMVCHttpRequest.setAttribute(VIEW_REFERER_NAME, new UrlPathHelper().getLookupPathForRequest(springMVCHttpRequest.getRequest()));
+		springMVCHttpRequest.setAttribute(VIEW_REFERER_NAME, new UrlPathHelper().getLookupPathForRequest(springMVCHttpRequest.getHttpServletRequest()));
 	}
 
 }

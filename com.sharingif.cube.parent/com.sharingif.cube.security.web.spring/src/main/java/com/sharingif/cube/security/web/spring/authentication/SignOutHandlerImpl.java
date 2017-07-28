@@ -65,7 +65,7 @@ public class SignOutHandlerImpl implements ISignOutHandler {
         session.invalidate();
         
         // 安全退出
-        logoutHandler.logout(httpRequest.getRequest(), httpResponse.getResponse(), null);
+        logoutHandler.logout(httpRequest.getHttpServletRequest(), httpResponse.getHttpServletResponse(), null);
 
 	}
 	

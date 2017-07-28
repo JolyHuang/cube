@@ -16,83 +16,81 @@ import java.util.Map;
  */
 public class SpringMVCHttpRequest implements HttpRequest {
 	
-	private HttpServletRequest request;
+	private HttpServletRequest httpServletRequest;
 	private SpringMVCHttpSession httpSession;
 	
-	public SpringMVCHttpRequest(HttpServletRequest request) {
-		this.request = request;
+	public SpringMVCHttpRequest(HttpServletRequest httpServletRequest) {
+		this.httpServletRequest = httpServletRequest;
 	}
 
-	public HttpServletRequest getRequest() {
-		return request;
+	public HttpServletRequest getHttpServletRequest() {
+		return httpServletRequest;
 	}
-
-
 
 	@Override
 	public int getContentLength() {
-		return getRequest().getContentLength();
+		return getHttpServletRequest().getContentLength();
 	}
 
 	@Override
 	public String getContentType() {
-		return getRequest().getContentType();
+		return getHttpServletRequest().getContentType();
 	}
 
 	@Override
 	public String getParameter(String name) {
-		return getRequest().getParameter(name);
+		return getHttpServletRequest().getParameter(name);
 	}
 
 	@Override
 	public void setAttribute(String name, Object o) {
-		getRequest().setAttribute(name, o);
+		getHttpServletRequest().setAttribute(name, o);
 	}
 
 	@Override
 	public String getHeader(String name) {
-		return getRequest().getHeader(name);
+		return getHttpServletRequest().getHeader(name);
 	}
 
 	@Override
 	public Enumeration<?> getHeaders(String name) {
-		return getRequest().getHeaders(name);
+		return getHttpServletRequest().getHeaders(name);
 	}
 
 	@Override
 	public Enumeration<?> getHeaderNames() {
-		return getRequest().getHeaderNames();
+		return getHttpServletRequest().getHeaderNames();
 	}
 
 	@Override
 	public String getMethod() {
-		return getRequest().getMethod();
+		return getHttpServletRequest().getMethod();
 	}
 
 	@Override
 	public String getContextPath() {
-		return getRequest().getContextPath();
+		return getHttpServletRequest().getContextPath();
 	}
 
 	@Override
 	public String getRequestURI() {
-		return getRequest().getRequestURI();
+		return getHttpServletRequest().getRequestURI();
 	}
 
 	@Override
 	public StringBuffer getRequestURL() {
-		return getRequest().getRequestURL();
+		return getHttpServletRequest().getRequestURL();
 	}
 
 	@Override
 	public String getQueryString() {
-		return getRequest().getQueryString();
+		return getHttpServletRequest().getQueryString();
 	}
 
 	@Override
 	public HttpSession getSession(boolean create) {
 		if(httpSession == null) {
-			javax.servlet.http.HttpSession httpServletSession = getRequest().getSession(create);
+			javax.servlet.http.HttpSession httpServletSession = getHttpServletRequest().getSession(create);
 			if(httpServletSession == null) {
 				return null;
 			}
@@ -108,7 +106,7 @@ public class SpringMVCHttpRequest implements HttpRequest {
 
 	@Override
 	public Map<String, String[]> getParameterMap() {
-		return getRequest().getParameterMap();
+		return getHttpServletRequest().getParameterMap();
 	}
 
 }
