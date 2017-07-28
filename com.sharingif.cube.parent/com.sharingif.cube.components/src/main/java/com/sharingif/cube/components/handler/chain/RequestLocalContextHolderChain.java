@@ -2,7 +2,7 @@ package com.sharingif.cube.components.handler.chain;
 
 import com.sharingif.cube.components.sequence.ISequenceGenerator;
 import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.handler.HandlerMethodContent;
+import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.core.handler.chain.AbstractHandlerMethodChain;
 import com.sharingif.cube.core.handler.request.RequestLocalContextHolder;
 
@@ -13,7 +13,7 @@ import com.sharingif.cube.core.handler.request.RequestLocalContextHolder;
  * @version v1.0
  * @since v1.0
  */
-public class RequestLocalContextHolderChain extends AbstractHandlerMethodChain<HandlerMethodContent> {
+public class RequestLocalContextHolderChain extends AbstractHandlerMethodChain {
 
 	private ISequenceGenerator<String> sequenceGenerator;
 

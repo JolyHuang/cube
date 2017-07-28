@@ -1,11 +1,14 @@
 package com.sharingif.cube.security.web.handler.chain.command.authentication;
 
 
-import com.sharingif.cube.communication.http.handler.HttpHandlerMethodContent;
+import com.sharingif.cube.communication.http.HttpRequest;
+import com.sharingif.cube.communication.http.HttpResponse;
+import com.sharingif.cube.communication.http.request.HttpRequestInfo;
 import com.sharingif.cube.core.exception.CubeException;
+import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
+import com.sharingif.cube.core.handler.chain.command.AbstractHandlerMethodCommand;
 import com.sharingif.cube.core.user.ICoreUser;
 import com.sharingif.cube.security.web.authentication.ISessionConcurrentHandler;
-import com.sharingif.cube.web.handler.chain.command.AbstractWebHandlerMethodCommand;
 
 /**
  *
@@ -18,7 +21,7 @@ import com.sharingif.cube.web.handler.chain.command.AbstractWebHandlerMethodComm
  * @Version:      [v1.0]
  *
  */
-public class SessionConcurrentWebCommand extends AbstractWebHandlerMethodCommand {
+public class SessionConcurrentWebCommand extends AbstractHandlerMethodCommand {
 	
 	private ISessionConcurrentHandler sessionConcurrentHandler;
 	
@@ -31,8 +34,10 @@ public class SessionConcurrentWebCommand extends AbstractWebHandlerMethodCommand
 
 
 	@Override
-	public void execute(HttpHandlerMethodContent content) throws CubeException {
-		sessionConcurrentHandler.handleSessionConcurrent(content.findObject(ICoreUser.class), content.getRequest(),content.getResponse());
+	public void execute(HandlerMethodContent content) throws CubeException {
+		HttpRequestInfo<HttpRequest,HttpResponse> httpRequestInfo = content.getRequestInfo();
+		
+		sessionConcurrentHandler.handleSessionConcurrent(content.findObject(ICoreUser.class), httpRequestInfo.getRequest(),httpRequestInfo.getResponse());
 	}
 
 }

@@ -1,10 +1,13 @@
 package com.sharingif.cube.security.web.handler.chain.command.access;
 
 
-import com.sharingif.cube.communication.http.handler.HttpHandlerMethodContent;
+import com.sharingif.cube.communication.http.HttpRequest;
+import com.sharingif.cube.communication.http.HttpResponse;
+import com.sharingif.cube.communication.http.request.HttpRequestInfo;
 import com.sharingif.cube.core.exception.CubeException;
+import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
+import com.sharingif.cube.core.handler.chain.command.AbstractHandlerMethodCommand;
 import com.sharingif.cube.security.web.authentication.ISecurityContextPersistenceHandler;
-import com.sharingif.cube.web.handler.chain.command.AbstractWebHandlerMethodCommand;
 
 /**   
  *  
@@ -17,7 +20,7 @@ import com.sharingif.cube.web.handler.chain.command.AbstractWebHandlerMethodComm
  * @Version:      [v1.0] 
  *    
  */
-public class SecurityContextPersistenceWebCommand extends AbstractWebHandlerMethodCommand {
+public class SecurityContextPersistenceWebCommand extends AbstractHandlerMethodCommand {
 	
 	private ISecurityContextPersistenceHandler securityContextPersistenceHandler;
 	
@@ -31,9 +34,10 @@ public class SecurityContextPersistenceWebCommand extends AbstractWebHandlerMeth
 	}
 
 	@Override
-	public void execute(HttpHandlerMethodContent content) throws CubeException {
+	public void execute(HandlerMethodContent content) throws CubeException {
+		HttpRequestInfo<HttpRequest,HttpResponse> httpRequestInfo = content.getRequestInfo();
 		
-		securityContextPersistenceHandler.handleSecurityContextPersistence(content.getRequest(), content.getResponse());
+		securityContextPersistenceHandler.handleSecurityContextPersistence(httpRequestInfo.getRequest(), httpRequestInfo.getResponse());
         
 	}
 	

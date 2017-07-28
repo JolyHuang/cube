@@ -6,13 +6,13 @@ package com.sharingif.cube.core.request;
  * @version v1.0
  * @since v1.0
  */
-public interface RequestInfoResolver<I,O> {
+public interface RequestInfoResolver<I,O extends RequestInfo<?>> {
 	
 	/**
 	 * 请求信息解析为RequestInfo对象
 	 * @param request : 请求信息
 	 * @return
 	 */
-	RequestInfo<O> resolveRequest(I request);
+	O resolveRequest(I request);
 
 }
