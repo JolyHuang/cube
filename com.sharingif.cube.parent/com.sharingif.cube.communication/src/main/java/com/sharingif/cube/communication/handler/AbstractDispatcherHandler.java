@@ -1,20 +1,19 @@
 package com.sharingif.cube.communication.handler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.sharingif.cube.communication.view.MultiViewResolver;
 import com.sharingif.cube.communication.view.View;
 import com.sharingif.cube.communication.view.exception.NoViewFoundException;
 import com.sharingif.cube.communication.view.exception.ViewException;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
 import com.sharingif.cube.core.exception.handler.IExceptionResolver;
-import com.sharingif.cube.core.handler.HandlerMethodContent;
 import com.sharingif.cube.core.handler.adapter.MultiHandlerMethodAdapter;
 import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
+import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.core.handler.mapping.MultiHandlerMapping;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.core.request.RequestInfoResolver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 请求调度处理器
@@ -33,7 +32,7 @@ public abstract class AbstractDispatcherHandler<I> implements DispatcherHandler<
 	private MultiHandlerMethodAdapter multiHandlerMethodAdapter;
 	private IExceptionResolver<Object,Object> exceptionResolver;
 	private MultiViewResolver multiViewResolver;
-	private HandlerMethodChain<HandlerMethodContent> handlerMethodChain;
+	private HandlerMethodChain handlerMethodChain;
 	
 	@SuppressWarnings("rawtypes")
 	public RequestInfoResolver getRequestInfoResolver() {
@@ -69,10 +68,10 @@ public abstract class AbstractDispatcherHandler<I> implements DispatcherHandler<
 	public void setMultiViewResolver(MultiViewResolver multiViewResolver) {
 		this.multiViewResolver = multiViewResolver;
 	}
-	public HandlerMethodChain<HandlerMethodContent> getHandlerMethodChain() {
+	public HandlerMethodChain getHandlerMethodChain() {
 		return handlerMethodChain;
 	}
-	public void setHandlerMethodChain(HandlerMethodChain<HandlerMethodContent> handlerMethodChain) {
+	public void setHandlerMethodChain(HandlerMethodChain handlerMethodChain) {
 		this.handlerMethodChain = handlerMethodChain;
 	}
 

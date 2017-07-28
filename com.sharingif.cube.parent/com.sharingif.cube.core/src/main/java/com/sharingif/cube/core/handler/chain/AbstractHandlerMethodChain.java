@@ -5,14 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ApplicationObjectSupport;
 
 import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.handler.HandlerMethodContent;
 
-public abstract class AbstractHandlerMethodChain<T extends HandlerMethodContent> extends ApplicationObjectSupport implements HandlerMethodChain<T> {
+public abstract class AbstractHandlerMethodChain extends ApplicationObjectSupport implements HandlerMethodChain {
 
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Override
-	public void exception(T handlerMethodContent, Exception exception) throws CubeException {
+	public void exception(HandlerMethodContent handlerMethodContent, Exception exception) throws CubeException {
 	}
 	
 }

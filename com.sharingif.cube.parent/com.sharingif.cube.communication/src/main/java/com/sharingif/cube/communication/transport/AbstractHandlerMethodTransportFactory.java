@@ -1,12 +1,10 @@
 package com.sharingif.cube.communication.transport;
 
-import org.springframework.core.DefaultParameterNameDiscoverer;
-import org.springframework.core.ParameterNameDiscoverer;
-
-import com.sharingif.cube.core.handler.HandlerMethodContent;
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
 import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
 import com.sharingif.cube.core.transport.transform.Transform;
+import org.springframework.core.DefaultParameterNameDiscoverer;
+import org.springframework.core.ParameterNameDiscoverer;
 
 /**
  * AbstractHandlerMethodTransportFactory
@@ -21,7 +19,7 @@ public abstract class AbstractHandlerMethodTransportFactory<MI,MO,CI,CO,UI,UO> i
 	
 	private DataBinderFactory dataBinderFactory;
 	private ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
-	private HandlerMethodChain<? super HandlerMethodContent> handlerMethodChain;
+	private HandlerMethodChain handlerMethodChain;
 	
 	public Transform<MI, MO, UI, UO> getTransform() {
 		return transform;
@@ -42,10 +40,10 @@ public abstract class AbstractHandlerMethodTransportFactory<MI,MO,CI,CO,UI,UO> i
 	public void setParameterNameDiscoverer(ParameterNameDiscoverer parameterNameDiscoverer) {
 		this.parameterNameDiscoverer = parameterNameDiscoverer;
 	}
-	public HandlerMethodChain<? super HandlerMethodContent> getHandlerMethodChain() {
+	public HandlerMethodChain getHandlerMethodChain() {
 		return handlerMethodChain;
 	}
-	public void setHandlerMethodChain(HandlerMethodChain<? super HandlerMethodContent> handlerMethodChain) {
+	public void setHandlerMethodChain(HandlerMethodChain handlerMethodChain) {
 		this.handlerMethodChain = handlerMethodChain;
 	}
 	

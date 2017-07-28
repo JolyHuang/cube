@@ -1,20 +1,20 @@
 package com.sharingif.cube.security.confidentiality.encrypt.aes;
 
-import com.sharingif.cube.core.exception.CubeRuntimeException;
-import com.sharingif.cube.core.util.Charset;
-import com.sharingif.cube.security.binary.BinaryCoder;
-import com.sharingif.cube.security.binary.HexCoder;
+import java.io.UnsupportedEncodingException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.AlgorithmParameterSpec;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.UnsupportedEncodingException;
-import java.security.Key;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.security.spec.AlgorithmParameterSpec;
+
+import com.sharingif.cube.core.exception.CubeRuntimeException;
+import com.sharingif.cube.core.util.Charset;
+import com.sharingif.cube.security.binary.BinaryCoder;
+import com.sharingif.cube.security.binary.HexCoder;
 
 /**
  * [AES对称加密]
