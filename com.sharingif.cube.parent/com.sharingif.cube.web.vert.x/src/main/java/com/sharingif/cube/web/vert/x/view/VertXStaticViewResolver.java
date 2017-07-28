@@ -14,13 +14,13 @@ import io.vertx.ext.web.handler.StaticHandler;
  * @version v1.0
  * @since v1.0
  */
-public class VertXStaticViewResolver implements ViewResolver<RoutingContext> {
+public class VertXStaticViewResolver implements ViewResolver {
 
     private final VertXStaticView vertXStaticView = new VertXStaticView();
 
 
     @Override
-    public View<RoutingContext> resolveView(RequestInfo<RoutingContext> requestInfo, Object returnValue, ExceptionContent exceptionContent) {
+    public View resolveView(RequestInfo<?> requestInfo, Object returnValue, ExceptionContent exceptionContent) {
         if((returnValue instanceof StaticHandler)) {
             return vertXStaticView;
         }

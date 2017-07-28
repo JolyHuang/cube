@@ -15,12 +15,12 @@ import io.vertx.ext.web.RoutingContext;
  * @version v1.0
  * @since v1.0
  */
-public class VertXJsonViewResolver implements ViewResolver<RoutingContext> {
+public class VertXJsonViewResolver implements ViewResolver {
 
-	private View<RoutingContext> view = new VertXJsonView();
+	private View view = new VertXJsonView();
 	
 	@Override
-	public View<RoutingContext> resolveView(RequestInfo<RoutingContext> requestInfo, Object returnValue, ExceptionContent exceptionContent) {
+	public View resolveView(RequestInfo<?> requestInfo, Object returnValue, ExceptionContent exceptionContent) {
 		if(requestInfo.getMediaType() == null) {
 			return null;
 		}

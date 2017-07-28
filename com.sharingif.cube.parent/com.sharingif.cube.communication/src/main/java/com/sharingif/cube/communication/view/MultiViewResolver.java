@@ -16,7 +16,7 @@ import java.util.List;
  * @version v1.0
  * @since v1.0
  */
-public class MultiViewResolver implements ViewResolver<Object> {
+public class MultiViewResolver implements ViewResolver {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -35,9 +35,9 @@ public class MultiViewResolver implements ViewResolver<Object> {
 
     @SuppressWarnings("unchecked")
 	@Override
-    public View<Object> resolveView(RequestInfo<Object> requestInfo, Object returnValue, ExceptionContent exceptionContent) {
-        for(ViewResolver<Object> viewResolver : getViewResolvers()) {
-            View<Object> view = viewResolver.resolveView(requestInfo, returnValue, exceptionContent);
+    public View resolveView(RequestInfo<?> requestInfo, Object returnValue, ExceptionContent exceptionContent) {
+        for(ViewResolver viewResolver : getViewResolvers()) {
+            View view = viewResolver.resolveView(requestInfo, returnValue, exceptionContent);
             if(view != null){
                 return view;
             }

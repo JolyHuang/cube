@@ -5,6 +5,7 @@ import java.util.Locale;
 import com.sharingif.cube.communication.http.request.HttpRequestInfo;
 import com.sharingif.cube.web.vert.x.http.VertXHttpRequest;
 import com.sharingif.cube.web.vert.x.http.VertXHttpResponse;
+import io.vertx.ext.web.RoutingContext;
 
 /**
  * VertXRequestInfo
@@ -15,8 +16,23 @@ import com.sharingif.cube.web.vert.x.http.VertXHttpResponse;
  */
 public class VertXRequestInfo extends HttpRequestInfo<VertXHttpRequest, VertXHttpResponse> {
 
-	public VertXRequestInfo(String mediaType, String lookupPath, Locale locale, String method, VertXHttpRequest request, VertXHttpResponse response) {
+	private RoutingContext routingContext;
+
+	public VertXRequestInfo(
+			String mediaType
+			,String lookupPath
+			,Locale locale
+			,String method
+			,VertXHttpRequest request
+			,VertXHttpResponse response
+			,RoutingContext routingContext
+		) {
 		super(mediaType, lookupPath, locale, method, request, response);
+
+		this.routingContext = routingContext;
 	}
 
+	public RoutingContext getRoutingContext() {
+		return routingContext;
+	}
 }

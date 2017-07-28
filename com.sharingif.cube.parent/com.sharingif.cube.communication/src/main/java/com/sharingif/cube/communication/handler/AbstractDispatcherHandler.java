@@ -132,7 +132,7 @@ public abstract class AbstractDispatcherHandler<I> implements DispatcherHandler<
 
 	protected void handlerView(RequestInfo<Object> requestInfo, Object returnValue, ExceptionContent exceptionContent) {
 		try {
-			View<Object> view = getMultiViewResolver().resolveView(requestInfo, returnValue, exceptionContent);
+			View view = getMultiViewResolver().resolveView(requestInfo, returnValue, exceptionContent);
 		
 			view.view(requestInfo, returnValue, exceptionContent);
 		} catch (NoViewFoundException exception) {

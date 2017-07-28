@@ -33,7 +33,9 @@ public class VertXRequestInfoResolver implements RequestInfoResolver<ExtendedRou
 				,null
 				,method
 				,new VertXHttpRequest(routingContext.request())
-				,new VertXHttpResponse(routingContext.response()));
+				,new VertXHttpResponse(routingContext.response())
+				,routingContext
+			);
 		
 		return requestInfo;
 	}

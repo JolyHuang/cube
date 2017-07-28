@@ -15,7 +15,7 @@ import java.util.TimeZone;
  * @version v1.0
  * @since v1.0
  */
-public abstract class AbstractJsonView<T> implements View<T> {
+public abstract class AbstractJsonView implements View {
 	
 	private String exceptionMessageName = "_exceptionMessage";
 	private String exceptionLocalizedMessageName = "_exceptionLocalizedMessage";

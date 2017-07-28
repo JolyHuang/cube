@@ -10,8 +10,8 @@ import com.sharingif.cube.core.request.RequestInfo;
  * @version v1.0
  * @since v1.0
  */
-public interface ViewResolver<T> {
+public interface ViewResolver {
 	
-	View<T> resolveView(RequestInfo<T> requestInfo, Object returnValue, ExceptionContent exceptionContent);
+	View resolveView(RequestInfo<?> requestInfo, Object returnValue, ExceptionContent exceptionContent);
 
 }
