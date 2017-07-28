@@ -1,10 +1,13 @@
 package com.sharingif.cube.security.web.handler.chain.command.user;
 
 
-import com.sharingif.cube.communication.http.handler.HttpHandlerMethodContent;
+import com.sharingif.cube.communication.http.HttpRequest;
+import com.sharingif.cube.communication.http.HttpResponse;
+import com.sharingif.cube.communication.http.request.HttpRequestInfo;
 import com.sharingif.cube.core.exception.CubeException;
+import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
+import com.sharingif.cube.core.handler.chain.command.AbstractHandlerMethodCommand;
 import com.sharingif.cube.core.user.ICoreUser;
-import com.sharingif.cube.web.handler.chain.command.AbstractWebHandlerMethodCommand;
 import com.sharingif.cube.web.user.IWebUserManage;
 
 /**   
@@ -18,7 +21,7 @@ import com.sharingif.cube.web.user.IWebUserManage;
  * @Version:      [v1.0] 
  *    
  */
-public class CoreUserHttpSessionManageWebCommand extends AbstractWebHandlerMethodCommand {
+public class CoreUserHttpSessionManageWebCommand extends AbstractHandlerMethodCommand {
 	
 	private IWebUserManage webUserManage;
 	
@@ -31,8 +34,10 @@ public class CoreUserHttpSessionManageWebCommand extends AbstractWebHandlerMetho
 
 
 	@Override
-	public void execute(HttpHandlerMethodContent content) throws CubeException {
-		webUserManage.persistenceUser(content.getRequest(), content.getObject(ICoreUser.class));
+	public void execute(HandlerMethodContent content) throws CubeException {
+		HttpRequestInfo<HttpRequest,HttpResponse> httpRequestInfo = content.getRequestInfo();
+		
+		webUserManage.persistenceUser(httpRequestInfo.getRequest(), content.getObject(ICoreUser.class));
 	}
 
 }

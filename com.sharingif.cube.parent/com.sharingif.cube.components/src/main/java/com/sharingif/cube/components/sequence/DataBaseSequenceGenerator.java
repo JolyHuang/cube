@@ -1,14 +1,16 @@
 package com.sharingif.cube.components.sequence;
 
-import com.sharingif.cube.core.exception.CubeRuntimeException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+
+import javax.sql.DataSource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.sharingif.cube.core.exception.CubeRuntimeException;
 
 /**
  * 数据库方式生成序列
@@ -67,7 +69,8 @@ public class DataBaseSequenceGenerator extends AbstractSequenceGenerator<String>
         return strbuf.toString();
     }
 
-    protected void getNextIdFromDb() {
+    @SuppressWarnings("resource")
+	protected void getNextIdFromDb() {
         Connection conn = null;
         PreparedStatement preparedstatement = null;
 
