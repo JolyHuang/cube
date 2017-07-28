@@ -1,5 +1,7 @@
 package com.sharingif.cube.communication;
 
+import jdk.nashorn.internal.scripts.JO;
+
 import java.util.Map;
 
 /**
@@ -21,6 +23,10 @@ public class JsonModel<T> {
 	private String _exceptionMessage;
 	private String _exceptionLocalizedMessage;
 	private T _data;
+
+	public JsonModel() {
+
+	}
 	
 	public JsonModel(Boolean _tranStatus, String _exceptionMessage, String _exceptionLocalizedMessage, T _data) {
 		super();
@@ -32,7 +38,7 @@ public class JsonModel<T> {
 	
 	/**
 	 * 使用包含JsonModel所有数据的map初始化JsonModel，方便数据的查找
-	 * @param jsonModel
+	 * @param jsonMap
 	 */
 	@SuppressWarnings("unchecked")
 	public JsonModel(Map<String, Object> jsonMap) {
@@ -41,21 +47,36 @@ public class JsonModel<T> {
 		this._exceptionLocalizedMessage = (String) jsonMap.get(JsonModel.EXCEPTION_LOCALIZED_MESSAGE);
 		this._data = (T) jsonMap.get(JsonModel.DATA);
 	}
-	
+
 	public Boolean get_tranStatus() {
 		return _tranStatus;
+	}
+
+	public void set_tranStatus(Boolean _tranStatus) {
+		this._tranStatus = _tranStatus;
 	}
 
 	public String get_exceptionMessage() {
 		return _exceptionMessage;
 	}
 
+	public void set_exceptionMessage(String _exceptionMessage) {
+		this._exceptionMessage = _exceptionMessage;
+	}
+
 	public String get_exceptionLocalizedMessage() {
 		return _exceptionLocalizedMessage;
+	}
+
+	public void set_exceptionLocalizedMessage(String _exceptionLocalizedMessage) {
+		this._exceptionLocalizedMessage = _exceptionLocalizedMessage;
 	}
 
 	public T get_data() {
 		return _data;
 	}
-	
+
+	public void set_data(T _data) {
+		this._data = _data;
+	}
 }
