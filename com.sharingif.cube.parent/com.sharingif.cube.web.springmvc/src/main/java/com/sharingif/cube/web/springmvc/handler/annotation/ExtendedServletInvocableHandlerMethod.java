@@ -1,10 +1,12 @@
 package com.sharingif.cube.web.springmvc.handler.annotation;
 
-import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
-import com.sharingif.cube.core.request.RequestInfo;
-import com.sharingif.cube.core.util.CubeExceptionUtil;
-import com.sharingif.cube.web.springmvc.handler.SpringMVCHandlerMethodContent;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ParameterNameDiscoverer;
@@ -18,10 +20,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHan
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.util.UrlPathHelper;
 
-import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Locale;
+import com.sharingif.cube.core.exception.CubeException;
+import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
+import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
+import com.sharingif.cube.core.util.CubeExceptionUtil;
+import com.sharingif.cube.web.springmvc.http.SpringMVCHttpRequest;
+import com.sharingif.cube.web.springmvc.http.SpringMVCHttpResponse;
+import com.sharingif.cube.web.springmvc.request.SpringMVCHttpRequestInfo;
 
 /**
  * ExtendedServletInvocableHandlerMethod
@@ -42,7 +47,7 @@ public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandl
 
 	private ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
 	
-	private HandlerMethodChain<SpringMVCHandlerMethodContent> handlerMethodChain;
+	private HandlerMethodChain handlerMethodChain;
 
 	public ExtendedServletInvocableHandlerMethod(HandlerMethod handlerMethod) {
 		super(handlerMethod);
@@ -75,21 +80,28 @@ public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandl
 	public void setParameterNameDiscoverer(ParameterNameDiscoverer parameterNameDiscoverer) {
 		this.parameterNameDiscoverer = parameterNameDiscoverer;
 	}
-	public HandlerMethodChain<SpringMVCHandlerMethodContent> getHandlerMethodChain() {
+	public HandlerMethodChain getHandlerMethodChain() {
 		return handlerMethodChain;
 	}
 
-	public void setHandlerMethodChain(HandlerMethodChain<SpringMVCHandlerMethodContent> handlerMethodChain) {
+	public void setHandlerMethodChain(HandlerMethodChain handlerMethodChain) {
 		this.handlerMethodChain = handlerMethodChain;
 	}
 	
-	protected RequestInfo<HttpServletRequest> getRequestInfo(HttpServletRequest request) {
-		
+	protected SpringMVCHttpRequestInfo getRequestInfo(HttpServletRequest request, HttpServletResponse response) {
+
 		String lookupPath = urlPathHelper.getLookupPathForRequest(request);
 		String method = request.getMethod().toUpperCase(Locale.ENGLISH);
+
 		
-		RequestInfo<HttpServletRequest> requestInfo = new RequestInfo<HttpServletRequest>(null, lookupPath, RequestContextUtils.getLocale(request), method, request);
-		
+		 SpringMVCHttpRequestInfo requestInfo = new SpringMVCHttpRequestInfo(
+				 null
+				 ,lookupPath
+				 ,RequestContextUtils.getLocale(request)
+				 ,method
+				 ,new SpringMVCHttpRequest(request)
+				 ,new SpringMVCHttpResponse(response));
+
 		return requestInfo;
 	}
 
@@ -104,17 +116,14 @@ public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandl
 		}
 		
 		boolean handlerMethodChainIsNotEmpty = (null != getHandlerMethodChain());
-		SpringMVCHandlerMethodContent handlerMethodContent = null;
+		HandlerMethodContent handlerMethodContent = null;
 		if(handlerMethodChainIsNotEmpty) {
-			handlerMethodContent = new SpringMVCHandlerMethodContent(
+			handlerMethodContent = new HandlerMethodContent(
 					this.cubeHandlerMethod
 					,args
 					,null
 					,RequestContextUtils.getLocale(request.getNativeRequest(HttpServletRequest.class))
-					,getRequestInfo(request.getNativeRequest(HttpServletRequest.class))
-					,request
-					,mavContainer
-					,providedArgs
+					,getRequestInfo(request.getNativeRequest(HttpServletRequest.class), request.getNativeResponse(HttpServletResponse.class))
 				);
 			getHandlerMethodChain().before(handlerMethodContent);
 		}

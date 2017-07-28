@@ -1,36 +1,18 @@
 package com.sharingif.cube.core.handler.adapter;
 
-import java.util.List;
-
-import org.springframework.core.DefaultParameterNameDiscoverer;
-import org.springframework.core.ParameterNameDiscoverer;
-
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.DefaultInvocableHandlerMethod;
 import com.sharingif.cube.core.handler.HandlerMethod;
-import com.sharingif.cube.core.handler.HandlerMethodContent;
-import com.sharingif.cube.core.handler.bind.annotation.RequestMapping;
 import com.sharingif.cube.core.handler.bind.support.BindingInitializer;
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
 import com.sharingif.cube.core.handler.bind.support.DefaultDataBinderFactory;
 import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
 import com.sharingif.cube.core.request.RequestInfo;
+import org.springframework.core.DefaultParameterNameDiscoverer;
+import org.springframework.core.ParameterNameDiscoverer;
 
-/**
- * An {@link AbstractHandlerMethodAdapter} that supports {@link HandlerMethod}s
- * with the signature -- method argument and return types, defined in
- * {@code @RequestMapping}.
- *
- * <p>Support for custom argument and return value types can be added via
- * {@link #setCustomArgumentResolvers} and {@link #setCustomReturnValueHandlers}.
- * Or alternatively to re-configure all argument and return value types use
- * {@link #setArgumentResolvers} and {@link #setReturnValueHandlers(List)}.
- *
- * @author Rossen Stoyanchev
- * @since 3.1
- * @see HandlerMethodArgumentResolver
- * @see HandlerMethodReturnValueHandler
- */
+import java.util.List;
+
 public class HandlerMethodHandlerAdapter extends AbstractHandlerMethodAdapter {
 	
 	private HandlerMethodArgumentResolverComposite argumentResolvers;
@@ -41,7 +23,7 @@ public class HandlerMethodHandlerAdapter extends AbstractHandlerMethodAdapter {
 	
 	private ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
 	
-	private HandlerMethodChain<HandlerMethodContent> handlerMethodChain;
+	private HandlerMethodChain handlerMethodChain;
 	
 	/**
 	 * Configure the complete list of supported argument types thus overriding
@@ -57,10 +39,6 @@ public class HandlerMethodHandlerAdapter extends AbstractHandlerMethodAdapter {
 		}
 	}
 	
-	/**
-	 * Return the configured argument resolvers, or possibly {@code null} if
-	 * not initialized yet via {@link #afterPropertiesSet()}.
-	 */
 	public List<HandlerMethodArgumentResolver> getArgumentResolvers() {
 		return (this.argumentResolvers != null) ? this.argumentResolvers.getResolvers() : null;
 	}
@@ -79,10 +57,6 @@ public class HandlerMethodHandlerAdapter extends AbstractHandlerMethodAdapter {
 		}
 	}
 
-	/**
-	 * Return the configured handlers, or possibly {@code null} if not
-	 * initialized yet via {@link #afterPropertiesSet()}.
-	 */
 	public List<HandlerMethodReturnValueHandler> getReturnValueHandlers() {
 		return this.returnValueHandlers.getHandlers();
 	}
@@ -104,11 +78,11 @@ public class HandlerMethodHandlerAdapter extends AbstractHandlerMethodAdapter {
 		this.parameterNameDiscoverer = parameterNameDiscoverer;
 	}
 
-	public HandlerMethodChain<HandlerMethodContent> getHandlerMethodChain() {
+	public HandlerMethodChain getHandlerMethodChain() {
 		return handlerMethodChain;
 	}
 
-	public void setHandlerMethodChain(HandlerMethodChain<HandlerMethodContent> handlerMethodChain) {
+	public void setHandlerMethodChain(HandlerMethodChain handlerMethodChain) {
 		this.handlerMethodChain = handlerMethodChain;
 	}
 	
@@ -122,10 +96,6 @@ public class HandlerMethodHandlerAdapter extends AbstractHandlerMethodAdapter {
 		return invokeHandleMethod(request, handlerMethod);
 	}
 	
-	/**
-	 * Invoke the {@link RequestMapping} handler method preparing a {@link ModelAndView}
-	 * if view resolution is required.
-	 */
 	protected Object invokeHandleMethod(RequestInfo<?> request, HandlerMethod handlerMethod) throws CubeException {
 		DataBinderFactory dataBinderFactory = getDataBinderFactory(handlerMethod);
 		

@@ -1,20 +1,21 @@
 package com.sharingif.cube.web.springmvc.servlet;
 
-import com.sharingif.cube.communication.http.handler.HttpHandlerMethodContent;
-import com.sharingif.cube.core.handler.HandlerMethodContent;
-import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
-import com.sharingif.cube.core.request.RequestInfo;
-import com.sharingif.cube.web.springmvc.http.SpringMVCHttpRequest;
-import com.sharingif.cube.web.springmvc.http.SpringMVCHttpResponse;
-import org.springframework.web.servlet.DispatcherServlet;
-import org.springframework.web.servlet.support.RequestContextUtils;
-import org.springframework.web.util.UrlPathHelper;
+import java.util.Locale;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Locale;
+
+import org.springframework.web.servlet.DispatcherServlet;
+import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.util.UrlPathHelper;
+
+import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
+import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
+import com.sharingif.cube.web.springmvc.http.SpringMVCHttpRequest;
+import com.sharingif.cube.web.springmvc.http.SpringMVCHttpResponse;
+import com.sharingif.cube.web.springmvc.request.SpringMVCHttpRequestInfo;
 
 /**
  * 扩展DispatcherServlet，重写父类doService方法,添加initContextHolders、resetContextHolders方法。
@@ -31,15 +32,14 @@ public class ExtendedDispatcherServlet extends DispatcherServlet {
 	
 	private static final String WEB_HANDLERMETHODCHAIN = "webHandlerMethodChain";
 	
-	private HandlerMethodChain<HandlerMethodContent> handlerMethodChain;
+	private HandlerMethodChain handlerMethodChain;
 	private boolean handlerMethodChainIsNotEmpty;
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		
-		handlerMethodChain = (HandlerMethodChain<HandlerMethodContent>) super.getWebApplicationContext().getBean(WEB_HANDLERMETHODCHAIN);
+		handlerMethodChain = (HandlerMethodChain) super.getWebApplicationContext().getBean(WEB_HANDLERMETHODCHAIN);
 		
 		handlerMethodChainIsNotEmpty = (null != handlerMethodChain);
 	}
@@ -78,24 +78,30 @@ public class ExtendedDispatcherServlet extends DispatcherServlet {
 	}
 
 	protected HandlerMethodContent getHandlerMethodContent(HttpServletRequest request, HttpServletResponse response) {
-		HttpHandlerMethodContent webHandlerMethodContent = new HttpHandlerMethodContent(
+		
+		HandlerMethodContent webHandlerMethodContent = new HandlerMethodContent(
 				null
 				,null
 				,null
 				,null
-				,getRequestInfo(request)
-				,new SpringMVCHttpRequest(request)
-				,new SpringMVCHttpResponse(response)
+				,getRequestInfo(request, response)
 		);
 		return webHandlerMethodContent;
 	}
 	
-	protected RequestInfo<HttpServletRequest> getRequestInfo(HttpServletRequest request) {
+	protected SpringMVCHttpRequestInfo getRequestInfo(HttpServletRequest request, HttpServletResponse response) {
 
 		String lookupPath = urlPathHelper.getLookupPathForRequest(request);
 		String method = request.getMethod().toUpperCase(Locale.ENGLISH);
 
-		RequestInfo<HttpServletRequest> requestInfo = new RequestInfo<HttpServletRequest>(null, lookupPath, RequestContextUtils.getLocale(request), method, request);
+		
+		 SpringMVCHttpRequestInfo requestInfo = new SpringMVCHttpRequestInfo(
+				 null
+				 ,lookupPath
+				 ,RequestContextUtils.getLocale(request)
+				 ,method
+				 ,new SpringMVCHttpRequest(request)
+				 ,new SpringMVCHttpResponse(response));
 
 		return requestInfo;
 	}

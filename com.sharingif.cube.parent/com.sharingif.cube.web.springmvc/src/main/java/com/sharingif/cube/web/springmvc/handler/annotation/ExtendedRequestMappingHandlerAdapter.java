@@ -1,20 +1,19 @@
 package com.sharingif.cube.web.springmvc.handler.annotation;
 
-import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
-import com.sharingif.cube.web.springmvc.handler.SpringMVCHandlerMethodContent;
-import com.sharingif.cube.web.springmvc.method.annotation.ExtendedRequestParamMethodArgumentResolver;
-import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.MediaTypeMethodProcessor;
-import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.container.DataContainerMethodProcessor;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.method.annotation.RequestParamMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
 import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod;
 import org.springframework.web.servlet.mvc.method.annotation.ServletModelAttributeMethodProcessor;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
+import com.sharingif.cube.web.springmvc.method.annotation.ExtendedRequestParamMethodArgumentResolver;
+import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.MediaTypeMethodProcessor;
+import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.container.DataContainerMethodProcessor;
 
 /**
  * 扩展RequestMappingHandlerAdapter，添加HandlerMethodChain、MediaTypeMethodProcessor、DataContainerMethodProcessor功能
@@ -25,12 +24,12 @@ import java.util.List;
  */
 public class ExtendedRequestMappingHandlerAdapter extends RequestMappingHandlerAdapter {
 	
-	private HandlerMethodChain<SpringMVCHandlerMethodContent> handlerMethodChain;
+	private HandlerMethodChain handlerMethodChain;
 	
-	public HandlerMethodChain<SpringMVCHandlerMethodContent> getHandlerMethodChain() {
+	public HandlerMethodChain getHandlerMethodChain() {
 		return handlerMethodChain;
 	}
-	public void setHandlerMethodChain(HandlerMethodChain<SpringMVCHandlerMethodContent> handlerMethodChain) {
+	public void setHandlerMethodChain(HandlerMethodChain handlerMethodChain) {
 		this.handlerMethodChain = handlerMethodChain;
 	}
 

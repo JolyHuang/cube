@@ -22,7 +22,7 @@ import com.sharingif.cube.core.util.StringUtils;
  * @version v1.0
  * @since v1.0
  */
-public class HandlerMethodCommunicationTransportRequestInfoResolver implements RequestInfoResolver<Object[], Object[]> {
+public class HandlerMethodCommunicationTransportRequestInfoResolver implements RequestInfoResolver<Object[], RequestInfo<Object[]>> {
 
 	@Override
 	public RequestInfo<Object[]> resolveRequest(Object[] request) {

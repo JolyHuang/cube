@@ -1,6 +1,7 @@
-package com.sharingif.cube.core.handler;
+package com.sharingif.cube.core.handler.chain;
 
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
+import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.request.RequestInfo;
 
 import java.util.HashMap;
@@ -37,32 +38,26 @@ public class HandlerMethodContent {
 	public HandlerMethod getHandlerMethod() {
 		return handlerMethod;
 	}
-	public void setHandlerMethod(HandlerMethod handlerMethod) {
-		this.handlerMethod = handlerMethod;
-	}
 	public Object[] getArgs() {
 		return args;
-	}
-	public void setArgs(Object[] args) {
-		this.args = args;
 	}
 	public Object getReturnValue() {
 		return returnValue;
 	}
-	public void setReturnValue(Object returnValue) {
-		this.returnValue = returnValue;
-	}
 	public Locale getLocale() {
 		return locale;
 	}
-	public void setLocale(Locale locale) {
-		this.locale = locale;
+	
+	public void setArgs(Object[] args) {
+		this.args = args;
 	}
-	public RequestInfo<?> getRequestInfo() {
-		return requestInfo;
+	public void setReturnValue(Object returnValue) {
+		this.returnValue = returnValue;
 	}
-	public void setRequestInfo(RequestInfo<?> requestInfo) {
-		this.requestInfo = requestInfo;
+
+	@SuppressWarnings("unchecked")
+	public <T extends RequestInfo<?>> T getRequestInfo() {
+		return (T)requestInfo;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -118,6 +113,7 @@ public class HandlerMethodContent {
 	public void addacheData(String key, Object obj) {
 		cacheDataMap.put(key,obj);
 	}
+	@SuppressWarnings("unchecked")
 	public <T> T getCacheData(String key) {
 		return (T)cacheDataMap .get(key);
 	}
