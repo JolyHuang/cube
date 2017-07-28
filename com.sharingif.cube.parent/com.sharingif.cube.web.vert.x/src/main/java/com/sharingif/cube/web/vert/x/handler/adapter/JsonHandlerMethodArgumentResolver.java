@@ -6,6 +6,7 @@ import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
 import com.sharingif.cube.core.handler.adapter.HandlerMethodArgumentResolver;
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
 import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.web.vert.x.request.VertXRequestInfo;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.ext.web.RoutingContext;
 import org.springframework.beans.BeanUtils;
@@ -38,7 +39,8 @@ public class JsonHandlerMethodArgumentResolver implements HandlerMethodArgumentR
 
 	@Override
 	public Object resolveArgument(MethodParameter parameter, RequestInfo<?> requestInfo, DataBinderFactory dataBinderFactory) throws CubeException {
-		RoutingContext routingContext = (RoutingContext) requestInfo.getRequest();
+		VertXRequestInfo vertXRequestInfo = (VertXRequestInfo)requestInfo;
+		RoutingContext routingContext = vertXRequestInfo.getRoutingContext();
 		Buffer buffer = routingContext.getBody();
 		if(buffer.length() == 0) {
 			return null;
