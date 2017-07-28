@@ -31,7 +31,9 @@ public class JsonHandlerMethodArgumentResolver implements HandlerMethodArgumentR
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter, RequestInfo<?> requestInfo) {
-		return MediaType.APPLICATION_JSON.toString().equals(requestInfo.getMediaType());
+		MediaType candidateContentType = MediaType.parseMediaType(requestInfo.getMediaType());
+
+		return MediaType.APPLICATION_JSON.isCompatibleWith(candidateContentType);
 	}
 
 	@Override
@@ -56,24 +58,11 @@ public class JsonHandlerMethodArgumentResolver implements HandlerMethodArgumentR
 		return binder.convertIfNecessary(binder.getTarget(), parameter.getParameterType(), parameter);
 	}
 	
-	/**
-	 * Extension point to bind the request to the target object.
-	 * @param binder the data binder instance to use for the binding
-	 * @param request the current request
-	 */
 	protected void bindRequestParameters(DataBinder binder, RequestInfo<?> requestInfo, Map<?,?> parameter) {
 		MutablePropertyValues mpvs = new MutablePropertyValues(parameter);
 		binder.bind(mpvs);
 	}
 	
-	/**
-	 * Validate the model attribute if applicable.
-	 * <p>The default implementation checks for {@code @javax.validation.Valid},
-	 * Spring's {@link org.springframework.validation.annotation.Validated},
-	 * and custom annotations whose name starts with "Valid".
-	 * @param binder the DataBinder to be used
-	 * @param methodParam the method parameter
-	 */
 	protected void validateIfApplicable(DataBinder binder, MethodParameter methodParam) {
 		Annotation[] annotations = methodParam.getParameterAnnotations();
 		for (Annotation ann : annotations) {
@@ -87,26 +76,11 @@ public class JsonHandlerMethodArgumentResolver implements HandlerMethodArgumentR
 		}
 	}
 	
-	/**
-	 * Extension point to create the model attribute if not found in the model.
-	 * The default implementation uses the default constructor.
-	 * @param attributeName the name of the attribute (never {@code null})
-	 * @param methodParam the method parameter
-	 * @param binderFactory for creating WebDataBinder instance
-	 * @param request the current request
-	 * @return the created model attribute (never {@code null})
-	 */
 	protected Object createAttribute(String attributeName, MethodParameter methodParam, RequestInfo<?> requestInfo, DataBinderFactory dataBinderFactory) throws CubeException {
 
 		return BeanUtils.instantiateClass(methodParam.getParameterType());
 	}
 	
-	/**
-	 * Whether to raise a fatal bind exception on validation errors.
-	 * @param binder the data binder used to perform data binding
-	 * @param methodParam the method argument
-	 * @return {@code true} if the next method argument is not of type {@link Errors}
-	 */
 	protected boolean isBindExceptionRequired(DataBinder binder, MethodParameter methodParam) {
 		int i = methodParam.getParameterIndex();
 		Class<?>[] paramTypes = methodParam.getMethod().getParameterTypes();

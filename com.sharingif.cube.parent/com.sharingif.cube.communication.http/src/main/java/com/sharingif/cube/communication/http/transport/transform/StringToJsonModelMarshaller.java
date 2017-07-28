@@ -58,8 +58,13 @@ public class StringToJsonModelMarshaller implements Marshaller<MethodParameterAr
 		return object;
 	}
 
-	protected JavaType getJavaType(Type type) {
+	protected JavaType getJavaType(Class<?> type) {
 		TypeFactory typeFactory = this.objectMapper.getTypeFactory();
+
+		if(type.getName().equals(Void.TYPE.getName())) {
+			return typeFactory.constructType(JsonModel.class);
+		}
+
 		JavaType javaType = typeFactory.constructType(type);
 		return typeFactory.constructParametricType(JsonModel.class, javaType);
 	}
