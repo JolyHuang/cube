@@ -8,20 +8,19 @@ import com.sharingif.cube.core.chain.Chain;
 import com.sharingif.cube.core.chain.EmptyChain;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.exception.CubeRuntimeException;
-import com.sharingif.cube.core.handler.HandlerMethodContent;
 import com.sharingif.cube.core.util.StringUtils;
 
-public class AnnotationHandlerMethodChain<T extends HandlerMethodContent> extends AbstractHandlerMethodChain<T> {
+public class AnnotationHandlerMethodChain extends AbstractHandlerMethodChain {
 	
 	private static final String BEFORE_SIMPLECHAIN_PREFIX = "_B_";
 	private static final String AFTER_SIMPLECHAIN_PREFIX = "_A_";
 	
-	private Map<String, Chain<? super T>> cacheChainMap = new HashMap<String, Chain<? super T>>(100);
+	private Map<String, Chain<? super HandlerMethodContent>> cacheChainMap = new HashMap<String, Chain<? super HandlerMethodContent>>(100);
 	private final EmptyChain EMPTY_CHAIN = new EmptyChain();
 
 	@Override
-	public void before(T content) throws CubeException {
-		Chain<? super T> beforeChain = getBeforeSimpleChain(content);
+	public void before(HandlerMethodContent content) throws CubeException {
+		Chain<? super HandlerMethodContent> beforeChain = getBeforeSimpleChain(content);
 		if(null == beforeChain) {
 			return;
 		}
@@ -30,8 +29,8 @@ public class AnnotationHandlerMethodChain<T extends HandlerMethodContent> extend
 	}
 
 	@Override
-	public void after(T content) throws CubeException {
-		Chain<? super T> afterChain = getAfterSimpleChain(content);
+	public void after(HandlerMethodContent content) throws CubeException {
+		Chain<? super HandlerMethodContent> afterChain = getAfterSimpleChain(content);
 		if(null == afterChain) {
 			return;
 		}
@@ -40,13 +39,13 @@ public class AnnotationHandlerMethodChain<T extends HandlerMethodContent> extend
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected Chain<? super T> getBeforeSimpleChain(HandlerMethodContent handlerMethodContent) throws CubeException {
+	protected Chain<? super HandlerMethodContent> getBeforeSimpleChain(HandlerMethodContent handlerMethodContent) throws CubeException {
 		
 		Method method = handlerMethodContent.getHandlerMethod().getMethod();
 		
 		String chainMapKey = new StringBuilder(BEFORE_SIMPLECHAIN_PREFIX).append(handlerMethodContent.getHandlerMethod().getBean().getClass().getName()).append(".").append(method.getName()).toString();
 		
-		Chain<? super T> simpleChain = cacheChainMap.get(chainMapKey);
+		Chain<? super HandlerMethodContent> simpleChain = cacheChainMap.get(chainMapKey);
 		
 		if(null != simpleChain){
 			return simpleChain;
@@ -81,13 +80,13 @@ public class AnnotationHandlerMethodChain<T extends HandlerMethodContent> extend
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected Chain<? super T> getAfterSimpleChain(HandlerMethodContent handlerMethodContent) throws CubeException {
+	protected Chain<? super HandlerMethodContent> getAfterSimpleChain(HandlerMethodContent handlerMethodContent) throws CubeException {
 		
 		Method method = handlerMethodContent.getHandlerMethod().getMethod();
 		
 		String chainMapKey = new StringBuilder().append(AFTER_SIMPLECHAIN_PREFIX).append(handlerMethodContent.getHandlerMethod().getBean().getClass().getName()).append(".").append(method.getName()).toString();
 		
-		Chain<? super T> simpleChain = cacheChainMap.get(chainMapKey);
+		Chain<? super HandlerMethodContent> simpleChain = cacheChainMap.get(chainMapKey);
 		
 		if(null != simpleChain){
 			return simpleChain;

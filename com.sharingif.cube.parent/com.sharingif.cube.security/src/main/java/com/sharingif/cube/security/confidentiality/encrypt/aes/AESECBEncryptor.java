@@ -2,7 +2,6 @@ package com.sharingif.cube.security.confidentiality.encrypt.aes;
 
 import java.io.UnsupportedEncodingException;
 
-import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 
 import com.sharingif.cube.core.exception.CubeRuntimeException;

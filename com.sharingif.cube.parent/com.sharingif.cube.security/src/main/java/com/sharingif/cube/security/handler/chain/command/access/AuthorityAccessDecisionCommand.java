@@ -1,7 +1,7 @@
 package com.sharingif.cube.security.handler.chain.command.access;
 
 import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.handler.HandlerMethodContent;
+import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.core.handler.chain.command.AbstractHandlerMethodCommand;
 import com.sharingif.cube.core.user.CoreUserContextHolder;
 import com.sharingif.cube.core.user.ICoreUser;
