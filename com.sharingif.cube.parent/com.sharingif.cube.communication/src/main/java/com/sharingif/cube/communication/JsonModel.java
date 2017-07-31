@@ -1,7 +1,9 @@
 package com.sharingif.cube.communication;
 
 import jdk.nashorn.internal.scripts.JO;
+import org.springframework.validation.FieldError;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,6 +24,7 @@ public class JsonModel<T> {
 	private Boolean _tranStatus;
 	private String _exceptionMessage;
 	private String _exceptionLocalizedMessage;
+	private List<FieldError> _fieldErrors;
 	private T _data;
 
 	public JsonModel() {
@@ -70,6 +73,14 @@ public class JsonModel<T> {
 
 	public void set_exceptionLocalizedMessage(String _exceptionLocalizedMessage) {
 		this._exceptionLocalizedMessage = _exceptionLocalizedMessage;
+	}
+
+	public List<FieldError> get_fieldErrors() {
+		return _fieldErrors;
+	}
+
+	public void set_fieldErrors(List<FieldError> _fieldErrors) {
+		this._fieldErrors = _fieldErrors;
 	}
 
 	public T get_data() {

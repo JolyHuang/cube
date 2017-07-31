@@ -22,15 +22,6 @@ import java.util.*;
  */
 public class BindValidationCubeExceptionHandler extends ValidationCubeExceptionHandler {
 	
-	private String fieldErrors="_fieldErrors";
-	
-	public String getFieldErrors() {
-		return fieldErrors;
-	}
-	public void setFieldErrors(String fieldErrors) {
-		this.fieldErrors = fieldErrors;
-	}
-
 	@Override
 	public boolean supports(Exception exception) {
 		if(exception instanceof BindException) {
@@ -110,8 +101,6 @@ public class BindValidationCubeExceptionHandler extends ValidationCubeExceptionH
 		BindValidationCubeException bindValidationCubeException = (BindValidationCubeException)cubeException;
 		
 		Map<String, Object> model = bindValidationCubeException.getBindingResult().getModel();
-		
-		modelMap.put(fieldErrors, bindValidationCubeException.getLocaleFieldErrors());
 		
 		for (Map.Entry<String, Object> entry : model.entrySet()) {
 			String key = entry.getKey();

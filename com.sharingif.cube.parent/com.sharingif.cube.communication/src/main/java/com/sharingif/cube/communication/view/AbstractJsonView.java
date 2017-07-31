@@ -5,7 +5,10 @@ import com.sharingif.cube.communication.JsonModel;
 import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.exception.CubeRuntimeException;
 import com.sharingif.cube.core.exception.ICubeException;
+import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
+import org.springframework.validation.FieldError;
 
+import java.util.List;
 import java.util.TimeZone;
 
 /**
@@ -68,6 +71,11 @@ public abstract class AbstractJsonView implements View {
 			jsonModel = new JsonModel<Object>(true, null, null, value);
 		} else {
 			jsonModel = new JsonModel<Object>(false, exception.getMessage(), exception.getLocalizedMessage(), null);
+
+			if(value instanceof BindValidationCubeException) {
+				List<FieldError> localeFieldErrors = ((BindValidationCubeException)exception).getLocaleFieldErrors();
+				jsonModel.set_fieldErrors(localeFieldErrors);
+			}
 		}
 		
 		return objectoJson(jsonModel);
