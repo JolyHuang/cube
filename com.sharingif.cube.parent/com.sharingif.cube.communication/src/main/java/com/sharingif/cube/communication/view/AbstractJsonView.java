@@ -72,7 +72,7 @@ public abstract class AbstractJsonView implements View {
 		} else {
 			jsonModel = new JsonModel<Object>(false, exception.getMessage(), exception.getLocalizedMessage(), null);
 
-			if(value instanceof BindValidationCubeException) {
+			if(exception instanceof BindValidationCubeException) {
 				List<FieldError> localeFieldErrors = ((BindValidationCubeException)exception).getLocaleFieldErrors();
 				jsonModel.set_fieldErrors(localeFieldErrors);
 			}
