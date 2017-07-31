@@ -1,11 +1,12 @@
 package com.sharingif.cube.web.springmvc.exception;
 
+import com.sharingif.cube.communication.http.HttpRequest;
+import com.sharingif.cube.communication.http.HttpResponse;
+import com.sharingif.cube.communication.http.request.HttpRequestInfo;
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
 import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.handler.exception.NoHandlerMappingFoundException;
-import com.sharingif.cube.core.request.RequestInfo;
-import com.sharingif.cube.web.exception.handler.WebRequestInfo;
 import com.sharingif.cube.web.exception.handler.validation.ValidationCubeExceptionHandler;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -30,7 +31,7 @@ public class NoHandlerFoundExceptionHandler extends ValidationCubeExceptionHandl
     }
 
     @Override
-    public ExceptionContent handlerException(RequestInfo<WebRequestInfo> requestInfo, HandlerMethod handlerMethod, ICubeException cubeException) {
+    public ExceptionContent handlerException(HttpRequestInfo<HttpRequest, HttpResponse> requestInfo, HandlerMethod handlerMethod, ICubeException cubeException) {
         ExceptionContent out = new ExceptionContent();
         out.setViewName(String.valueOf(HttpStatus.NOT_FOUND.value()));
 

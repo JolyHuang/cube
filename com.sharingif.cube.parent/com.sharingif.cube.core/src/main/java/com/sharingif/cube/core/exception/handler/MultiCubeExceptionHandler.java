@@ -16,7 +16,7 @@ import java.util.Map;
  * @version v1.0
  * @since v1.0
  */
-public class MultiCubeExceptionHandler<RI, H extends Object> extends AbstractCubeExceptionHandler<RI,H> implements InitializingBean {
+public class MultiCubeExceptionHandler<RI extends RequestInfo, H extends Object> extends AbstractCubeExceptionHandler<RI,H> implements InitializingBean {
 	
 	private Map<String,AbstractCubeExceptionHandler<RI,H>> cacheExceptionHandlers = new HashMap<String,AbstractCubeExceptionHandler<RI,H>>(20);
 	
@@ -48,16 +48,16 @@ public class MultiCubeExceptionHandler<RI, H extends Object> extends AbstractCub
 	}
 	
 	@Override
-	public void wirteLog(RequestInfo<RI> requestInfo, H handler, ICubeException cubeException) {
+	public void wirteLog(RI requestInfo, H handler, ICubeException cubeException) {
 	}
 	
 	@Override
-	public ExceptionContent handlerException(RequestInfo<RI> requestInfo, H handler, ICubeException cubeException) {
+	public ExceptionContent handlerException(RI requestInfo, H handler, ICubeException cubeException) {
 		return null;
 	}
 	
 	@Override
-	public ExceptionContent handler(RequestInfo<RI> requestInfo, H handler, Exception exception) {
+	public ExceptionContent handler(RI requestInfo, H handler, Exception exception) {
 		try {
 			return handlerInternal(requestInfo, handler, exception);
 		} catch (Exception e) {
@@ -66,7 +66,7 @@ public class MultiCubeExceptionHandler<RI, H extends Object> extends AbstractCub
 		}
 	}
 	
-	protected ExceptionContent handlerInternal(RequestInfo<RI> requestInfo, H handler, Exception exception) {
+	protected ExceptionContent handlerInternal(RI requestInfo, H handler, Exception exception) {
 		String cacheKey = exception.getClass().getName();
 		AbstractCubeExceptionHandler<RI,H> cacheExceptionHandler = cacheExceptionHandlers.get(cacheKey);
 		
