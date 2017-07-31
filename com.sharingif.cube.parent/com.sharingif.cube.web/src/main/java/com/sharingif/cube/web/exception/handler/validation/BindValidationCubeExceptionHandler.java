@@ -32,12 +32,19 @@ public class BindValidationCubeExceptionHandler extends ValidationCubeExceptionH
 
 	@Override
 	public boolean supports(Exception exception) {
-		return exception instanceof BindException;
+		if(exception instanceof BindException) {
+			return true;
+		}
+		return exception instanceof BindValidationCubeException;
 	}
 	
 	@Override
 	protected ICubeException convertExceptionInternal(Exception exception) {
-		return new BindValidationCubeException((BindException)exception);
+		if(exception instanceof BindException) {
+			return new BindValidationCubeException((BindException)exception);
+		}
+
+		return (BindValidationCubeException)exception;
 	}
 	
 	

@@ -31,32 +31,18 @@ public class BindValidationCubeException extends ValidationCubeException impleme
 	private List<FieldError> localeFieldErrors;
 
 
-	/**
-	 * Create a new BindException instance for a BindingResult.
-	 * @param bindingResult the BindingResult instance to wrap
-	 */
 	public BindValidationCubeException(BindingResult bindingResult) {
 		super(MESSAGE);
 		Assert.notNull(bindingResult, "BindingResult must not be null");
 		this.bindingResult = bindingResult;
 	}
 	
-	/**
-	 * Create a new BindException instance for a BindingResult.
-	 * @param bindingResult the BindingResult instance to wrap
-	 */
 	public BindValidationCubeException(BindException bindException) {
 		super(MESSAGE, bindException);
 		Assert.notNull(bindException.getBindingResult(), "BindingResult must not be null");
 		this.bindingResult = bindException.getBindingResult();
 	}
 
-	/**
-	 * Create a new BindException instance for a target bean.
-	 * @param target target bean to bind onto
-	 * @param objectName the name of the target object
-	 * @see BeanPropertyBindingResult
-	 */
 	public BindValidationCubeException(Object target, String objectName) {
 		super(MESSAGE);
 		Assert.notNull(target, "Target object must not be null");
@@ -64,11 +50,6 @@ public class BindValidationCubeException extends ValidationCubeException impleme
 	}
 
 
-	/**
-	 * Return the BindingResult that this BindException wraps.
-	 * Will typically be a BeanPropertyBindingResult.
-	 * @see BeanPropertyBindingResult
-	 */
 	public final BindingResult getBindingResult() {
 		return this.bindingResult;
 	}
