@@ -1,16 +1,19 @@
 package com.sharingif.cube.web.vert.x.handler.adapter;
 
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.sharingif.cube.communication.MediaType;
+import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
 import com.sharingif.cube.core.handler.adapter.HandlerMethodArgumentResolver;
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
 import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.transport.exception.MarshallerException;
 import com.sharingif.cube.web.vert.x.request.VertXRequestInfo;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.ext.web.RoutingContext;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.MutablePropertyValues;
 import org.springframework.core.Conventions;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -19,7 +22,8 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 
 import java.lang.annotation.Annotation;
-import java.util.Map;
+import java.lang.reflect.Type;
+import java.util.TimeZone;
 
 /**
  * 处理json参数
@@ -29,6 +33,17 @@ import java.util.Map;
  * @since v1.0
  */
 public class JsonHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
+
+	private ObjectMapper objectMapper;
+
+	public JsonHandlerMethodArgumentResolver() {
+		objectMapper = new ObjectMapper();
+		objectMapper.setTimeZone(TimeZone.getTimeZone(CubeConfigure.DEFAULT_TIME_ZONE));
+	}
+
+	public JsonHandlerMethodArgumentResolver(ObjectMapper objectMapper) {
+		this.objectMapper = objectMapper;
+	}
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter, RequestInfo<?> requestInfo) {
@@ -45,28 +60,39 @@ public class JsonHandlerMethodArgumentResolver implements HandlerMethodArgumentR
 		if(buffer.length() == 0) {
 			return null;
 		}
-		
+
 		String name = Conventions.getVariableNameForParameter(parameter);
-		Object attribute = createAttribute(name, parameter, requestInfo, dataBinderFactory);
-		DataBinder binder = dataBinderFactory.createBinder(requestInfo, attribute, name);
-		if (binder.getTarget() != null) {
-			bindRequestParameters(binder, requestInfo, routingContext.getBodyAsJson().getMap());
+		Object arg = readWithMessageConverters(parameter, buffer);
+
+		DataBinder binder = dataBinderFactory.createBinder(requestInfo, arg, name);
+		if (arg != null) {
 			validateIfApplicable(binder, parameter);
 			if (binder.getBindingResult().hasErrors() && isBindExceptionRequired(binder, parameter)) {
 				throw new BindValidationCubeException(binder.getBindingResult());
 			}
 		}
-		
+
 		return binder.convertIfNecessary(binder.getTarget(), parameter.getParameterType(), parameter);
 	}
-	
-	protected void bindRequestParameters(DataBinder binder, RequestInfo<?> requestInfo, Map<?,?> parameter) {
-		MutablePropertyValues mpvs = new MutablePropertyValues(parameter);
-		binder.bind(mpvs);
+
+	public Object readWithMessageConverters(MethodParameter parameter, Buffer buffer) throws MarshallerException {
+		JavaType javaType = getJavaType(parameter.getNestedGenericParameterType());
+
+		try {
+			return objectMapper.readValue(buffer.getBytes(), javaType);
+		} catch (Exception e) {
+			throw new MarshallerException("marshaller json to object error", e);
+		}
+
 	}
-	
-	protected void validateIfApplicable(DataBinder binder, MethodParameter methodParam) {
-		Annotation[] annotations = methodParam.getParameterAnnotations();
+
+	protected JavaType getJavaType(Type type) {
+		TypeFactory typeFactory = this.objectMapper.getTypeFactory();
+		return typeFactory.constructType(type);
+	}
+
+	protected void validateIfApplicable(DataBinder binder, MethodParameter parameter) {
+		Annotation[] annotations = parameter.getParameterAnnotations();
 		for (Annotation ann : annotations) {
 			Validated validatedAnn = AnnotationUtils.getAnnotation(ann, Validated.class);
 			if (validatedAnn != null || ann.annotationType().getSimpleName().startsWith("Valid")) {
@@ -77,15 +103,10 @@ public class JsonHandlerMethodArgumentResolver implements HandlerMethodArgumentR
 			}
 		}
 	}
-	
-	protected Object createAttribute(String attributeName, MethodParameter methodParam, RequestInfo<?> requestInfo, DataBinderFactory dataBinderFactory) throws CubeException {
 
-		return BeanUtils.instantiateClass(methodParam.getParameterType());
-	}
-	
-	protected boolean isBindExceptionRequired(DataBinder binder, MethodParameter methodParam) {
-		int i = methodParam.getParameterIndex();
-		Class<?>[] paramTypes = methodParam.getMethod().getParameterTypes();
+	protected boolean isBindExceptionRequired(DataBinder binder, MethodParameter parameter) {
+		int i = parameter.getParameterIndex();
+		Class<?>[] paramTypes = parameter.getMethod().getParameterTypes();
 		boolean hasBindingResult = (paramTypes.length > (i + 1) && Errors.class.isAssignableFrom(paramTypes[i + 1]));
 		return !hasBindingResult;
 	}
