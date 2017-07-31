@@ -10,6 +10,7 @@ import com.sharingif.cube.core.transport.exception.MarshallerException;
 import com.sharingif.cube.core.transport.transform.Marshaller;
 import com.sharingif.cube.core.transport.transform.MethodParameterArgument;
 
+import java.lang.reflect.Type;
 import java.util.TimeZone;
 
 /**
@@ -45,7 +46,7 @@ public class StringToJsonModelMarshaller implements Marshaller<MethodParameterAr
 	@Override
 	public JsonModel<Object> marshaller(MethodParameterArgument<Object[], String> methodParameterArgument) throws MarshallerException {
 
-		JavaType javaType = getJavaType(methodParameterArgument.getMethodParameter().getNestedParameterType());
+		JavaType javaType = getJavaType(methodParameterArgument.getMethodParameter().getNestedGenericParameterType());
 
 		JsonModel<Object> object;
 		try {
@@ -57,10 +58,10 @@ public class StringToJsonModelMarshaller implements Marshaller<MethodParameterAr
 		return object;
 	}
 
-	protected JavaType getJavaType(Class<?> type) {
+	protected JavaType getJavaType(Type type) {
 		TypeFactory typeFactory = this.objectMapper.getTypeFactory();
 
-		if(type.getName().equals(Void.TYPE.getName())) {
+		if(type.getTypeName().equals(Void.TYPE.getTypeName())) {
 			return typeFactory.constructType(JsonModel.class);
 		}
 
