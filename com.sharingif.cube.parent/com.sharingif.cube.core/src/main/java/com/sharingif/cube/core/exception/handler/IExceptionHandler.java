@@ -17,7 +17,7 @@ import java.util.Locale;
  * @Version:      [v1.0] 
  *    
  */
-public interface IExceptionHandler<RI,H extends Object> {
+public interface IExceptionHandler<RI extends RequestInfo,H extends Object> {
 	
 	/**
 	 * 判断是否支持
@@ -47,7 +47,7 @@ public interface IExceptionHandler<RI,H extends Object> {
 	 * @param handler : 请求处理器
 	 * @param cubeException : cube异常
 	 */
-	void wirteLog(RequestInfo<RI> requestInfo, H handler, ICubeException cubeException);
+	void wirteLog(RI requestInfo, H handler, ICubeException cubeException);
 	
 	/**
 	 * 处理异常
@@ -56,6 +56,6 @@ public interface IExceptionHandler<RI,H extends Object> {
 	 * @param cubeException : cube异常
 	 * @return O : 异常处理结果
 	 */
-	ExceptionContent handlerException(RequestInfo<RI> requestInfo, H handler, ICubeException cubeException);
+	ExceptionContent handlerException(RI requestInfo, H handler, ICubeException cubeException);
 
 }

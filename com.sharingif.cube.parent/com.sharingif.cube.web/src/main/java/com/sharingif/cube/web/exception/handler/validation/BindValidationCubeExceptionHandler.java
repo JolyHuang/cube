@@ -1,11 +1,12 @@
 package com.sharingif.cube.web.exception.handler.validation;
 
+import com.sharingif.cube.communication.http.HttpRequest;
+import com.sharingif.cube.communication.http.HttpResponse;
+import com.sharingif.cube.communication.http.request.HttpRequestInfo;
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
 import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
 import com.sharingif.cube.core.handler.HandlerMethod;
-import com.sharingif.cube.core.request.RequestInfo;
-import com.sharingif.cube.web.exception.handler.WebRequestInfo;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -66,7 +67,7 @@ public class BindValidationCubeExceptionHandler extends ValidationCubeExceptionH
 	}
 
 	@Override
-	public void wirteLogInternal(RequestInfo<WebRequestInfo> requestInfo, HandlerMethod handlerMethod, ICubeException cubeException, Locale locale, Long exTime) {
+	public void wirteLogInternal(HttpRequestInfo<HttpRequest, HttpResponse> requestInfo, HandlerMethod handlerMethod, ICubeException cubeException, Locale locale, Long exTime) {
 		
 		String loggerMessage = "transaction error===> ThdId:{}, method:{}, TrsId:{}, ExTime:{} \nmessage:{} \nlocalizedMessage:{}";
 		
@@ -95,7 +96,7 @@ public class BindValidationCubeExceptionHandler extends ValidationCubeExceptionH
 	}
 
 	@Override
-	public ExceptionContent handlerException(RequestInfo<WebRequestInfo> requestInfo,
+	public ExceptionContent handlerException(HttpRequestInfo<HttpRequest, HttpResponse> requestInfo,
 			HandlerMethod handlerMethod,
 			ICubeException cubeException) {
 

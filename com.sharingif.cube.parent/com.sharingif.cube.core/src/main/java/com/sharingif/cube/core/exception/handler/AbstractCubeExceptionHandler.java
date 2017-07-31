@@ -18,7 +18,7 @@ import java.util.Locale;
  * @version v1.0
  * @since v1.0
  */
-public abstract class AbstractCubeExceptionHandler<RI, H extends Object> extends ApplicationObjectSupport implements IExceptionHandler<RI,H> {
+public abstract class AbstractCubeExceptionHandler<RI extends RequestInfo, H extends Object> extends ApplicationObjectSupport implements IExceptionHandler<RI,H> {
 
 
 	private static final Field DETAIL_MESSAGE_FIELD;
@@ -111,22 +111,19 @@ public abstract class AbstractCubeExceptionHandler<RI, H extends Object> extends
 	 * @param exception : 异常
 	 * @return O : 异常处理结果
 	 */
-	public ExceptionContent handler(RequestInfo<RI> requestInfo, H handler, Exception exception) {
+	public ExceptionContent handler(RI requestInfo, H handler, Exception exception) {
 
-		if(supports(exception)){
-			ICubeException cubeException = convertException(exception);
+		ICubeException cubeException = convertException(exception);
 
-			resolverMessages(cubeException, requestInfo.getLocale());
+		resolverMessages(cubeException, requestInfo.getLocale());
 
-			wirteLog(requestInfo, handler, cubeException);
+		wirteLog(requestInfo, handler, cubeException);
 
-			ExceptionContent result = handlerException(requestInfo, handler, cubeException);
-			result.setCubeException(cubeException);
+		ExceptionContent result = handlerException(requestInfo, handler, cubeException);
+		result.setCubeException(cubeException);
 
-			return result;
-		}
+		return result;
 
-		return null;
 	}
 
 

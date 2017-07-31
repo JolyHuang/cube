@@ -19,7 +19,7 @@ import java.util.Locale;
  * @version v1.0
  * @since v1.0
  */
-public abstract class AbstractCubeHandlerMethodExceptionHandler<RI> extends AbstractCubeExceptionHandler<RI,HandlerMethod> {
+public abstract class AbstractCubeHandlerMethodExceptionHandler<RI extends RequestInfo> extends AbstractCubeExceptionHandler<RI,HandlerMethod> {
 	
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -48,7 +48,7 @@ public abstract class AbstractCubeHandlerMethodExceptionHandler<RI> extends Abst
 		}
 	}
 	
-	public void wirteLogInternal(RequestInfo<RI> requestInfo, HandlerMethod handlerMethod, ICubeException cubeException, Locale locale, Long exTime) {
+	public void wirteLogInternal(RI requestInfo, HandlerMethod handlerMethod, ICubeException cubeException, Locale locale, Long exTime) {
 		String loggerMessage = "transaction error===> ThdId:{}, method:{}, TrsId:{}, ExTime:{} message:{} localizedMessage:{}";
 		
 		
@@ -77,7 +77,7 @@ public abstract class AbstractCubeHandlerMethodExceptionHandler<RI> extends Abst
 	}
 	
 	@Override
-	public void wirteLog(RequestInfo<RI> requestInfo, HandlerMethod handlerMethod, ICubeException cubeException) {
+	public void wirteLog(RI requestInfo, HandlerMethod handlerMethod, ICubeException cubeException) {
 		Long beginCurrentTime = RequestLocalContextHolder.getRequestDateTime();
 		if(beginCurrentTime == null) {
 			beginCurrentTime = Long.valueOf(0);
@@ -93,7 +93,7 @@ public abstract class AbstractCubeHandlerMethodExceptionHandler<RI> extends Abst
 	 * @param exception : 异常
 	 * @return O : 异常处理结果
 	 */
-	public ExceptionContent handler(RequestInfo<RI> requestInfo, HandlerMethod handlerMethod, Exception exception) {
+	public ExceptionContent handler(RI requestInfo, HandlerMethod handlerMethod, Exception exception) {
 		
 		if(supports(exception)){
 			ICubeException cubeException = convertException(exception);

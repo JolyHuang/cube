@@ -5,7 +5,7 @@ import com.sharingif.cube.communication.view.View;
 import com.sharingif.cube.communication.view.exception.NoViewFoundException;
 import com.sharingif.cube.communication.view.exception.ViewException;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
-import com.sharingif.cube.core.exception.handler.IExceptionResolver;
+import com.sharingif.cube.core.exception.handler.MultiCubeExceptionHandler;
 import com.sharingif.cube.core.handler.adapter.MultiHandlerMethodAdapter;
 import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
 import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
@@ -30,7 +30,7 @@ public abstract class AbstractDispatcherHandler<I> implements DispatcherHandler<
 	private RequestInfoResolver requestInfoResolver;
 	private MultiHandlerMapping multiHandlerMapping;
 	private MultiHandlerMethodAdapter multiHandlerMethodAdapter;
-	private IExceptionResolver<Object,Object> exceptionResolver;
+	private MultiCubeExceptionHandler multiCubeExceptionHandler;
 	private MultiViewResolver multiViewResolver;
 	private HandlerMethodChain handlerMethodChain;
 	
@@ -54,13 +54,12 @@ public abstract class AbstractDispatcherHandler<I> implements DispatcherHandler<
 	public void setMultiHandlerMethodAdapter(MultiHandlerMethodAdapter multiHandlerMethodAdapter) {
 		this.multiHandlerMethodAdapter = multiHandlerMethodAdapter;
 	}
-	@SuppressWarnings("rawtypes")
-	public IExceptionResolver getExceptionResolver() {
-		return exceptionResolver;
+
+	public MultiCubeExceptionHandler getMultiCubeExceptionHandler() {
+		return multiCubeExceptionHandler;
 	}
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void setExceptionResolver(IExceptionResolver exceptionResolver) {
-		this.exceptionResolver = exceptionResolver;
+	public void setMultiCubeExceptionHandler(MultiCubeExceptionHandler multiCubeExceptionHandler) {
+		this.multiCubeExceptionHandler = multiCubeExceptionHandler;
 	}
 	public MultiViewResolver getMultiViewResolver() {
 		return multiViewResolver;
@@ -123,7 +122,7 @@ public abstract class AbstractDispatcherHandler<I> implements DispatcherHandler<
 
 		} catch (Exception e) {
 			logger.error("do dispatch error", e);
-			exceptionContent = getExceptionResolver().resolverException(requestInfo, handler, e);
+			exceptionContent = multiCubeExceptionHandler.handler(requestInfo, handler, e);
 		}
 
 		handlerView(requestInfo,returnValue,exceptionContent);
