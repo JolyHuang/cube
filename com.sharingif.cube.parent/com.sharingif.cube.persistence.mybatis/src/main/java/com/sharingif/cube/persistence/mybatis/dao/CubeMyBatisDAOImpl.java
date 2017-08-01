@@ -42,7 +42,7 @@ public abstract class CubeMyBatisDAOImpl<T, ID extends Serializable> extends Abs
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@SuppressWarnings("unchecked")
-	private String namespace = namespace = Introspector.decapitalize(((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]).getSimpleName());
+	private String namespace = Introspector.decapitalize(((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]).getSimpleName());
 	
 	public CubeMyBatisDAOImpl(){
 		
