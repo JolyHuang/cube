@@ -126,7 +126,9 @@ public class DateUtils {
 	 * @param endDate	： 结束日期
 	 * @return
 	 */
-	public static int intervalDay(Date startDate, Date endDate) {
+	public static int intervalDay(Date startDate, Date endDate) throws ParseException {
+		startDate = getDate(getDate(startDate,DATE_COMPACT_FORMAT),DATE_COMPACT_FORMAT);
+		endDate = getDate(getDate(endDate,DATE_COMPACT_FORMAT),DATE_COMPACT_FORMAT);
 		long intervalDay = (startDate.getTime() - endDate.getTime())/(24*60*60*1000L);
 
 		return Math.abs((int) intervalDay);
