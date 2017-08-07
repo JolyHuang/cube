@@ -239,8 +239,13 @@ public abstract class CubeMyBatisDAOImpl<T, ID extends Serializable> extends Abs
 		private static final void addObjectOperationHistory(Object obj){
 			
 			if(obj instanceof IObjectDateOperationHistory) {
+
+				Date currentDate = new Date(System.currentTimeMillis());
+
 				IObjectDateOperationHistory objectDateOperationHistory = (IObjectDateOperationHistory)obj;
-				objectDateOperationHistory.setCreateTime(new Date(System.currentTimeMillis()));
+				objectDateOperationHistory.setCreateTime(currentDate);
+
+				objectDateOperationHistory.setModifyTime(currentDate);
 			}
 
 			if(obj instanceof IObjectUserOperationHistory) {
