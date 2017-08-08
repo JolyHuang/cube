@@ -14,6 +14,8 @@ import com.sharingif.cube.core.transport.exception.MarshallerException;
 import com.sharingif.cube.web.vert.x.request.VertXRequestInfo;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.ext.web.RoutingContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.Conventions;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -33,6 +35,8 @@ import java.util.TimeZone;
  * @since v1.0
  */
 public class JsonHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
+
+	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
 	private ObjectMapper objectMapper;
 
@@ -81,6 +85,7 @@ public class JsonHandlerMethodArgumentResolver implements HandlerMethodArgumentR
 		try {
 			return objectMapper.readValue(buffer.getBytes(), javaType);
 		} catch (Exception e) {
+			this.logger.error("marshaller object to json error : {}", e);
 			throw new MarshallerException("marshaller json to object error", e);
 		}
 

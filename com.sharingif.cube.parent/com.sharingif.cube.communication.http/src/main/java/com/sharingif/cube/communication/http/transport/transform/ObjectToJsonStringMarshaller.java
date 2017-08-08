@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.transport.exception.MarshallerException;
 import com.sharingif.cube.core.transport.transform.Marshaller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 对象数组转json字符串
@@ -15,6 +17,8 @@ import com.sharingif.cube.core.transport.transform.Marshaller;
  * @since v1.0
  */
 public class ObjectToJsonStringMarshaller implements Marshaller<Object[], String> {
+
+	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private ObjectMapper objectMapper;
 	
@@ -36,6 +40,7 @@ public class ObjectToJsonStringMarshaller implements Marshaller<Object[], String
 			
 			return objectMapper.writeValueAsString((data.length > 1) ? data : data[0]);
 		} catch (Exception e) {
+			this.logger.error("marshaller object to json error : {}", e);
 			throw new MarshallerException("marshaller object to json error", e);
 		}
 	}

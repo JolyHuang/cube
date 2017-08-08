@@ -9,6 +9,8 @@ import com.sharingif.cube.core.handler.bind.support.BindingInitializer;
 import com.sharingif.cube.core.transport.exception.MarshallerException;
 import com.sharingif.cube.core.transport.transform.Marshaller;
 import com.sharingif.cube.core.transport.transform.MethodParameterArgument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Type;
 import java.util.TimeZone;
@@ -21,6 +23,8 @@ import java.util.TimeZone;
  * @since v1.0
  */
 public class StringToJsonModelMarshaller implements Marshaller<MethodParameterArgument<Object[],String>, JsonModel<Object>> {
+
+	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private ObjectMapper objectMapper;
 	private BindingInitializer bindingInitializer;
@@ -52,6 +56,7 @@ public class StringToJsonModelMarshaller implements Marshaller<MethodParameterAr
 		try {
 			object = objectMapper.readValue(methodParameterArgument.getConnectReturnValue(), javaType);
 		} catch (Exception e) {
+			this.logger.error("marshaller object to json error : {}", e);
 			throw new MarshallerException("marshaller json to object error", e);
 		}
 

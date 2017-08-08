@@ -107,6 +107,7 @@ public class MethodParameterArgumentToJsonModelMarshaller implements Marshaller<
 		try {
 			return marshallerInternal(methodParameterArgument);
 		} catch (Exception e) {
+			this.logger.error("marshaller object to json error : {}", e);
 			throw new MarshallerException("marshaller json to object error", e);
 		}
 		
@@ -118,7 +119,7 @@ public class MethodParameterArgumentToJsonModelMarshaller implements Marshaller<
 		Object tranStatusObject = connectReturnMap.get(getTranStatusName());
 		
 		if(null == tranStatusObject) {
-			this.logger.error("The transaction status field \"{}\" is not found in the message", getTranStatusName());
+			this.logger.error("The transaction status field {} is not found in the message", getTranStatusName());
 			throw new MarshallerException("tranStatus key name error");
 		}
 		
