@@ -1,6 +1,7 @@
 package com.sharingif.cube.communication.http.transport.transform;
 
 import com.sharingif.cube.communication.JsonModel;
+import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.core.transport.transform.MethodParameterArgument;
 import com.sharingif.cube.core.transport.exception.MarshallerException;
 import com.sharingif.cube.core.transport.transform.Marshaller;
@@ -13,13 +14,13 @@ import com.sharingif.cube.core.transport.transform.Transform;
  * @version v1.0
  * @since v1.0
  */
-public class HttpJsonTransform implements Transform<Object[],String,MethodParameterArgument<Object[], String>,JsonModel<Object>> {
+public class HttpJsonTransform implements Transform<RequestInfo<Object[]>,String,MethodParameterArgument<Object[], String>,JsonModel<Object>> {
 
-	private Marshaller<Object[], String> marshaller;
+	private Marshaller<RequestInfo<Object[]>, String> marshaller;
 	private Marshaller<MethodParameterArgument<Object[], String>, JsonModel<Object>> unmarshaller;
 	
 	@Override
-	public void setMarshaller(Marshaller<Object[], String> marshaller) {
+	public void setMarshaller(Marshaller<RequestInfo<Object[]>, String> marshaller) {
 		this.marshaller = marshaller;
 	}
 
@@ -29,7 +30,7 @@ public class HttpJsonTransform implements Transform<Object[],String,MethodParame
 	}
 	
 	@Override
-	public String marshaller(Object[] data) throws MarshallerException {
+	public String marshaller(RequestInfo<Object[]> data) throws MarshallerException {
 		return marshaller.marshaller(data);
 	}
 

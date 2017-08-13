@@ -4,6 +4,7 @@ import java.util.TimeZone;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharingif.cube.core.config.CubeConfigure;
+import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.core.transport.exception.MarshallerException;
 import com.sharingif.cube.core.transport.transform.Marshaller;
 import org.slf4j.Logger;
@@ -16,7 +17,7 @@ import org.slf4j.LoggerFactory;
  * @version v1.0
  * @since v1.0
  */
-public class ObjectToJsonStringMarshaller implements Marshaller<Object[], String> {
+public class ObjectToJsonStringMarshaller implements Marshaller<RequestInfo<Object[]>, String> {
 
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -32,7 +33,10 @@ public class ObjectToJsonStringMarshaller implements Marshaller<Object[], String
 	}
 
 	@Override
-	public String marshaller(Object[] data) throws MarshallerException {
+	public String marshaller(RequestInfo<Object[]> requestInfo) throws MarshallerException {
+
+		Object[] data = requestInfo.getRequest();
+
 		try {
 			if(data == null || data.length == 0) {
 				return null;

@@ -1,7 +1,6 @@
 package com.sharingif.cube.core.transport;
 
 import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.core.transport.transform.Transform;
 
 /**
@@ -15,6 +14,6 @@ public interface Transport<MI,MO,UI,UO> {
 	
 	void setTransform(Transform<MI,MO,UI,UO> transform);
 	
-	Object doTransport(RequestInfo<MI> obj) throws CubeException ;
+	Object doTransport(MI obj) throws CubeException ;
 	
 }

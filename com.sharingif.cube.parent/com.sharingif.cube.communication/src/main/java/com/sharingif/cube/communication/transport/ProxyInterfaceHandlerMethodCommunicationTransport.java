@@ -16,7 +16,7 @@ import com.sharingif.cube.core.util.CubeExceptionUtil;
  * @version v1.0
  * @since v1.0
  */
-public class ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> extends AbstractHandlerMethodCommunicationTransport<Object[],MO,RequestInfo<MO>,CO,MethodParameterArgument<Object[],CO>,UO> {
+public class ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> extends AbstractHandlerMethodCommunicationTransport<RequestInfo<Object[]>,MO,RequestInfo<MO>,CO,MethodParameterArgument<Object[],CO>,UO> {
 
 	public ProxyInterfaceHandlerMethodCommunicationTransport(HandlerMethod handlerMethod) {
 		super(handlerMethod);
@@ -35,7 +35,7 @@ public class ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> extends
 		
 		Object returnValue = null;
 		try {
-			returnValue = doTransportInternal((RequestInfo<Object[]>) handlerMethodContent.getRequestInfo());
+			returnValue = doTransportInternal(handlerMethodContent.getRequestInfo());
 		} catch (Exception exception) {
 			if(handlerMethodChainIsNotEmpty) {
 				try {
@@ -64,7 +64,7 @@ public class ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> extends
 	}
 	
 	public Object doTransportInternal(RequestInfo<Object[]> requestInfo) throws CubeException {
-		MO marshallerData = marshaller((RequestInfo<Object[]>)requestInfo);
+		MO marshallerData = marshaller(requestInfo);
 		
 		CO connectReceiveMessage = connect(requestInfo, marshallerData);
 		
@@ -76,7 +76,7 @@ public class ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> extends
 	}
 	
 	protected MO marshaller(RequestInfo<Object[]> requestInfo) throws MarshallerException {
-		return getTransform().marshaller(requestInfo.getRequest());
+		return getTransform().marshaller(requestInfo);
 	}
 	
 	protected CO connect(RequestInfo<Object[]> requestInfo, MO marshallerData) {

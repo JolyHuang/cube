@@ -1,5 +1,6 @@
 package com.sharingif.cube.communication.transport.transform;
 
+import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.core.transport.exception.MarshallerException;
 import com.sharingif.cube.core.transport.transform.Marshaller;
 import com.sharingif.cube.core.transport.transform.MethodParameterArgument;
@@ -12,15 +13,15 @@ import com.sharingif.cube.core.transport.transform.Transform;
  * @version v1.0
  * @since v1.0
  */
-public class ProxyInterfaceHandlerMethodCommunicationTransform<MO,CO,UO> implements Transform<Object[], MO, MethodParameterArgument<Object[], CO>, UO> {
+public class ProxyInterfaceHandlerMethodCommunicationTransform<MO,CO,UO> implements Transform<RequestInfo<Object[]>, MO, MethodParameterArgument<Object[], CO>, UO> {
 	
-	private Marshaller<Object[], MO> marshaller;
+	private Marshaller<RequestInfo<Object[]>, MO> marshaller;
 	private Marshaller<MethodParameterArgument<Object[], CO>, UO> unmarshaller;
 	
-	public Marshaller<Object[], MO> getMarshaller() {
+	public Marshaller<RequestInfo<Object[]>, MO> getMarshaller() {
 		return marshaller;
 	}
-	public void setMarshaller(Marshaller<Object[], MO> marshaller) {
+	public void setMarshaller(Marshaller<RequestInfo<Object[]>, MO> marshaller) {
 		this.marshaller = marshaller;
 	}
 	public Marshaller<MethodParameterArgument<Object[], CO>, UO> getUnmarshaller() {
@@ -30,7 +31,7 @@ public class ProxyInterfaceHandlerMethodCommunicationTransform<MO,CO,UO> impleme
 		this.unmarshaller = unmarshaller;
 	}
 	@Override
-	public MO marshaller(Object[] data) throws MarshallerException {
+	public MO marshaller(RequestInfo<Object[]> data) throws MarshallerException {
 		return marshaller.marshaller(data);
 	}
 	@Override
