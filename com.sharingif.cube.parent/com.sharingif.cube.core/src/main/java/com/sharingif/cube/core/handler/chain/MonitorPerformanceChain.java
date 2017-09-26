@@ -28,7 +28,7 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain {
 		Long beginCurrentTime = System.currentTimeMillis();
 		content.addacheData(BEGIN_CURRENT_TIME, beginCurrentTime);
 
-		this.logger.info("{} begin===> ThdId:{}, method:{}, TrsId:{}"
+		this.logger.info("{} begin===> thdId:{}, method:{}, trsId:{}"
 				,name
 				,Thread.currentThread().getId()
 				,content.getRequestInfo().getMethod()
@@ -43,7 +43,7 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain {
 		
 		Long endCurrentTime = System.currentTimeMillis();
 		
-		this.logger.info("{} end===> ThdId:{}, method:{}, TrsId:{}, ExTime:{}"
+		this.logger.info("{} end===> thdId:{}, method:{}, trsId:{}, exTime:{}"
 				,name
 				,Thread.currentThread().getId()
 				,content.getRequestInfo().getMethod()
@@ -60,11 +60,28 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain {
 		
 		Long endCurrentTime = System.currentTimeMillis();
 
-		String loggerMessage = "{} error===> ThdId:{}, method:{}, TrsId:{}, ExTime:{}, message:{}, localizedMessage:{}";
+		String loggerMessage = "{} error===> thdId:{}, method:{}, trsId:{}, exTime:{}, message:{}, localizedMessage:{}";
 
+		String message = null;
 		String localizedMessage = null;
 		if(exception instanceof ICubeException) {
-			localizedMessage = ((ICubeException)exception).getLocalizedMessage();
+			ICubeException cubeException = ((ICubeException)exception);
+			message = cubeException.getMessage();
+			localizedMessage = cubeException.getLocalizedMessage();
+		}
+
+		if(null == exception.getCause()) {
+			this.logger.error(loggerMessage
+					,name
+					,Thread.currentThread().getId()
+					,content.getRequestInfo().getMethod()
+					,content.getRequestInfo().getLookupPath()
+					,(endCurrentTime-beginCurrentTime)
+					,message
+					,localizedMessage
+			);
+
+			return;
 		}
 
 		this.logger.error(loggerMessage
@@ -73,10 +90,11 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain {
 				,content.getRequestInfo().getMethod()
 				,content.getRequestInfo().getLookupPath()
 				,(endCurrentTime-beginCurrentTime)
-				,exception.getMessage()
+				,message
 				,localizedMessage
-				);
-		
+				,exception
+		);
+
 	}
 	
 }
