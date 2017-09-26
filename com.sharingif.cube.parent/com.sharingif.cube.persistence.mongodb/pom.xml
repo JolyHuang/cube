@@ -4,7 +4,7 @@
     <parent>
         <artifactId>com.sharingif.cube.parent</artifactId>
         <groupId>com.sharingif.cube</groupId>
-        <version>3.0.0-RELEASE</version>
+        <version>3.0.1-RELEASE</version>
     </parent>
     <artifactId>com.sharingif.cube.persistence.mongodb</artifactId>
     <name>com.sharingif.cube.persistence.mongodb</name>
