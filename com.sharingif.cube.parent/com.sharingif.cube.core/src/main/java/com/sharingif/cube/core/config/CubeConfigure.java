@@ -47,7 +47,7 @@ public final class CubeConfigure {
 			}
 		}
 		
-		String defaultEncoding = null;
+		String defaultEncoding;
 		try {
 			defaultEncoding = properties.getProperty(DEFAULT_ENCODING_KEY).trim();
 		} catch (Exception e) {
@@ -57,12 +57,13 @@ public final class CubeConfigure {
 		DEFAULT_ENCODING = defaultEncoding;
 		initParameterLogger(DEFAULT_ENCODING_KEY, DEFAULT_ENCODING);
 
+		String externalConfigure;
 		try {
-			EXTERNAL_CONFIGURE = properties.getProperty(EXTERNAL_CONFIGURE_KEY).trim();
+			externalConfigure = properties.getProperty(EXTERNAL_CONFIGURE_KEY).trim();
 		} catch (Exception e) {
-			logger.error("Could not find key '{}' in CubeConfigure.properties", EXTERNAL_CONFIGURE_KEY);
-			throw e;
+			externalConfigure = null;
 		}
+		EXTERNAL_CONFIGURE = externalConfigure;
 		initParameterLogger(EXTERNAL_CONFIGURE_KEY, EXTERNAL_CONFIGURE);
 
 		String defaultTimeZone = null;
