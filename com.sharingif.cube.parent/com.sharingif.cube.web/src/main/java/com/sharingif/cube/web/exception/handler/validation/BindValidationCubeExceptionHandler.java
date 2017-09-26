@@ -60,7 +60,7 @@ public class BindValidationCubeExceptionHandler extends ValidationCubeExceptionH
 	@Override
 	public void wirteLogInternal(HttpRequestInfo<HttpRequest, HttpResponse> requestInfo, HandlerMethod handlerMethod, ICubeException cubeException, Locale locale, Long exTime) {
 		
-		String loggerMessage = "transaction error===> ThdId:{}, method:{}, TrsId:{}, ExTime:{} \nmessage:{} \nlocalizedMessage:{}";
+		String loggerMessage = "transaction error===> ThdId:{}, method:{}, TrsId:{}, ExTime:{}, message:{}, localizedMessage:{}";
 		
 		if(null == ((Exception)cubeException).getCause()){
 			

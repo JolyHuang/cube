@@ -1,6 +1,7 @@
 package com.sharingif.cube.core.handler.chain;
 
 import com.sharingif.cube.core.exception.CubeException;
+import com.sharingif.cube.core.exception.ICubeException;
 
 /**
  * 日志监控
@@ -58,9 +59,14 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain {
 		Long beginCurrentTime = content.getCacheData(BEGIN_CURRENT_TIME);
 		
 		Long endCurrentTime = System.currentTimeMillis();
-		
-		String loggerMessage = "{} error===> ThdId:{}, method:{}, TrsId:{}, ExTime:{} message:{}";
-			
+
+		String loggerMessage = "{} error===> ThdId:{}, method:{}, TrsId:{}, ExTime:{}, message:{}, localizedMessage:{}";
+
+		String localizedMessage = null;
+		if(exception instanceof ICubeException) {
+			localizedMessage = ((ICubeException)exception).getLocalizedMessage();
+		}
+
 		this.logger.error(loggerMessage
 				,name
 				,Thread.currentThread().getId()
@@ -68,6 +74,7 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain {
 				,content.getRequestInfo().getLookupPath()
 				,(endCurrentTime-beginCurrentTime)
 				,exception.getMessage()
+				,localizedMessage
 				);
 		
 	}
