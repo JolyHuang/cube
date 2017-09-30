@@ -27,10 +27,11 @@ public class VertXJsonView extends AbstractJsonView {
 		Buffer buffer = Buffer.buffer(getResponseData(returnValue, exceptionContent == null ? null: exceptionContent.getCubeException()));
 
 		vertXRequestInfo.getResponse().getHttpServerResponse()
-		.putHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
-		.putHeader(HttpHeaders.CONTENT_LENGTH, String.valueOf(buffer.length()))
-		.write(buffer)
-		.end();
+				.putHeader("Access-Control-Allow-Origin", "*")
+				.putHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
+				.putHeader(HttpHeaders.CONTENT_LENGTH, String.valueOf(buffer.length()))
+				.write(buffer)
+				.end();
 		
 	}
 
