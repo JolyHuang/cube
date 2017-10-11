@@ -13,12 +13,20 @@ import org.springframework.web.servlet.ModelAndView;
 public class StreamModelAndView extends ModelAndView {
 	
 	public static final String CONTENT = "_STREAMVIEW_CONTENT";
-	
+
+	public static final String FILE_NAME="_FILE_NAME";
+
 	public void setContent(String content){
 		addObject(CONTENT, content);
 	}
 	public void setContent(byte[] content){
 		addObject(CONTENT, content);
+	}
+	public void setFileName(String fileName) {
+		addObject(FILE_NAME, fileName);
+	}
+	public String getFIleName() {
+		return (String)getModel().get(FILE_NAME);
 	}
 	public Object getContent(){
 		return getModel().get(CONTENT);

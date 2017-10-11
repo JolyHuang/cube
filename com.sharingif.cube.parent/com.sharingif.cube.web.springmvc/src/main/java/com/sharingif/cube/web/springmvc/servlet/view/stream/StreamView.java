@@ -34,6 +34,11 @@ public class StreamView extends AbstractView {
 	protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 				
 		Object content = model.get(StreamModelAndView.CONTENT);
+
+		Object fileName = model.get(StreamModelAndView.FILE_NAME);
+		if(fileName != null) {
+			response.setHeader("Content-Disposition", "attachment; filename="+((String)fileName));
+		}
 		
 		if (content instanceof String) {
 			PrintWriter printwriter = response.getWriter();
