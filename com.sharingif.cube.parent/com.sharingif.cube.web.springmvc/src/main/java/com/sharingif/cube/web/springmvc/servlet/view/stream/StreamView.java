@@ -37,7 +37,7 @@ public class StreamView extends AbstractView {
 
 		Object fileName = model.get(StreamModelAndView.FILE_NAME);
 		if(fileName != null) {
-			response.setHeader("Content-Disposition", "attachment; filename="+((String)fileName));
+			response.setHeader("Content-Disposition", "attachment; filename="+(fileName));
 		}
 		
 		if (content instanceof String) {
