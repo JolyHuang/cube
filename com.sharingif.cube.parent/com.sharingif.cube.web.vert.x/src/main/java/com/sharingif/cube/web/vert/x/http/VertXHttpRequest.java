@@ -19,7 +19,7 @@ import io.vertx.ext.web.Session;
 public class VertXHttpRequest implements HttpRequest {
 	
 	private HttpServerRequest httpServerRequest;
-	private Session session;
+	private VertXHttpSession httpSession;
 	
 	public VertXHttpRequest(HttpServerRequest  httpServerRequest) {
 		this.httpServerRequest = httpServerRequest;
@@ -107,13 +107,13 @@ public class VertXHttpRequest implements HttpRequest {
 		return null;
 	}
 
-	public void setSession(Session session) {
-		this.session = session;
+	public void setHttpSession(VertXHttpSession httpSession) {
+		this.httpSession = httpSession;
 	}
+
 	@Override
 	public HttpSession getSession() {
-		// TODO Auto-generated method stub
-		return null;
+		return httpSession;
 	}
 
 	@Override

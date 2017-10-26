@@ -4,6 +4,7 @@ import com.sharingif.cube.core.request.RequestInfoResolver;
 import com.sharingif.cube.web.vert.x.http.VertXHttpRequest;
 import com.sharingif.cube.web.vert.x.http.VertXHttpResponse;
 
+import com.sharingif.cube.web.vert.x.http.VertXHttpSession;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.ext.web.RoutingContext;
@@ -28,7 +29,8 @@ public class VertXRequestInfoResolver implements RequestInfoResolver<ExtendedRou
 		RoutingContext routingContext = request.getRoutingContext();
 
 		VertXHttpRequest vertXHttpRequest = new VertXHttpRequest(routingContext.request());
-		vertXHttpRequest.setSession(routingContext.session());
+		VertXHttpSession vertXHttpSession = new VertXHttpSession(request.getRoutingContext().session());
+		vertXHttpRequest.setHttpSession(vertXHttpSession);
 		VertXRequestInfo requestInfo = new VertXRequestInfo(
 				mediaType
 				,lookupPath

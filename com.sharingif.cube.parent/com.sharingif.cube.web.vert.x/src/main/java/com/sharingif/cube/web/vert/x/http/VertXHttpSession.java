@@ -3,6 +3,7 @@ package com.sharingif.cube.web.vert.x.http;
 import java.util.Enumeration;
 
 import com.sharingif.cube.communication.http.HttpSession;
+import io.vertx.ext.web.Session;
 
 /**
  * HttpSession
@@ -12,7 +13,17 @@ import com.sharingif.cube.communication.http.HttpSession;
  * @since v1.0
  */
 public class VertXHttpSession implements HttpSession {
-	
+
+	private Session session;
+
+	public VertXHttpSession(Session session) {
+		this.session = session;
+	}
+
+	public Session getSession() {
+		return session;
+	}
+
 	@Override
 	public String getId() {
 		// TODO Auto-generated method stub
