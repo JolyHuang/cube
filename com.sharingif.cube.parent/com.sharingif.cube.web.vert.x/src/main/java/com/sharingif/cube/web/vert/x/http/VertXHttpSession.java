@@ -32,8 +32,7 @@ public class VertXHttpSession implements HttpSession {
 
 	@Override
 	public Object getAttribute(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return session.get(name);
 	}
 
 	@Override
@@ -44,8 +43,7 @@ public class VertXHttpSession implements HttpSession {
 
 	@Override
 	public void setAttribute(String name, Object value) {
-		// TODO Auto-generated method stub
-
+		session.put(name, value);
 	}
 
 	@Override
