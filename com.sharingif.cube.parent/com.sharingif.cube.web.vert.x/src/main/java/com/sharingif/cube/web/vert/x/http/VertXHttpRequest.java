@@ -7,6 +7,7 @@ import com.sharingif.cube.communication.http.HttpRequest;
 import com.sharingif.cube.communication.http.HttpSession;
 
 import io.vertx.core.http.HttpServerRequest;
+import io.vertx.ext.web.Session;
 
 /**
  * VertXHttpRequest
@@ -18,6 +19,7 @@ import io.vertx.core.http.HttpServerRequest;
 public class VertXHttpRequest implements HttpRequest {
 	
 	private HttpServerRequest httpServerRequest;
+	private Session session;
 	
 	public VertXHttpRequest(HttpServerRequest  httpServerRequest) {
 		this.httpServerRequest = httpServerRequest;
@@ -105,6 +107,9 @@ public class VertXHttpRequest implements HttpRequest {
 		return null;
 	}
 
+	public void setSession(Session session) {
+		this.session = session;
+	}
 	@Override
 	public HttpSession getSession() {
 		// TODO Auto-generated method stub

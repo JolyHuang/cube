@@ -26,13 +26,15 @@ public class VertXRequestInfoResolver implements RequestInfoResolver<ExtendedRou
 		String lookupPath = httpServerRequest.path().replace(new StringBuilder("/").append(request.getContextPath()).toString(), "");
 		String method = httpServerRequest.rawMethod();
 		RoutingContext routingContext = request.getRoutingContext();
-		
+
+		VertXHttpRequest vertXHttpRequest = new VertXHttpRequest(routingContext.request());
+		vertXHttpRequest.setSession(routingContext.session());
 		VertXRequestInfo requestInfo = new VertXRequestInfo(
 				mediaType
 				,lookupPath
 				,null
 				,method
-				,new VertXHttpRequest(routingContext.request())
+				,vertXHttpRequest
 				,new VertXHttpResponse(routingContext.response())
 				,routingContext
 			);

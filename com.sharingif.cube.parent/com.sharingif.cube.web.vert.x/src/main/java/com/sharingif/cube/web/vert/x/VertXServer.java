@@ -8,6 +8,9 @@ import io.vertx.core.VertxOptions;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.SessionHandler;
+import io.vertx.ext.web.sstore.LocalSessionStore;
+import io.vertx.ext.web.sstore.SessionStore;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
@@ -23,6 +26,7 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 	private int port;
 	private String contextPath;
 	private String staticPath;
+	private Long sessionTimeOut = 15*60*1000L;
 	private DispatcherHandler<ExtendedRoutingContext> dispatcherHandler;
 
 	private VertxOptions vertxOptions;
@@ -58,6 +62,12 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 	public void setStaticPath(String staticPath) {
 		this.staticPath = staticPath;
 	}
+	public Long getSessionTimeOut() {
+		return sessionTimeOut;
+	}
+	public void setSessionTimeOut(Long sessionTimeOut) {
+		this.sessionTimeOut = sessionTimeOut;
+	}
 	public DispatcherHandler<ExtendedRoutingContext> getDispatcherHandler() {
 		return dispatcherHandler;
 	}
@@ -77,6 +87,10 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 		HttpServer server = vertx.createHttpServer();
 
 		Router router = Router.router(vertx);
+
+		SessionStore store = LocalSessionStore.create(vertx, "vertx.session", sessionTimeOut);
+		SessionHandler sessionHandler = SessionHandler.create(store);
+		router.route().handler(sessionHandler);
 		
 		String basePath = new StringBuilder("/").append(getContextPath()).toString();
 

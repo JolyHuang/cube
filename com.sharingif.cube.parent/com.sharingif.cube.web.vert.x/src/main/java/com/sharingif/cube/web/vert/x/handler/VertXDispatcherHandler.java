@@ -29,13 +29,15 @@ public class VertXDispatcherHandler extends AbstractDispatcherHandler<ExtendedRo
 		String lookupPath = httpServerRequest.path().replace(new StringBuilder("/").append(request.getContextPath()).toString(), "");
 		String method = httpServerRequest.rawMethod();
 		RoutingContext routingContext = request.getRoutingContext();
-		
+
+		VertXHttpRequest vertXHttpRequest = new VertXHttpRequest(routingContext.request());
+		vertXHttpRequest.setSession(request.getRoutingContext().session());
 		VertXRequestInfo requestInfo = new VertXRequestInfo(
 				mediaType
 				,lookupPath
 				,null
 				,method
-				,new VertXHttpRequest(routingContext.request())
+				,vertXHttpRequest
 				,new VertXHttpResponse(routingContext.response())
 				,request.getRoutingContext()
 			);
