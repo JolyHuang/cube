@@ -30,7 +30,8 @@ public class VertXJsonView extends AbstractJsonView {
 		Buffer buffer = Buffer.buffer(getResponseData(returnValue, exceptionContent == null ? null: exceptionContent.getCubeException()));
 
 		vertXRequestInfo.getResponse().getHttpServerResponse()
-				.putHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, vertXRequestInfo.getRequest().getHttpServerRequest().headers().get(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD))
+				.putHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, vertXRequestInfo.getRequest().getHttpServerRequest().headers().get(HttpHeaders.ORIGIN))
+				.putHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
 				.putHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
 				.putHeader(HttpHeaders.CONTENT_LENGTH, String.valueOf(buffer.length()))
 				.write(buffer)
