@@ -5,10 +5,13 @@ import com.sharingif.cube.communication.MediaType;
 import com.sharingif.cube.communication.view.AbstractJsonView;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
 import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.web.vert.x.http.VertXHttpRequest;
 import com.sharingif.cube.web.vert.x.request.VertXRequestInfo;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.ext.web.RoutingContext;
+
+import static io.vertx.core.http.HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD;
 
 /**
  * VertXJsonView
@@ -27,7 +30,7 @@ public class VertXJsonView extends AbstractJsonView {
 		Buffer buffer = Buffer.buffer(getResponseData(returnValue, exceptionContent == null ? null: exceptionContent.getCubeException()));
 
 		vertXRequestInfo.getResponse().getHttpServerResponse()
-				.putHeader("Access-Control-Allow-Origin", "*")
+				.putHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, vertXRequestInfo.getRequest().getHttpServerRequest().headers().get(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD))
 				.putHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
 				.putHeader(HttpHeaders.CONTENT_LENGTH, String.valueOf(buffer.length()))
 				.write(buffer)
