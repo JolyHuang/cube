@@ -8,6 +8,7 @@ import io.vertx.core.VertxOptions;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.CookieHandler;
 import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.sstore.LocalSessionStore;
 import io.vertx.ext.web.sstore.SessionStore;
@@ -87,6 +88,8 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 		HttpServer server = vertx.createHttpServer();
 
 		Router router = Router.router(vertx);
+
+		router.route().handler(CookieHandler.create());
 
 		SessionStore store = LocalSessionStore.create(vertx, "vertx.session", sessionTimeOut);
 		SessionHandler sessionHandler = SessionHandler.create(store);
