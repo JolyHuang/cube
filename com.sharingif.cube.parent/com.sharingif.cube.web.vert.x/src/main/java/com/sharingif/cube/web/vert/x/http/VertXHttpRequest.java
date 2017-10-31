@@ -101,8 +101,7 @@ public class VertXHttpRequest implements HttpRequest {
 
 	@Override
 	public HttpSession getSession(boolean create) {
-		// TODO Auto-generated method stub
-		return null;
+		return httpSession;
 	}
 
 	public void setHttpSession(VertXHttpSession httpSession) {
