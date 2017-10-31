@@ -21,7 +21,7 @@ import java.util.List;
 public class DataContainerMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
     public DataContainerMethodArgumentResolver() {
-        List<DataContainerMethodArgumentProcessor> dataContainerMethodArgumentProcessorList = new ArrayList<DataContainerMethodArgumentProcessor>();
+        dataContainerMethodArgumentProcessorList = new ArrayList<DataContainerMethodArgumentProcessor>();
 
         dataContainerMethodArgumentProcessorList.add(new CoreUserDataContainerMethodArgumentProcessor());
 
