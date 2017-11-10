@@ -50,9 +50,10 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O> {
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     private String host;
-    private int port;
+    private int port = -1;
     private String address;
     private String contextPath;
+    private boolean useHttps;
 
     private int connectionRequestTimeout = 1000;
     private int connectTimeout = 5000;
@@ -96,6 +97,12 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O> {
     }
     public void setContextPath(String contextPath) {
         this.contextPath = contextPath;
+    }
+    public boolean isUseHttps() {
+        return useHttps;
+    }
+    public void setUseHttps(boolean useHttps) {
+        this.useHttps = useHttps;
     }
 
     public int getConnectionRequestTimeout() {
@@ -156,9 +163,17 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O> {
     protected HttpHost getHttpHost() {
         HttpHost httpHost = null;
         if(!StringUtils.isEmpty(address)) {
-            httpHost = new HttpHost(address);
+            if(useHttps) {
+                httpHost = new HttpHost(address, port, "https");
+            } else {
+                httpHost = new HttpHost(address, port);
+            }
         } else {
-            httpHost = new HttpHost(host, port);
+            if(useHttps) {
+                httpHost = new HttpHost(host, port, "https");
+            } else {
+                httpHost = new HttpHost(host, port);
+            }
         }
         return httpHost;
     }
@@ -169,6 +184,25 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O> {
             path = new StringBuffer("/").append(getContextPath()).append(path).toString();
         }
         return path;
+    }
+
+    protected String getUrl(HttpHost httpHost, String path) {
+        StringBuilder url = new StringBuilder();
+        url.append(httpHost.getSchemeName());
+        url.append("://");
+        if(!StringUtils.isEmpty(address)) {
+            url.append(address);
+            if(port != -1) {
+                url.append(":").append(port);
+            }
+        } else {
+            url.append(host);
+            url.append(":");
+            url.append(port);
+        }
+        url.append(path);
+
+        return url.toString();
     }
 
     protected void connectErrorLog(RequestInfo<String> httpContext, HttpHost httpHost, String path,Integer statusCode) {

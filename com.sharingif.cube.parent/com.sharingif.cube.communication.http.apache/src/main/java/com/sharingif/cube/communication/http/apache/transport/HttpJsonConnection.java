@@ -90,16 +90,16 @@ public class HttpJsonConnection extends AbstractHttpConnection<RequestInfo<Strin
 		
 	}
 	
-	protected CloseableHttpResponse connect(HttpHost httpHost, String path, RequestInfo<String> httpContext) throws ClientProtocolException, IOException {
+	protected CloseableHttpResponse connect(HttpHost httpHost, String path, RequestInfo<String> httpContext) throws IOException {
 		
 		if(getDebug()) {
 			this.logger.info("send message:{}", httpContext.getRequest());
 		}
 		
 		if(httpContext.getMethod().equals(HttpMethod.GET.name())) {
-			HttpGet httpGet = new HttpGet(path);
+			HttpGet httpGet = new HttpGet(getUrl(httpHost, path));
 			addHeader(httpGet);
-			return getHttpclient().execute(httpHost, httpGet);
+			return getHttpclient().execute(httpGet);
 		}
 		if(httpContext.getMethod().equals(HttpMethod.POST.name())) {
 			HttpPost httpPost = new HttpPost(path);
