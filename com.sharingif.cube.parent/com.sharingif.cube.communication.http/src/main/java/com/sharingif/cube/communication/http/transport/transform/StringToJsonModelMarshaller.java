@@ -28,7 +28,11 @@ public class StringToJsonModelMarshaller implements Marshaller<MethodParameterAr
 	
 	private ObjectMapper objectMapper;
 	private BindingInitializer bindingInitializer;
-	
+
+	public ObjectMapper getObjectMapper() {
+		return objectMapper;
+	}
+
 	public StringToJsonModelMarshaller() {
 		objectMapper = new ObjectMapper();
 		objectMapper.setTimeZone(TimeZone.getTimeZone(CubeConfigure.DEFAULT_TIME_ZONE));
