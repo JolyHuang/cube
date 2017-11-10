@@ -34,6 +34,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.CodingErrorAction;
 import java.util.Map;
@@ -186,7 +188,7 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O> {
         return path;
     }
 
-    protected String getUrl(HttpHost httpHost, String path) {
+    protected String getUrl(HttpHost httpHost, String path) throws UnsupportedEncodingException {
         StringBuilder url = new StringBuilder();
         url.append(httpHost.getSchemeName());
         url.append("://");
@@ -202,7 +204,7 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O> {
         }
         url.append(path);
 
-        return url.toString();
+        return URLEncoder.encode(url.toString(), com.sharingif.cube.core.util.Charset.UTF8.toString());
     }
 
     protected void connectErrorLog(RequestInfo<String> httpContext, HttpHost httpHost, String path,Integer statusCode) {
