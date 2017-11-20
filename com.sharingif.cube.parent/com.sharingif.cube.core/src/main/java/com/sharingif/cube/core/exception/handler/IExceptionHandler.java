@@ -17,7 +17,7 @@ import java.util.Locale;
  * @Version:      [v1.0] 
  *    
  */
-public interface IExceptionHandler<RI extends RequestInfo,H extends Object> {
+public interface IExceptionHandler<RI extends RequestInfo<?>,H extends Object> {
 	
 	/**
 	 * 判断是否支持

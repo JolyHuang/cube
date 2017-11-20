@@ -4,7 +4,6 @@ import com.sharingif.cube.communication.view.View;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
 import com.sharingif.cube.core.request.RequestInfo;
 import com.sharingif.cube.web.vert.x.request.VertXRequestInfo;
-import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.StaticHandler;
 
 /**

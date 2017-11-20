@@ -18,7 +18,7 @@ import java.util.Locale;
  * @version v1.0
  * @since v1.0
  */
-public abstract class AbstractCubeExceptionHandler<RI extends RequestInfo, H extends Object> extends ApplicationObjectSupport implements IExceptionHandler<RI,H> {
+public abstract class AbstractCubeExceptionHandler<RI extends RequestInfo<?>, H extends Object> extends ApplicationObjectSupport implements IExceptionHandler<RI,H> {
 
 
 	private static final Field DETAIL_MESSAGE_FIELD;

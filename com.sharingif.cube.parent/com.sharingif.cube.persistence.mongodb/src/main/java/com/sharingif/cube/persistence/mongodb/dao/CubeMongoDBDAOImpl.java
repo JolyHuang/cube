@@ -5,7 +5,6 @@ import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.sharingif.cube.persistence.mongodb.transport.transform.BsonTransform;
 import org.bson.Document;
-import static com.mongodb.client.model.Filters.*;
 
 import com.sharingif.cube.core.transport.exception.MarshallerException;
 import com.sharingif.cube.core.util.CubeExceptionUtil;
@@ -30,7 +29,8 @@ import java.util.List;
  */
 public class CubeMongoDBDAOImpl<T, ID extends Serializable> extends AbstractBaseDAO<T, ID> implements ICubeMongoDBDAO<T, ID> {
 
-    private String collectionName = ((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]).getSimpleName();
+    @SuppressWarnings("unchecked")
+	private String collectionName = ((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]).getSimpleName();
 
     private MongoDatabase mongoDatabase;
     private DocumentTransform<T> documentTransform;

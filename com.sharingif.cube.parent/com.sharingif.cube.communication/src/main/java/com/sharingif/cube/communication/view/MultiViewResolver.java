@@ -20,20 +20,16 @@ public class MultiViewResolver implements ViewResolver {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @SuppressWarnings("rawtypes")
 	private List<ViewResolver> viewResolvers;
 
-    @SuppressWarnings("rawtypes")
 	public List<ViewResolver> getViewResolvers() {
         return viewResolvers;
     }
 
-    @SuppressWarnings("rawtypes")
 	public void setViewResolvers(List<ViewResolver> viewResolvers) {
         this.viewResolvers = viewResolvers;
     }
 
-    @SuppressWarnings("unchecked")
 	@Override
     public View resolveView(RequestInfo<?> requestInfo, Object returnValue, ExceptionContent exceptionContent) {
         for(ViewResolver viewResolver : getViewResolvers()) {

@@ -30,6 +30,7 @@ public abstract class AbstractDispatcherHandler<I> implements DispatcherHandler<
 	private RequestInfoResolver requestInfoResolver;
 	private MultiHandlerMapping multiHandlerMapping;
 	private MultiHandlerMethodAdapter multiHandlerMethodAdapter;
+	@SuppressWarnings("rawtypes")
 	private MultiCubeExceptionHandler multiCubeExceptionHandler;
 	private MultiViewResolver multiViewResolver;
 	private HandlerMethodChain handlerMethodChain;
@@ -55,9 +56,11 @@ public abstract class AbstractDispatcherHandler<I> implements DispatcherHandler<
 		this.multiHandlerMethodAdapter = multiHandlerMethodAdapter;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public MultiCubeExceptionHandler getMultiCubeExceptionHandler() {
 		return multiCubeExceptionHandler;
 	}
+	@SuppressWarnings("rawtypes")
 	public void setMultiCubeExceptionHandler(MultiCubeExceptionHandler multiCubeExceptionHandler) {
 		this.multiCubeExceptionHandler = multiCubeExceptionHandler;
 	}

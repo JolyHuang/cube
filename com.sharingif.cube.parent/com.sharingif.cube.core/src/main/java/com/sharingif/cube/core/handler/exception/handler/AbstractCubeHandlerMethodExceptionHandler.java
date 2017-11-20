@@ -19,7 +19,7 @@ import java.util.Locale;
  * @version v1.0
  * @since v1.0
  */
-public abstract class AbstractCubeHandlerMethodExceptionHandler<RI extends RequestInfo> extends AbstractCubeExceptionHandler<RI,HandlerMethod> {
+public abstract class AbstractCubeHandlerMethodExceptionHandler<RI extends RequestInfo<?>> extends AbstractCubeExceptionHandler<RI,HandlerMethod> {
 	
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	

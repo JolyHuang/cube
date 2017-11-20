@@ -23,7 +23,6 @@ public class ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> extends
 		super(handlerMethod);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public Object doTransport(RequestInfo<Object[]> requestInfo) throws CubeException {
 		
@@ -74,7 +73,7 @@ public class ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> extends
 		handleException(unmarshallerData);
 
 		if(JsonModel.class.isInstance(unmarshallerData)) {
-			JsonModel jsonModel = (JsonModel)unmarshallerData;
+			JsonModel<?> jsonModel = (JsonModel<?>)unmarshallerData;
 			return jsonModel.get_data();
 		}
 		

@@ -16,7 +16,7 @@ import java.util.Map;
  * @version v1.0
  * @since v1.0
  */
-public class MultiCubeExceptionHandler<RI extends RequestInfo, H extends Object> extends AbstractCubeExceptionHandler<RI,H> implements InitializingBean {
+public class MultiCubeExceptionHandler<RI extends RequestInfo<?>, H extends Object> extends AbstractCubeExceptionHandler<RI,H> implements InitializingBean {
 	
 	private Map<String,AbstractCubeExceptionHandler<RI,H>> cacheExceptionHandlers = new HashMap<String,AbstractCubeExceptionHandler<RI,H>>(20);
 	

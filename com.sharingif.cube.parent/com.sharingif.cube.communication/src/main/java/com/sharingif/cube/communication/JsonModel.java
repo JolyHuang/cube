@@ -1,6 +1,5 @@
 package com.sharingif.cube.communication;
 
-import jdk.nashorn.internal.scripts.JO;
 import org.springframework.validation.FieldError;
 
 import java.util.List;
