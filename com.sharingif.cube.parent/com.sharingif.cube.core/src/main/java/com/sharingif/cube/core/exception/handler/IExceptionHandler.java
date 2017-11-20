@@ -1,7 +1,7 @@
 package com.sharingif.cube.core.exception.handler;
 
 import com.sharingif.cube.core.exception.ICubeException;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 import java.util.Locale;
 
@@ -17,7 +17,7 @@ import java.util.Locale;
  * @Version:      [v1.0] 
  *    
  */
-public interface IExceptionHandler<RI extends RequestInfo<?>,H extends Object> {
+public interface IExceptionHandler<RI extends RequestContext<?>,H extends Object> {
 	
 	/**
 	 * 判断是否支持
@@ -43,19 +43,19 @@ public interface IExceptionHandler<RI extends RequestInfo<?>,H extends Object> {
 	
 	/**
 	 * 输出日志
-	 * @param requestInfo : 请求信息
+	 * @param requestContext : 请求信息
 	 * @param handler : 请求处理器
 	 * @param cubeException : cube异常
 	 */
-	void wirteLog(RI requestInfo, H handler, ICubeException cubeException);
+	void wirteLog(RI requestContext, H handler, ICubeException cubeException);
 	
 	/**
 	 * 处理异常
-	 * @param requestInfo : 请求信息
+	 * @param requestContext : 请求信息
 	 * @param handler : 请求处理器
 	 * @param cubeException : cube异常
 	 * @return O : 异常处理结果
 	 */
-	ExceptionContent handlerException(RI requestInfo, H handler, ICubeException cubeException);
+	ExceptionContent handlerException(RI requestContext, H handler, ICubeException cubeException);
 
 }

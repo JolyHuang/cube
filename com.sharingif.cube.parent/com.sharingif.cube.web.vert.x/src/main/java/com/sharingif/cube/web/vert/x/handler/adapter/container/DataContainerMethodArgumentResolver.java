@@ -4,7 +4,7 @@ import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.adapter.HandlerMethodArgumentResolver;
 import com.sharingif.cube.core.handler.bind.annotation.DataContainer;
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import org.springframework.core.MethodParameter;
 
 import java.util.ArrayList;
@@ -38,15 +38,15 @@ public class DataContainerMethodArgumentResolver implements HandlerMethodArgumen
     }
 
     @Override
-    public boolean supportsParameter(MethodParameter parameter, RequestInfo<?> requestInfo) {
+    public boolean supportsParameter(MethodParameter parameter, RequestContext<?> requestContext) {
         return parameter.hasParameterAnnotation(DataContainer.class);
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, RequestInfo<?> requestInfo, DataBinderFactory dataBinderFactory) throws CubeException {
+    public Object resolveArgument(MethodParameter parameter, RequestContext<?> requestContext, DataBinderFactory dataBinderFactory) throws CubeException {
         for(DataContainerMethodArgumentProcessor dataContainerMethodArgumentProcessor : dataContainerMethodArgumentProcessorList){
             if(dataContainerMethodArgumentProcessor.supportsParameter(parameter.getParameterType())){
-                return dataContainerMethodArgumentProcessor.resolveArgument(parameter, requestInfo, dataBinderFactory);
+                return dataContainerMethodArgumentProcessor.resolveArgument(parameter, requestContext, dataBinderFactory);
             }
         }
         return null;

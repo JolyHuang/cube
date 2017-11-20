@@ -11,7 +11,7 @@ import org.springframework.util.Assert;
 
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 /**
  * Handles method return values by delegating to a list of registered
@@ -53,12 +53,12 @@ public class HandlerMethodReturnValueHandlerComposite implements
 	 *             found.
 	 */
 	@Override
-	public Object handleReturnValue(RequestInfo<?> requestInfo, Object returnValue, MethodParameter returnType, DataBinderFactory dataBinderFactory) throws CubeException {
+	public Object handleReturnValue(RequestContext<?> requestContext, Object returnValue, MethodParameter returnType, DataBinderFactory dataBinderFactory) throws CubeException {
 
 		HandlerMethodReturnValueHandler handler = getReturnValueHandler(returnType);
 		Assert.notNull(handler, "Unknown return value type ["
 				+ returnType.getParameterType().getName() + "]");
-		return handler.handleReturnValue(requestInfo, returnValue, returnType, dataBinderFactory);
+		return handler.handleReturnValue(requestContext, returnValue, returnType, dataBinderFactory);
 	}
 
 	/**

@@ -1,7 +1,7 @@
 package com.sharingif.cube.core.handler.request;
 
 import com.sharingif.cube.core.handler.bind.annotation.RequestMapping;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 /**
  * The contract for request conditions.
@@ -41,7 +41,7 @@ public interface RequestCondition<T> {
 	 * @return a condition instance in case of a match;
 	 * 		or {@code null} if there is no match.
 	 */
-	T getMatchingCondition(RequestInfo<?> requestInfo);
+	T getMatchingCondition(RequestContext<?> requestContext);
 
 	/**
 	 * Compares this condition to another condition in the context of
@@ -49,6 +49,6 @@ public interface RequestCondition<T> {
 	 * been obtained via {@link #getMatchingCondition(HttpServletRequest)}
 	 * to ensure they have content relevant to current request only.
 	 */
-	int compareTo(T other, RequestInfo<?> requestInfo);
+	int compareTo(T other, RequestContext<?> requestContext);
 
 }

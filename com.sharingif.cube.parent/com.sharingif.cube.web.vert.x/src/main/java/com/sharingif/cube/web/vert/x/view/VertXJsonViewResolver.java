@@ -5,7 +5,7 @@ import com.sharingif.cube.communication.MediaType;
 import com.sharingif.cube.communication.view.View;
 import com.sharingif.cube.communication.view.ViewResolver;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 /**
  * ContentNegotiatingViewResolver
@@ -19,12 +19,12 @@ public class VertXJsonViewResolver implements ViewResolver {
 	private View view = new VertXJsonView();
 	
 	@Override
-	public View resolveView(RequestInfo<?> requestInfo, Object returnValue, ExceptionContent exceptionContent) {
-		if(requestInfo.getMediaType() == null) {
+	public View resolveView(RequestContext<?> requestContext, Object returnValue, ExceptionContent exceptionContent) {
+		if(requestContext.getMediaType() == null) {
 			return null;
 		}
 
-		MediaType candidateContentType = MediaType.parseMediaType(requestInfo.getMediaType());
+		MediaType candidateContentType = MediaType.parseMediaType(requestContext.getMediaType());
 		if(MediaType.APPLICATION_JSON.isCompatibleWith(candidateContentType)) {
 			return view;
 		} else {

@@ -13,7 +13,7 @@ import org.springframework.util.Assert;
 
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 
 /**
@@ -45,8 +45,8 @@ public class HandlerMethodArgumentResolverComposite implements HandlerMethodArgu
 	 * {@link HandlerMethodArgumentResolver}.
 	 */
 	@Override
-	public boolean supportsParameter(MethodParameter parameter, RequestInfo<?> requestInfo) {
-		return getArgumentResolver(parameter, requestInfo) != null;
+	public boolean supportsParameter(MethodParameter parameter, RequestContext<?> requestContext) {
+		return getArgumentResolver(parameter, requestContext) != null;
 	}
 
 	/**
@@ -54,17 +54,17 @@ public class HandlerMethodArgumentResolverComposite implements HandlerMethodArgu
 	 * @throws IllegalStateException if no suitable {@link HandlerMethodArgumentResolver} is found.
 	 */
 	@Override
-	public Object resolveArgument(MethodParameter parameter, RequestInfo<?> requestInfo, DataBinderFactory dataBinderFactory) throws CubeException {
+	public Object resolveArgument(MethodParameter parameter, RequestContext<?> requestContext, DataBinderFactory dataBinderFactory) throws CubeException {
 
-		HandlerMethodArgumentResolver resolver = getArgumentResolver(parameter, requestInfo);
+		HandlerMethodArgumentResolver resolver = getArgumentResolver(parameter, requestContext);
 		Assert.notNull(resolver, "Unknown parameter type [" + parameter.getParameterType().getName() + "]");
-		return resolver.resolveArgument(parameter, requestInfo, dataBinderFactory);
+		return resolver.resolveArgument(parameter, requestContext, dataBinderFactory);
 	}
 
 	/**
 	 * Find a registered {@link HandlerMethodArgumentResolver} that supports the given method parameter.
 	 */
-	private HandlerMethodArgumentResolver getArgumentResolver(MethodParameter parameter, RequestInfo<?> requestInfo) {
+	private HandlerMethodArgumentResolver getArgumentResolver(MethodParameter parameter, RequestContext<?> requestContext) {
 		HandlerMethodArgumentResolver result = this.argumentResolverCache.get(parameter);
 		if (result == null) {
 			for (HandlerMethodArgumentResolver methodArgumentResolver : this.argumentResolvers) {
@@ -72,7 +72,7 @@ public class HandlerMethodArgumentResolverComposite implements HandlerMethodArgu
 					logger.trace("Testing if argument resolver [" + methodArgumentResolver + "] supports [" +
 							parameter.getGenericParameterType() + "]");
 				}
-				if (methodArgumentResolver.supportsParameter(parameter, requestInfo)) {
+				if (methodArgumentResolver.supportsParameter(parameter, requestContext)) {
 					result = methodArgumentResolver;
 					this.argumentResolverCache.put(parameter, result);
 					break;

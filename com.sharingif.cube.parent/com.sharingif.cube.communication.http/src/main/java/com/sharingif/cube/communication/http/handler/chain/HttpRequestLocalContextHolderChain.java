@@ -2,7 +2,7 @@ package com.sharingif.cube.communication.http.handler.chain;
 
 import com.sharingif.cube.communication.http.HttpRequest;
 import com.sharingif.cube.communication.http.HttpResponse;
-import com.sharingif.cube.communication.http.request.HttpRequestInfo;
+import com.sharingif.cube.communication.http.request.HttpRequestContext;
 import com.sharingif.cube.components.sequence.ISequenceGenerator;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.chain.AbstractHandlerMethodChain;
@@ -44,9 +44,9 @@ public class HttpRequestLocalContextHolderChain extends AbstractHandlerMethodCha
 	}
 	
 	protected String getSequence(HandlerMethodContent content) {
-		HttpRequestInfo<HttpRequest,HttpResponse> httpRequestInfo = content.getRequestInfo();
+		HttpRequestContext<HttpRequest,HttpResponse> httpRequestContext = content.getRequestContext();
 		
-		String uniqueNumber = httpRequestInfo.getRequest().getHeader("_uniqueNumber");
+		String uniqueNumber = httpRequestContext.getRequest().getHeader("_uniqueNumber");
 		if(StringUtils.isEmpty(uniqueNumber)) {
 			uniqueNumber = sequenceGenerator.generateSequence();
 		}

@@ -2,7 +2,7 @@ package com.sharingif.cube.core.handler.adapter;
 
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.exception.NoHandlerMappingFoundException;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +39,7 @@ public class MultiHandlerMethodAdapter implements HandlerAdapter<Object,Object> 
 
     @SuppressWarnings("unchecked")
 	@Override
-    public Object handle(RequestInfo<Object> request, Object handler) throws CubeException {
+    public Object handle(RequestContext<Object> request, Object handler) throws CubeException {
 
         for (HandlerAdapter<Object,Object> ha : getHandlerAdapters()) {
             if (logger.isTraceEnabled()) {

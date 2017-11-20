@@ -8,7 +8,7 @@ import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.core.handler.chain.command.AbstractHandlerMethodCommand;
 import com.sharingif.cube.core.util.StringUtils;
 import com.sharingif.cube.security.web.access.INoUserHandler;
-import com.sharingif.cube.web.springmvc.request.SpringMVCHttpRequestInfo;
+import com.sharingif.cube.web.springmvc.request.SpringMVCHttpRequestContext;
 
 /**
  *
@@ -40,8 +40,8 @@ public class LoginRefererWebCommand extends AbstractHandlerMethodCommand{
 		}
 		
 		ModelAndView modelAndView = (ModelAndView)returnValue;
-		SpringMVCHttpRequestInfo httpRequestInfo = content.getRequestInfo();
-		String referer = noUserHandler.handleReferer(httpRequestInfo.getRequest());
+		SpringMVCHttpRequestContext httpRequestContext = content.getRequestContext();
+		String referer = noUserHandler.handleReferer(httpRequestContext.getRequest());
 		if(!StringUtils.isEmpty(referer)){
 			modelAndView.setViewName(referer);
 		}

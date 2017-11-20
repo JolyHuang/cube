@@ -2,7 +2,7 @@ package com.sharingif.cube.web.exception.handler.validation;
 
 import com.sharingif.cube.communication.http.HttpRequest;
 import com.sharingif.cube.communication.http.HttpResponse;
-import com.sharingif.cube.communication.http.request.HttpRequestInfo;
+import com.sharingif.cube.communication.http.request.HttpRequestContext;
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
 import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
@@ -58,7 +58,7 @@ public class BindValidationCubeExceptionHandler extends ValidationCubeExceptionH
 	}
 
 	@Override
-	public void wirteLogInternal(HttpRequestInfo<HttpRequest, HttpResponse> requestInfo, HandlerMethod handlerMethod, ICubeException cubeException, Locale locale, Long exTime) {
+	public void wirteLogInternal(HttpRequestContext<HttpRequest, HttpResponse> requestContext, HandlerMethod handlerMethod, ICubeException cubeException, Locale locale, Long exTime) {
 		
 		String loggerMessage = "transaction error===> thdId:{}, method:{}, trsId:{}, exTime:{}, message:{}, localizedMessage:{}";
 		
@@ -66,8 +66,8 @@ public class BindValidationCubeExceptionHandler extends ValidationCubeExceptionH
 			
 			this.logger.error(loggerMessage
 					,Thread.currentThread().getId()
-					,requestInfo.getMethod()
-					,requestInfo.getLookupPath()
+					,requestContext.getMethod()
+					,requestContext.getLookupPath()
 					,exTime
 					,cubeException.getMessage()
 					,((BindValidationCubeException)cubeException).getFieldErrors()
@@ -77,8 +77,8 @@ public class BindValidationCubeExceptionHandler extends ValidationCubeExceptionH
 		
 		this.logger.error(loggerMessage
 				,Thread.currentThread().getId()
-				,requestInfo.getMethod()
-				,requestInfo.getLookupPath()
+				,requestContext.getMethod()
+				,requestContext.getLookupPath()
 				,exTime
 				,cubeException.getMessage()
 				,cubeException.getLocalizedMessage()
@@ -87,11 +87,11 @@ public class BindValidationCubeExceptionHandler extends ValidationCubeExceptionH
 	}
 
 	@Override
-	public ExceptionContent handlerException(HttpRequestInfo<HttpRequest, HttpResponse> requestInfo,
+	public ExceptionContent handlerException(HttpRequestContext<HttpRequest, HttpResponse> requestContext,
 			HandlerMethod handlerMethod,
 			ICubeException cubeException) {
 
-		ExceptionContent out = super.handlerException(requestInfo, handlerMethod, cubeException);
+		ExceptionContent out = super.handlerException(requestContext, handlerMethod, cubeException);
 		Map<String,Object> modelMap = out.getModel();
 		if(modelMap == null){
 			modelMap = new HashMap<String,Object>(1);

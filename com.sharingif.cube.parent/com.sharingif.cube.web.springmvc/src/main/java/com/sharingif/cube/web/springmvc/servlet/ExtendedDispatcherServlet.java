@@ -15,7 +15,7 @@ import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
 import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.web.springmvc.http.SpringMVCHttpRequest;
 import com.sharingif.cube.web.springmvc.http.SpringMVCHttpResponse;
-import com.sharingif.cube.web.springmvc.request.SpringMVCHttpRequestInfo;
+import com.sharingif.cube.web.springmvc.request.SpringMVCHttpRequestContext;
 
 /**
  * 扩展DispatcherServlet，重写父类doService方法,添加initContextHolders、resetContextHolders方法。
@@ -84,18 +84,18 @@ public class ExtendedDispatcherServlet extends DispatcherServlet {
 				,null
 				,null
 				,null
-				,getRequestInfo(request, response)
+				,getRequestContext(request, response)
 		);
 		return webHandlerMethodContent;
 	}
 	
-	protected SpringMVCHttpRequestInfo getRequestInfo(HttpServletRequest request, HttpServletResponse response) {
+	protected SpringMVCHttpRequestContext getRequestContext(HttpServletRequest request, HttpServletResponse response) {
 
 		String lookupPath = urlPathHelper.getLookupPathForRequest(request);
 		String method = request.getMethod().toUpperCase(Locale.ENGLISH);
 
 		
-		 SpringMVCHttpRequestInfo requestInfo = new SpringMVCHttpRequestInfo(
+		 SpringMVCHttpRequestContext requestContext = new SpringMVCHttpRequestContext(
 				 null
 				 ,lookupPath
 				 ,RequestContextUtils.getLocale(request)
@@ -103,7 +103,7 @@ public class ExtendedDispatcherServlet extends DispatcherServlet {
 				 ,new SpringMVCHttpRequest(request)
 				 ,new SpringMVCHttpResponse(response));
 
-		return requestInfo;
+		return requestContext;
 	}
 
 }

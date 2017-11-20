@@ -4,7 +4,7 @@ import org.springframework.core.MethodParameter;
 
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 
 /**
@@ -24,7 +24,7 @@ public interface HandlerMethodArgumentResolver {
 	 * @return {@code true} if this resolver supports the supplied parameter;
 	 * {@code false} otherwise
 	 */
-	boolean supportsParameter(MethodParameter parameter, RequestInfo<?> requestInfo);
+	boolean supportsParameter(MethodParameter parameter, RequestContext<?> requestContext);
 
 	/**
 	 * Resolves a method parameter into an argument value from a given request.
@@ -41,6 +41,6 @@ public interface HandlerMethodArgumentResolver {
 	 * @return the resolved argument value, or {@code null}
 	 * @throws Exception in case of errors with the preparation of argument values
 	 */
-	Object resolveArgument(MethodParameter parameter, RequestInfo<?> requestInfo, DataBinderFactory dataBinderFactory) throws CubeException;
+	Object resolveArgument(MethodParameter parameter, RequestContext<?> requestContext, DataBinderFactory dataBinderFactory) throws CubeException;
 
 }

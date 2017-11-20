@@ -3,7 +3,7 @@ package com.sharingif.cube.core.handler.request;
 
 
 import com.sharingif.cube.core.handler.RequestMappingInfoHandlerMethodMappingNamingStrategy;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import com.sharingif.cube.core.util.StringUtils;
 
 /**
@@ -93,15 +93,15 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 	 * the current request, sorted with best matching patterns on top.
 	 * @return a new instance in case all conditions match; or {@code null} otherwise
 	 */
-	public RequestMappingInfo getMatchingCondition(RequestInfo<?> requestInfo) {
+	public RequestMappingInfo getMatchingCondition(RequestContext<?> requestContext) {
 		
-		RequestMethodsRequestCondition methods = this.methodsCondition.getMatchingCondition(requestInfo);
+		RequestMethodsRequestCondition methods = this.methodsCondition.getMatchingCondition(requestContext);
 		
 		if (methods == null) {
 			return null;
 		}
 		
-		PatternsRequestCondition patterns = patternsCondition.getMatchingCondition(requestInfo);
+		PatternsRequestCondition patterns = patternsCondition.getMatchingCondition(requestContext);
 		if (patterns == null) {
 			return null;
 		}
@@ -115,8 +115,8 @@ public final class RequestMappingInfo implements RequestCondition<RequestMapping
 	 * {@link #getMatchingCondition(HttpServletRequest)} to ensure they have conditions with
 	 * content relevant to current request.
 	 */
-	public int compareTo(RequestMappingInfo other, RequestInfo<?> requestInfo) {
-		int result = patternsCondition.compareTo(other.getPatternsCondition(), requestInfo);
+	public int compareTo(RequestMappingInfo other, RequestContext<?> requestContext) {
+		int result = patternsCondition.compareTo(other.getPatternsCondition(), requestContext);
 		return result;
 	}
 

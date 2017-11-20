@@ -3,7 +3,7 @@ package com.sharingif.cube.web.vert.x.view;
 import com.sharingif.cube.communication.view.View;
 import com.sharingif.cube.communication.view.ViewResolver;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import io.vertx.ext.web.handler.CorsHandler;
 
 /**
@@ -19,7 +19,7 @@ public class CORSViewResolver implements ViewResolver {
     private static final CORSView corsView = new CORSView();
 
     @Override
-    public View resolveView(RequestInfo<?> requestInfo, Object returnValue, ExceptionContent exceptionContent) {
+    public View resolveView(RequestContext<?> requestContext, Object returnValue, ExceptionContent exceptionContent) {
         if((returnValue instanceof CorsHandler)) {
             return corsView;
         }

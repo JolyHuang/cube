@@ -2,7 +2,7 @@ package com.sharingif.cube.communication.view;
 
 import com.sharingif.cube.communication.view.exception.NoViewFoundException;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,9 +31,9 @@ public class MultiViewResolver implements ViewResolver {
     }
 
 	@Override
-    public View resolveView(RequestInfo<?> requestInfo, Object returnValue, ExceptionContent exceptionContent) {
+    public View resolveView(RequestContext<?> requestContext, Object returnValue, ExceptionContent exceptionContent) {
         for(ViewResolver viewResolver : getViewResolvers()) {
-            View view = viewResolver.resolveView(requestInfo, returnValue, exceptionContent);
+            View view = viewResolver.resolveView(requestContext, returnValue, exceptionContent);
             if(view != null){
                 return view;
             }

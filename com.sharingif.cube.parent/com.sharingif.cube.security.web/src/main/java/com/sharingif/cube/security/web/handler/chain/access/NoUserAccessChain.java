@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.sharingif.cube.communication.http.HttpRequest;
 import com.sharingif.cube.communication.http.HttpResponse;
-import com.sharingif.cube.communication.http.request.HttpRequestInfo;
+import com.sharingif.cube.communication.http.request.HttpRequestContext;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.chain.AbstractHandlerMethodChain;
 import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
@@ -48,8 +48,8 @@ public class NoUserAccessChain extends AbstractHandlerMethodChain {
     @Override
     public void before(HandlerMethodContent content) throws CubeException {
         if(null == excludeMethods.get(getAuthorityCode(content))) {
-            HttpRequestInfo<HttpRequest,HttpResponse> httpRequestInfo = content.getRequestInfo();
-            noUserHandler.handleNoUser(httpRequestInfo.getRequest());
+            HttpRequestContext<HttpRequest,HttpResponse> httpRequestContext = content.getRequestContext();
+            noUserHandler.handleNoUser(httpRequestContext.getRequest());
         }
     }
 

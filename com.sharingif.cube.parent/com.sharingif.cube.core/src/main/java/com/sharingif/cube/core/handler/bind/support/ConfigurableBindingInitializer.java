@@ -4,7 +4,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.validation.DataBinder;
 import org.springframework.validation.Validator;
 
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 
 /**
@@ -56,7 +56,7 @@ public class ConfigurableBindingInitializer implements BindingInitializer {
 
 
 	@Override
-	public void initBinder(DataBinder binder, RequestInfo<?> requestInfo) {
+	public void initBinder(DataBinder binder, RequestContext<?> requestContext) {
 		if (this.validator != null && binder.getTarget() != null &&
 				this.validator.supports(binder.getTarget().getClass())) {
 			binder.setValidator(this.validator);

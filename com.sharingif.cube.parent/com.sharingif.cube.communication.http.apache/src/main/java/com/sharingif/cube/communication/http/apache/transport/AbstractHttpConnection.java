@@ -2,7 +2,7 @@ package com.sharingif.cube.communication.http.apache.transport;
 
 import com.sharingif.cube.communication.transport.Connection;
 import com.sharingif.cube.core.config.CubeConfigure;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import com.sharingif.cube.core.util.StringUtils;
 import org.apache.http.*;
 import org.apache.http.client.config.RequestConfig;
@@ -178,7 +178,7 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O> {
         return httpHost;
     }
 
-    protected String handlePath(RequestInfo<?> httpContext) {
+    protected String handlePath(RequestContext<?> httpContext) {
         String path = httpContext.getLookupPath();
         if(!StringUtils.isEmpty(getContextPath())) {
             path = new StringBuffer("/").append(getContextPath()).append(path).toString();
@@ -205,7 +205,7 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O> {
         return url.toString();
     }
 
-    protected void connectErrorLog(RequestInfo<String> httpContext, HttpHost httpHost, String path,Integer statusCode) {
+    protected void connectErrorLog(RequestContext<String> httpContext, HttpHost httpHost, String path,Integer statusCode) {
         StringBuilder url = new StringBuilder();
         url.append(httpHost.getSchemeName());
         url.append("://");

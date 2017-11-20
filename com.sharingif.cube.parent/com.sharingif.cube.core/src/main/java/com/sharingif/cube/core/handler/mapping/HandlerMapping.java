@@ -1,7 +1,7 @@
 package com.sharingif.cube.core.handler.mapping;
 
 import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 
 
@@ -20,6 +20,6 @@ public interface HandlerMapping<RI,T> {
 	 * @return
 	 * @throws CubeException
 	 */
-	T getHandler(RequestInfo<RI> request) throws CubeException;
+	T getHandler(RequestContext<RI> request) throws CubeException;
 	
 }

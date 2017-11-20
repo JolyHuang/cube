@@ -4,7 +4,7 @@ import com.sharingif.cube.communication.MediaType;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.chain.AbstractHandlerMethodChain;
 import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
-import com.sharingif.cube.web.vert.x.request.VertXRequestInfo;
+import com.sharingif.cube.web.vert.x.request.VertXRequestContext;
 
 import io.vertx.core.http.HttpHeaders;
 
@@ -30,9 +30,9 @@ public class VertXDispatcherHandlerExceptionChain extends AbstractHandlerMethodC
 
 	@Override
     public void exception(HandlerMethodContent content, Exception exception) throws CubeException {
-    	VertXRequestInfo vertXRequestInfo =  content.getRequestInfo();
+    	VertXRequestContext vertXRequestContext =  content.getRequestContext();
 
-    	vertXRequestInfo.getResponse().getHttpServerResponse()
+    	vertXRequestContext.getResponse().getHttpServerResponse()
                 .putHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON.toString())
                 .setStatusCode(404)
                 .end();

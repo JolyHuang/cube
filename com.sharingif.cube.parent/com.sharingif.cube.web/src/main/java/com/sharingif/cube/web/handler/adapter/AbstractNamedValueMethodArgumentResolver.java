@@ -3,7 +3,7 @@ package com.sharingif.cube.web.handler.adapter;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.adapter.HandlerMethodArgumentResolver;
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import org.springframework.beans.factory.config.BeanExpressionContext;
 import org.springframework.beans.factory.config.BeanExpressionResolver;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -39,12 +39,12 @@ public abstract class AbstractNamedValueMethodArgumentResolver implements Handle
 	}
 
 	@Override
-	public Object resolveArgument(MethodParameter parameter, RequestInfo<?> requestInfo, DataBinderFactory dataBinderFactory) throws CubeException {
+	public Object resolveArgument(MethodParameter parameter, RequestContext<?> requestContext, DataBinderFactory dataBinderFactory) throws CubeException {
 
 		Class<?> paramType = parameter.getParameterType();
 		NamedValueInfo namedValueInfo = getNamedValueInfo(parameter);
 
-		Object arg = resolveName(namedValueInfo.name, parameter, requestInfo);
+		Object arg = resolveName(namedValueInfo.name, parameter, requestContext);
 		if (arg == null) {
 			if (namedValueInfo.defaultValue != null) {
 				arg = resolveDefaultValue(namedValueInfo.defaultValue);
@@ -59,11 +59,11 @@ public abstract class AbstractNamedValueMethodArgumentResolver implements Handle
 		}
 
 		if (dataBinderFactory != null) {
-			DataBinder binder = dataBinderFactory.createBinder(requestInfo, null, namedValueInfo.name);
+			DataBinder binder = dataBinderFactory.createBinder(requestContext, null, namedValueInfo.name);
 			arg = binder.convertIfNecessary(arg, paramType, parameter);
 		}
 
-		handleResolvedValue(arg, namedValueInfo.name, parameter, requestInfo);
+		handleResolvedValue(arg, namedValueInfo.name, parameter, requestContext);
 
 		return arg;
 	}
@@ -105,7 +105,7 @@ public abstract class AbstractNamedValueMethodArgumentResolver implements Handle
 		return new NamedValueInfo(name, info.required, defaultValue);
 	}
 
-	protected abstract Object resolveName(String name, MethodParameter parameter, RequestInfo<?> requestInfo)
+	protected abstract Object resolveName(String name, MethodParameter parameter, RequestContext<?> requestContext)
 			throws CubeException;
 
 	/**
@@ -143,7 +143,7 @@ public abstract class AbstractNamedValueMethodArgumentResolver implements Handle
 	}
 
 	protected void handleResolvedValue(Object arg, String name, MethodParameter parameter,
-			RequestInfo<?> requestInfo) {
+			RequestContext<?> requestContext) {
 	}
 
 	/**

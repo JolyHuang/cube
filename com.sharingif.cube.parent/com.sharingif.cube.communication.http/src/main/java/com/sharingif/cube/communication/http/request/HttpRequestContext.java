@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import com.sharingif.cube.communication.http.HttpRequest;
 import com.sharingif.cube.communication.http.HttpResponse;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 /**
  * 处理http请求,增加HttpRequest属性
@@ -14,11 +14,11 @@ import com.sharingif.cube.core.request.RequestInfo;
  * @since v1.0
  * 2017/7/27 下午10:43
  */
-public class HttpRequestInfo<Req extends HttpRequest, Rsp extends HttpResponse> extends RequestInfo<Req> {
+public class HttpRequestContext<Req extends HttpRequest, Rsp extends HttpResponse> extends RequestContext<Req> {
 
 	private Rsp response;
 	
-    public HttpRequestInfo(String mediaType, String lookupPath, Locale locale, String method, Req request, Rsp response) {
+    public HttpRequestContext(String mediaType, String lookupPath, Locale locale, String method, Req request, Rsp response) {
         super(mediaType, lookupPath, locale, method, request);
         
         this.response = response;

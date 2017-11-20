@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.mapping.AbstractHandlerMapping;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.StaticHandler;
@@ -34,7 +34,7 @@ public class StaticHandlerMapping extends AbstractHandlerMapping<RoutingContext,
     }
 
     @Override
-    protected StaticHandler getHandlerInternal(RequestInfo<RoutingContext> request) throws CubeException {
+    protected StaticHandler getHandlerInternal(RequestContext<RoutingContext> request) throws CubeException {
         for(String pattern : urlMap.keySet()) {
             if(getPathMatcher().match(pattern, request.getLookupPath())) {
 

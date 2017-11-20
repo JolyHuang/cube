@@ -7,7 +7,7 @@ import com.sharingif.cube.core.handler.bind.support.BindingInitializer;
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
 import com.sharingif.cube.core.handler.bind.support.DefaultDataBinderFactory;
 import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
 
@@ -92,11 +92,11 @@ public class HandlerMethodHandlerAdapter extends AbstractHandlerMethodAdapter {
 	}
 
 	@Override
-	protected Object handleInternal(RequestInfo<?> request, HandlerMethod handlerMethod) throws CubeException {
+	protected Object handleInternal(RequestContext<?> request, HandlerMethod handlerMethod) throws CubeException {
 		return invokeHandleMethod(request, handlerMethod);
 	}
 	
-	protected Object invokeHandleMethod(RequestInfo<?> request, HandlerMethod handlerMethod) throws CubeException {
+	protected Object invokeHandleMethod(RequestContext<?> request, HandlerMethod handlerMethod) throws CubeException {
 		DataBinderFactory dataBinderFactory = getDataBinderFactory(handlerMethod);
 		
 		return getHandlerMethod(handlerMethod, dataBinderFactory).invokeAndHandle(request);

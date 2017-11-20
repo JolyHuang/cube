@@ -9,7 +9,7 @@ import java.util.Map;
 import com.sharingif.cube.communication.http.HttpRequest;
 import com.sharingif.cube.communication.http.HttpResponse;
 import com.sharingif.cube.communication.http.HttpSession;
-import com.sharingif.cube.communication.http.request.HttpRequestInfo;
+import com.sharingif.cube.communication.http.request.HttpRequestContext;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.core.handler.chain.command.AbstractHandlerMethodCommand;
@@ -49,9 +49,9 @@ public class InvalidateHttpSessionWebCommand extends AbstractHandlerMethodComman
 
 	@Override
 	public void execute(HandlerMethodContent content) throws CubeException {
-		HttpRequestInfo<HttpRequest,HttpResponse> httpRequestInfo = content.getRequestInfo();
+		HttpRequestContext<HttpRequest,HttpResponse> httpRequestContext = content.getRequestContext();
 		
-		HttpSession oldSession = httpRequestInfo.getRequest().getSession(false);
+		HttpSession oldSession = httpRequestContext.getRequest().getSession(false);
 		
 		Map<String,Object> attributeMap = new HashMap<String,Object>(copyAttributeNames.size());
 		if(null != oldSession){
@@ -63,7 +63,7 @@ public class InvalidateHttpSessionWebCommand extends AbstractHandlerMethodComman
 		if(null != oldSession)
 			oldSession.invalidate();
 		
-		HttpSession newSession = httpRequestInfo.getRequest().getSession(true);
+		HttpSession newSession = httpRequestContext.getRequest().getSession(true);
 		for(String attributeName : copyAttributeNames){
 			newSession.setAttribute(attributeName, attributeMap.get(attributeName));
 		}

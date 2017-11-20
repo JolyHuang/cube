@@ -8,7 +8,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.PathMatcher;
 
 import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 
 /**
@@ -42,10 +42,10 @@ public abstract class AbstractHandlerMapping<RI,T> implements HandlerMapping<RI,
 		return applicationContext;
 	}
 	
-	protected abstract T getHandlerInternal(RequestInfo<RI> request) throws CubeException;
+	protected abstract T getHandlerInternal(RequestContext<RI> request) throws CubeException;
 	
 	@Override
-	public T getHandler(RequestInfo<RI> request) throws CubeException {
+	public T getHandler(RequestContext<RI> request) throws CubeException {
 		return getHandlerInternal(request);
 	}
 	

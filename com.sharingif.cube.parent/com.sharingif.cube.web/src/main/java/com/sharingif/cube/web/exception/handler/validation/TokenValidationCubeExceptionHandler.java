@@ -2,7 +2,7 @@ package com.sharingif.cube.web.exception.handler.validation;
 
 import com.sharingif.cube.communication.http.HttpRequest;
 import com.sharingif.cube.communication.http.HttpResponse;
-import com.sharingif.cube.communication.http.request.HttpRequestInfo;
+import com.sharingif.cube.communication.http.request.HttpRequestContext;
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
 import com.sharingif.cube.core.exception.validation.TokenValidationCubeException;
@@ -52,7 +52,7 @@ public class TokenValidationCubeExceptionHandler extends WebCubeExceptionHandler
 		return exception instanceof TokenValidationCubeException;
 	}
 	@Override
-	public ExceptionContent handlerException(HttpRequestInfo<HttpRequest, HttpResponse> requestInfo,
+	public ExceptionContent handlerException(HttpRequestContext<HttpRequest, HttpResponse> requestContext,
 											 HandlerMethod handlerMethod,
 											 ICubeException cubeException) {
 

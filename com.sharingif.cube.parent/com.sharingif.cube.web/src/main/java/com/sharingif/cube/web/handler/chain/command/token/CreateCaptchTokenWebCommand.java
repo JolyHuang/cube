@@ -2,7 +2,7 @@ package com.sharingif.cube.web.handler.chain.command.token;
 
 import com.sharingif.cube.communication.http.HttpRequest;
 import com.sharingif.cube.communication.http.HttpResponse;
-import com.sharingif.cube.communication.http.request.HttpRequestInfo;
+import com.sharingif.cube.communication.http.request.HttpRequestContext;
 import com.sharingif.cube.components.captcha.ICaptchaHandler;
 import com.sharingif.cube.components.token.IToken;
 import com.sharingif.cube.core.exception.CubeException;
@@ -32,9 +32,9 @@ public class CreateCaptchTokenWebCommand extends CreateTokenWebCommand {
 	
 	@Override
 	public void execute(HandlerMethodContent content) throws CubeException {
-		HttpRequestInfo<HttpRequest,HttpResponse> httpRequestInfo = content.getRequestInfo();
+		HttpRequestContext<HttpRequest,HttpResponse> httpRequestContext = content.getRequestContext();
 
-		IToken token = getWebTokenManager().generateToken(httpRequestInfo.getRequest());
+		IToken token = getWebTokenManager().generateToken(httpRequestContext.getRequest());
 		
 		try {
 			content.setArgs(new Object[]{captchaHandler.getCaptchByteStream(token.getUniqueId())});

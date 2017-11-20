@@ -1,7 +1,7 @@
 package com.sharingif.cube.core.handler.adapter;
 
 import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 /**
  * [适配Handler]
@@ -32,6 +32,6 @@ public interface HandlerAdapter<RI,H> {
 	 * @return
 	 * @throws CubeException
 	 */
-	Object handle(RequestInfo<RI> request, H handler)throws CubeException;
+	Object handle(RequestContext<RI> request, H handler)throws CubeException;
 
 }

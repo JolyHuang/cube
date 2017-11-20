@@ -26,7 +26,7 @@ import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.core.util.CubeExceptionUtil;
 import com.sharingif.cube.web.springmvc.http.SpringMVCHttpRequest;
 import com.sharingif.cube.web.springmvc.http.SpringMVCHttpResponse;
-import com.sharingif.cube.web.springmvc.request.SpringMVCHttpRequestInfo;
+import com.sharingif.cube.web.springmvc.request.SpringMVCHttpRequestContext;
 
 /**
  * ExtendedServletInvocableHandlerMethod
@@ -88,13 +88,13 @@ public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandl
 		this.handlerMethodChain = handlerMethodChain;
 	}
 	
-	protected SpringMVCHttpRequestInfo getRequestInfo(HttpServletRequest request, HttpServletResponse response) {
+	protected SpringMVCHttpRequestContext getRequestContext(HttpServletRequest request, HttpServletResponse response) {
 
 		String lookupPath = urlPathHelper.getLookupPathForRequest(request);
 		String method = request.getMethod().toUpperCase(Locale.ENGLISH);
 
 		
-		 SpringMVCHttpRequestInfo requestInfo = new SpringMVCHttpRequestInfo(
+		 SpringMVCHttpRequestContext requestContext = new SpringMVCHttpRequestContext(
 				 null
 				 ,lookupPath
 				 ,RequestContextUtils.getLocale(request)
@@ -102,7 +102,7 @@ public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandl
 				 ,new SpringMVCHttpRequest(request)
 				 ,new SpringMVCHttpResponse(response));
 
-		return requestInfo;
+		return requestContext;
 	}
 
 	@Override
@@ -123,7 +123,7 @@ public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandl
 					,args
 					,null
 					,RequestContextUtils.getLocale(request.getNativeRequest(HttpServletRequest.class))
-					,getRequestInfo(request.getNativeRequest(HttpServletRequest.class), request.getNativeResponse(HttpServletResponse.class))
+					,getRequestContext(request.getNativeRequest(HttpServletRequest.class), request.getNativeResponse(HttpServletResponse.class))
 				);
 			getHandlerMethodChain().before(handlerMethodContent);
 		}

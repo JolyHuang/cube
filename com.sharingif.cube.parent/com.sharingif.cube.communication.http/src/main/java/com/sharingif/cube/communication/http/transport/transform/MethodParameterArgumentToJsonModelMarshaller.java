@@ -28,7 +28,7 @@ import com.sharingif.cube.core.exception.CubeRuntimeException;
 import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
 import com.sharingif.cube.core.handler.bind.support.BindingInitializer;
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import com.sharingif.cube.core.transport.exception.MarshallerException;
 import com.sharingif.cube.core.transport.transform.Marshaller;
 
@@ -150,14 +150,14 @@ public class MethodParameterArgumentToJsonModelMarshaller implements Marshaller<
 	
 	protected Object convertAndAalidate(MethodParameterArgument<Object[], String> methodParameterArgument, Object data) {
 		MethodParameter parameter = methodParameterArgument.getMethodParameter();
-		RequestInfo<Object[]> requestInfo = methodParameterArgument.getRequestInfo();
+		RequestContext<Object[]> requestContext = methodParameterArgument.getRequestContext();
 		DataBinderFactory dataBinderFactory = methodParameterArgument.getDataBinderFactory();
 		
 //		if(data instanceof List) {
 //			List<Object> dataList = (List<Object>)data;
 //			List<Object> returnDataList = new ArrayList(dataList.size());
 //			for(Object obj : dataList) {
-//				returnDataList.add(convertAndAalidate(parameter, requestInfo, dataBinderFactory, (Map<?,?>)obj));
+//				returnDataList.add(convertAndAalidate(parameter, requestContext, dataBinderFactory, (Map<?,?>)obj));
 //			}
 //			
 //			return returnDataList;
@@ -167,20 +167,20 @@ public class MethodParameterArgumentToJsonModelMarshaller implements Marshaller<
 			return data;
 		}
 	
-		return convertAndAalidate(parameter, requestInfo, dataBinderFactory, (Map<?,?>)data);
+		return convertAndAalidate(parameter, requestContext, dataBinderFactory, (Map<?,?>)data);
 	}
 	
-	protected Object convertAndAalidate(MethodParameter parameter, RequestInfo<Object[]> requestInfo, DataBinderFactory dataBinderFactory, Map<?,?> dataMap) {
+	protected Object convertAndAalidate(MethodParameter parameter, RequestContext<Object[]> requestContext, DataBinderFactory dataBinderFactory, Map<?,?> dataMap) {
 		DataBinder binder = null;
 		try {
 			String name = Conventions.getVariableNameForParameter(parameter);
-			Object attribute = createAttribute(name, parameter, requestInfo, dataBinderFactory);
-			binder = dataBinderFactory.createBinder(requestInfo, attribute, name);
+			Object attribute = createAttribute(name, parameter, requestContext, dataBinderFactory);
+			binder = dataBinderFactory.createBinder(requestContext, attribute, name);
 		} catch (CubeException e) {
 			throw new CubeRuntimeException("data binder error", e);
 		}
 		if (binder.getTarget() != null) {
-			bindRequestParameters(binder, requestInfo, dataMap);
+			bindRequestParameters(binder, requestContext, dataMap);
 			validateIfApplicable(binder, parameter);
 			if (binder.getBindingResult().hasErrors() && isBindExceptionRequired(binder, parameter)) {
 				throw new BindValidationCubeException(binder.getBindingResult());
@@ -197,7 +197,7 @@ public class MethodParameterArgumentToJsonModelMarshaller implements Marshaller<
 	 * @param binder the data binder instance to use for the binding
 	 * @param request the current request
 	 */
-	protected void bindRequestParameters(DataBinder binder, RequestInfo<?> requestInfo, Map<?,?> parameter) {
+	protected void bindRequestParameters(DataBinder binder, RequestContext<?> requestContext, Map<?,?> parameter) {
 		MutablePropertyValues mpvs = new MutablePropertyValues(parameter);
 		binder.bind(mpvs);
 	}
@@ -232,7 +232,7 @@ public class MethodParameterArgumentToJsonModelMarshaller implements Marshaller<
 	 * @param request the current request
 	 * @return the created model attribute (never {@code null})
 	 */
-	protected Object createAttribute(String attributeName, MethodParameter methodParam, RequestInfo<?> requestInfo, DataBinderFactory dataBinderFactory) throws CubeException {
+	protected Object createAttribute(String attributeName, MethodParameter methodParam, RequestContext<?> requestContext, DataBinderFactory dataBinderFactory) throws CubeException {
 
 		return BeanUtils.instantiateClass(methodParam.getParameterType());
 	}

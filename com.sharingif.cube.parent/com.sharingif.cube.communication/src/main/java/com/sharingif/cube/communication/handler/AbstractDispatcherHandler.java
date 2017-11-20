@@ -10,8 +10,8 @@ import com.sharingif.cube.core.handler.adapter.MultiHandlerMethodAdapter;
 import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
 import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.core.handler.mapping.MultiHandlerMapping;
-import com.sharingif.cube.core.request.RequestInfo;
-import com.sharingif.cube.core.request.RequestInfoResolver;
+import com.sharingif.cube.core.request.RequestContext;
+import com.sharingif.cube.core.request.RequestContextResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +27,7 @@ public abstract class AbstractDispatcherHandler<I> implements DispatcherHandler<
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
 	@SuppressWarnings("rawtypes")
-	private RequestInfoResolver requestInfoResolver;
+	private RequestContextResolver requestContextResolver;
 	private MultiHandlerMapping multiHandlerMapping;
 	private MultiHandlerMethodAdapter multiHandlerMethodAdapter;
 	@SuppressWarnings("rawtypes")
@@ -35,13 +35,14 @@ public abstract class AbstractDispatcherHandler<I> implements DispatcherHandler<
 	private MultiViewResolver multiViewResolver;
 	private HandlerMethodChain handlerMethodChain;
 	
+	
 	@SuppressWarnings("rawtypes")
-	public RequestInfoResolver getRequestInfoResolver() {
-		return requestInfoResolver;
+	public RequestContextResolver getRequestContextResolver() {
+		return requestContextResolver;
 	}
 	@SuppressWarnings("rawtypes")
-	public void setRequestInfoResolver(RequestInfoResolver requestInfoResolver) {
-		this.requestInfoResolver = requestInfoResolver;
+	public void setRequestContextResolver(RequestContextResolver requestContextResolver) {
+		this.requestContextResolver = requestContextResolver;
 	}
 	public MultiHandlerMapping getMultiHandlerMapping() {
 		return multiHandlerMapping;
@@ -111,32 +112,32 @@ public abstract class AbstractDispatcherHandler<I> implements DispatcherHandler<
 	@SuppressWarnings("unchecked")
 	protected void doDispatchInternal(I request) {
 
-		RequestInfo<Object> requestInfo = null;
+		RequestContext<Object> requestContext = null;
 		Object handler = null;
 		Object returnValue = null;
 		ExceptionContent exceptionContent = null;
 		try {
 
-			requestInfo = getRequestInfoResolver().resolveRequest(request);
+			requestContext = getRequestContextResolver().resolveRequest(request);
 
-			handler = getMultiHandlerMapping().getHandler(requestInfo);
+			handler = getMultiHandlerMapping().getHandler(requestContext);
 
-			returnValue = getMultiHandlerMethodAdapter().handle(requestInfo,handler);
+			returnValue = getMultiHandlerMethodAdapter().handle(requestContext,handler);
 
 		} catch (Exception e) {
 			logger.error("do dispatch error", e);
-			exceptionContent = multiCubeExceptionHandler.handler(requestInfo, handler, e);
+			exceptionContent = multiCubeExceptionHandler.handler(requestContext, handler, e);
 		}
 
-		handlerView(requestInfo,returnValue,exceptionContent);
+		handlerView(requestContext,returnValue,exceptionContent);
 
 	}
 
-	protected void handlerView(RequestInfo<Object> requestInfo, Object returnValue, ExceptionContent exceptionContent) {
+	protected void handlerView(RequestContext<Object> requestContext, Object returnValue, ExceptionContent exceptionContent) {
 		try {
-			View view = getMultiViewResolver().resolveView(requestInfo, returnValue, exceptionContent);
+			View view = getMultiViewResolver().resolveView(requestContext, returnValue, exceptionContent);
 		
-			view.view(requestInfo, returnValue, exceptionContent);
+			view.view(requestContext, returnValue, exceptionContent);
 		} catch (NoViewFoundException exception) {
 			throw exception;
 		} catch (Exception exception) {
@@ -151,7 +152,7 @@ public abstract class AbstractDispatcherHandler<I> implements DispatcherHandler<
 				null,
 				null,
 				null,
-				new RequestInfo<I>(null,null,null,null,request));
+				new RequestContext<I>(null,null,null,null,request));
 	}
 	
 }

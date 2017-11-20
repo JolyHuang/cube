@@ -4,7 +4,7 @@ import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
 import com.sharingif.cube.core.handler.bind.annotation.PathVariable;
 import com.sharingif.cube.core.handler.bind.annotation.RequestMapping;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.AntPathMatcher;
@@ -26,7 +26,7 @@ public class PathVariableMethodArgumentResolver extends AbstractNamedValueMethod
 	private PathMatcher pathMatcher = new AntPathMatcher();
 
 	@Override
-	public boolean supportsParameter(MethodParameter parameter, RequestInfo<?> requestInfo) {
+	public boolean supportsParameter(MethodParameter parameter, RequestContext<?> requestContext) {
 		if (!parameter.hasParameterAnnotation(PathVariable.class)) {
 			return false;
 		}
@@ -45,12 +45,12 @@ public class PathVariableMethodArgumentResolver extends AbstractNamedValueMethod
 	}
 
 	@Override
-	protected Object resolveName(String name, MethodParameter parameter, RequestInfo<?> requestInfo)
+	protected Object resolveName(String name, MethodParameter parameter, RequestContext<?> requestContext)
 			throws CubeException {
 		
 		RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(parameter.getMethod(), RequestMapping.class);
 		String pattern = methodAnnotation.value()[0];
-		String lookupPath = requestInfo.getLookupPath();
+		String lookupPath = requestContext.getLookupPath();
 		
 		int patternNumber = pattern.split("/").length-1;
 		if(!pattern.startsWith("/")) {

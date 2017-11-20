@@ -4,7 +4,7 @@ import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.handler.HandlerMethodMappingNamingStrategy;
 import com.sharingif.cube.core.handler.HandlerMethodSelector;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactoryUtils;
@@ -171,42 +171,42 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 	
 	protected abstract T getMappingForMethod(Method method, Class<?> handlerType);
 	
-	protected abstract T getMatchingMapping(T mapping, RequestInfo<Object> requestInfo);
+	protected abstract T getMatchingMapping(T mapping, RequestContext<Object> requestContext);
 	
-	protected abstract Comparator<T> getMappingComparator(RequestInfo<Object> requestInfo);
+	protected abstract Comparator<T> getMappingComparator(RequestContext<Object> requestContext);
 	
-	private void addMatchingMappings(Collection<T> mappings, List<Match> matches, RequestInfo<Object> requestInfo) {
+	private void addMatchingMappings(Collection<T> mappings, List<Match> matches, RequestContext<Object> requestContext) {
 		for (T mapping : mappings) {
-			T match = getMatchingMapping(mapping, requestInfo);
+			T match = getMatchingMapping(mapping, requestContext);
 			if (match != null) {
 				matches.add(new Match(match, handlerMethods.get(mapping)));
 			}
 		}
 	}
 	
-	protected HandlerMethod handleNoMatch(Set<T> mappings, String lookupPath, RequestInfo<?> requestInfo) throws CubeException {
+	protected HandlerMethod handleNoMatch(Set<T> mappings, String lookupPath, RequestContext<?> requestContext) throws CubeException {
 
 		return null;
 	}
 	
-	protected HandlerMethod lookupHandlerMethod(String lookupPath, RequestInfo<Object> requestInfo) throws CubeException {
+	protected HandlerMethod lookupHandlerMethod(String lookupPath, RequestContext<Object> requestContext) throws CubeException {
 		List<Match> matches = new ArrayList<Match>();
 
 		List<T> directPathMatches = this.urlMap.get(lookupPath);
 		if (directPathMatches != null) {
-			addMatchingMappings(directPathMatches, matches, requestInfo);
+			addMatchingMappings(directPathMatches, matches, requestContext);
 		}
 
 		if (matches.isEmpty()) {
 			// No choice but to go through all mappings
-			addMatchingMappings(this.handlerMethods.keySet(), matches, requestInfo);
+			addMatchingMappings(this.handlerMethods.keySet(), matches, requestContext);
 		}
 		
 		if (!matches.isEmpty()) {
-			Comparator<Match> comparator = new MatchComparator(getMappingComparator(requestInfo));
+			Comparator<Match> comparator = new MatchComparator(getMappingComparator(requestContext));
 			Collections.sort(matches, comparator);
 			if (logger.isTraceEnabled()) {
-				logger.trace("Found " + matches.size() + " matching mapping(s) for [" + requestInfo + "] : " + matches);
+				logger.trace("Found " + matches.size() + " matching mapping(s) for [" + requestContext + "] : " + matches);
 			}
 			Match bestMatch = matches.get(0);
 			if (matches.size() > 1) {
@@ -215,21 +215,21 @@ public abstract class AbstractHandlerMethodMapping<T> extends AbstractHandlerMap
 					Method m1 = bestMatch.handlerMethod.getMethod();
 					Method m2 = secondBestMatch.handlerMethod.getMethod();
 					throw new IllegalStateException(
-							"Ambiguous handler methods mapped for request info '" + requestInfo + "': {" +
+							"Ambiguous handler methods mapped for request info '" + requestContext + "': {" +
 							m1 + ", " + m2 + "}");
 				}
 			}
 			return bestMatch.handlerMethod;
 		}
 
-		return handleNoMatch(handlerMethods.keySet(), lookupPath, requestInfo);
+		return handleNoMatch(handlerMethods.keySet(), lookupPath, requestContext);
 	}
 	
 	/**
 	 * Look up a handler method for the given request.
 	 */
 	@Override
-	protected HandlerMethod getHandlerInternal(RequestInfo<Object> request) throws CubeException {
+	protected HandlerMethod getHandlerInternal(RequestContext<Object> request) throws CubeException {
 		
 		String lookupPath = request.getLookupPath();
 		if (logger.isDebugEnabled()) {

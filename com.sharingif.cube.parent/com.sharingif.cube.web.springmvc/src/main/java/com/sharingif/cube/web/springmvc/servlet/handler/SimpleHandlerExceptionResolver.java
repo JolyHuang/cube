@@ -5,7 +5,7 @@ import com.sharingif.cube.core.exception.handler.ExceptionContent;
 import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.web.springmvc.http.SpringMVCHttpRequest;
 import com.sharingif.cube.web.springmvc.http.SpringMVCHttpResponse;
-import com.sharingif.cube.web.springmvc.request.SpringMVCHttpRequestInfo;
+import com.sharingif.cube.web.springmvc.request.SpringMVCHttpRequestContext;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.AbstractHandlerExceptionResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -25,13 +25,13 @@ import java.util.Locale;
 public class SimpleHandlerExceptionResolver extends AbstractHandlerExceptionResolver {
 	
 	private String exceptionAttribute="_exception";
-	private AbstractCubeExceptionHandler<SpringMVCHttpRequestInfo, HandlerMethod> cubeExceptionHandler;
+	private AbstractCubeExceptionHandler<SpringMVCHttpRequestContext, HandlerMethod> cubeExceptionHandler;
 	private UrlPathHelper urlPathHelper = new UrlPathHelper();
 	
-	public AbstractCubeExceptionHandler<SpringMVCHttpRequestInfo, HandlerMethod> getCubeExceptionHandler() {
+	public AbstractCubeExceptionHandler<SpringMVCHttpRequestContext, HandlerMethod> getCubeExceptionHandler() {
 		return cubeExceptionHandler;
 	}
-	public void setCubeExceptionHandler(AbstractCubeExceptionHandler<SpringMVCHttpRequestInfo, HandlerMethod> cubeExceptionHandler) {
+	public void setCubeExceptionHandler(AbstractCubeExceptionHandler<SpringMVCHttpRequestContext, HandlerMethod> cubeExceptionHandler) {
 		this.cubeExceptionHandler = cubeExceptionHandler;
 	}
 	public String getExceptionAttribute() {
@@ -41,13 +41,13 @@ public class SimpleHandlerExceptionResolver extends AbstractHandlerExceptionReso
 		this.exceptionAttribute = exceptionAttribute;
 	}
 	
-	protected SpringMVCHttpRequestInfo getRequestInfo(HttpServletRequest request, HttpServletResponse response) {
+	protected SpringMVCHttpRequestContext getRequestContext(HttpServletRequest request, HttpServletResponse response) {
 
 		String lookupPath = urlPathHelper.getLookupPathForRequest(request);
 		String method = request.getMethod().toUpperCase(Locale.ENGLISH);
 
 
-		SpringMVCHttpRequestInfo requestInfo = new SpringMVCHttpRequestInfo(
+		SpringMVCHttpRequestContext requestContext = new SpringMVCHttpRequestContext(
 				null
 				,lookupPath
 				,RequestContextUtils.getLocale(request)
@@ -55,14 +55,14 @@ public class SimpleHandlerExceptionResolver extends AbstractHandlerExceptionReso
 				,new SpringMVCHttpRequest(request)
 				,new SpringMVCHttpResponse(response));
 
-		return requestInfo;
+		return requestContext;
 
 	}
 	
 	@Override
 	protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
 
-		SpringMVCHttpRequestInfo requestInfo = getRequestInfo(request, response);
+		SpringMVCHttpRequestContext requestContext = getRequestContext(request, response);
 				
 		HandlerMethod handlerMethod = null;
 		org.springframework.web.method.HandlerMethod hm = (org.springframework.web.method.HandlerMethod)handler;
@@ -70,7 +70,7 @@ public class SimpleHandlerExceptionResolver extends AbstractHandlerExceptionReso
 			handlerMethod = new HandlerMethod(hm.getBean(), hm.getMethod());
 		}
 
-		ExceptionContent outContent = cubeExceptionHandler.handler(requestInfo, handlerMethod, ex);
+		ExceptionContent outContent = cubeExceptionHandler.handler(requestContext, handlerMethod, ex);
 		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName(outContent.getViewName());

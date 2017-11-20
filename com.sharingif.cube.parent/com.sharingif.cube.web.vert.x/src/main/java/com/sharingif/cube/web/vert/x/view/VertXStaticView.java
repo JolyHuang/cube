@@ -2,8 +2,8 @@ package com.sharingif.cube.web.vert.x.view;
 
 import com.sharingif.cube.communication.view.View;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
-import com.sharingif.cube.core.request.RequestInfo;
-import com.sharingif.cube.web.vert.x.request.VertXRequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
+import com.sharingif.cube.web.vert.x.request.VertXRequestContext;
 import io.vertx.ext.web.handler.StaticHandler;
 
 /**
@@ -16,10 +16,10 @@ import io.vertx.ext.web.handler.StaticHandler;
 public class VertXStaticView implements View {
 
     @Override
-    public void view(RequestInfo<?> requestInfo, Object returnValue, ExceptionContent exceptionContent) {
-        VertXRequestInfo vertXRequestInfo = (VertXRequestInfo)requestInfo;
+    public void view(RequestContext<?> requestContext, Object returnValue, ExceptionContent exceptionContent) {
+        VertXRequestContext vertXRequestContext = (VertXRequestContext)requestContext;
 
         StaticHandler staticHandler = (StaticHandler)returnValue;
-        staticHandler.handle(vertXRequestInfo.getRoutingContext());
+        staticHandler.handle(vertXRequestContext.getRoutingContext());
     }
 }

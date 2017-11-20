@@ -4,7 +4,7 @@ import org.springframework.core.MethodParameter;
 
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 
 /**
@@ -39,6 +39,6 @@ public interface HandlerMethodReturnValueHandler {
 	 * @param webRequest the current request
 	 * @throws Exception if the return value handling results in an error
 	 */
-	Object handleReturnValue(RequestInfo<?> requestInfo, Object returnValue, MethodParameter returnType, DataBinderFactory dataBinderFactory) throws CubeException;
+	Object handleReturnValue(RequestContext<?> requestContext, Object returnValue, MethodParameter returnType, DataBinderFactory dataBinderFactory) throws CubeException;
 
 }

@@ -3,7 +3,7 @@ package com.sharingif.cube.core.handler.bind.support;
 import org.springframework.validation.DataBinder;
 
 import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 
 
@@ -24,6 +24,6 @@ public interface DataBinderFactory {
 	 * @return the created {@link DataBinder} instance, never null
 	 * @throws Exception raised if the creation and initialization of the data binder fails
 	 */
-	DataBinder createBinder(RequestInfo<?> requestInfo, Object target, String objectName) throws CubeException;
+	DataBinder createBinder(RequestContext<?> requestContext, Object target, String objectName) throws CubeException;
 
 }

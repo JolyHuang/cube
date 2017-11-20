@@ -2,7 +2,7 @@ package com.sharingif.cube.web.vert.x.handler.adapter;
 
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.adapter.HandlerAdapter;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.CorsHandler;
 
@@ -21,7 +21,7 @@ public class CORSHandlerAdapter implements HandlerAdapter<RoutingContext,CorsHan
     }
 
     @Override
-    public Object handle(RequestInfo<RoutingContext> request, CorsHandler handler) throws CubeException {
+    public Object handle(RequestContext<RoutingContext> request, CorsHandler handler) throws CubeException {
         return handler;
     }
 }

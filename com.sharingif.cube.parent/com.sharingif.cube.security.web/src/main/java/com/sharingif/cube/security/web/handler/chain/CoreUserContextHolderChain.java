@@ -2,7 +2,7 @@ package com.sharingif.cube.security.web.handler.chain;
 
 import com.sharingif.cube.communication.http.HttpRequest;
 import com.sharingif.cube.communication.http.HttpResponse;
-import com.sharingif.cube.communication.http.request.HttpRequestInfo;
+import com.sharingif.cube.communication.http.request.HttpRequestContext;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.chain.AbstractHandlerMethodChain;
 import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
@@ -23,9 +23,9 @@ public class CoreUserContextHolderChain extends AbstractHandlerMethodChain{
 	
 	@Override
 	public void before(HandlerMethodContent content) throws CubeException {
-		HttpRequestInfo<HttpRequest,HttpResponse> httpRequestInfo = content.getRequestInfo();
+		HttpRequestContext<HttpRequest,HttpResponse> httpRequestContext = content.getRequestContext();
 		
-		ICoreUser coreUser = webUserManage.getUser(httpRequestInfo.getRequest());
+		ICoreUser coreUser = webUserManage.getUser(httpRequestContext.getRequest());
 		if(coreUser == null)
 			return;
 		

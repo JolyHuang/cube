@@ -2,7 +2,7 @@ package com.sharingif.cube.web.exception.handler.validation;
 
 import com.sharingif.cube.communication.http.HttpRequest;
 import com.sharingif.cube.communication.http.HttpResponse;
-import com.sharingif.cube.communication.http.request.HttpRequestInfo;
+import com.sharingif.cube.communication.http.request.HttpRequestContext;
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
@@ -39,13 +39,13 @@ public class ValidationCubeExceptionHandler extends WebCubeExceptionHandler {
 	}
 
 	@Override
-	public ExceptionContent handlerException(HttpRequestInfo<HttpRequest, HttpResponse> requestInfo,
+	public ExceptionContent handlerException(HttpRequestContext<HttpRequest, HttpResponse> requestContext,
 											 HandlerMethod handlerMethod,
 											 ICubeException cubeException) {
 
 		ExceptionContent out = new ExceptionContent();
 
-		String referer = (String) requestInfo.getRequest().getParameter(refererAttribute);
+		String referer = (String) requestContext.getRequest().getParameter(refererAttribute);
 
 		if (!StringUtils.isEmpty(referer))
 			out.setViewName(referer);

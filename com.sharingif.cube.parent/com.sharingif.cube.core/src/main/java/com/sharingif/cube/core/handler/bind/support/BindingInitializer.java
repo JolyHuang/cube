@@ -2,7 +2,7 @@ package com.sharingif.cube.core.handler.bind.support;
 
 import org.springframework.validation.DataBinder;
 
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 
 /**
@@ -20,6 +20,6 @@ public interface BindingInitializer {
 	 * @param binder the DataBinder to initialize
 	 * @param request the web request that the data binding happens within
 	 */
-	void initBinder(DataBinder binder, RequestInfo<?> requestInfo);
+	void initBinder(DataBinder binder, RequestContext<?> requestContext);
 
 }

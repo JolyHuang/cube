@@ -6,7 +6,7 @@ import com.sharingif.cube.core.handler.adapter.HandlerMethodArgumentResolverComp
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
 import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
 import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import com.sharingif.cube.core.util.CubeExceptionUtil;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.GenericTypeResolver;
@@ -76,9 +76,9 @@ public class InvocableHandlerMethod extends HandlerMethod {
 		this.handlerMethodChain = handlerMethodChain;
 	}
 
-	public Object invokeForRequest(RequestInfo<?> requestInfo) throws CubeException {
+	public Object invokeForRequest(RequestContext<?> requestContext) throws CubeException {
 
-		Object[] args = getMethodArgumentValues(requestInfo);
+		Object[] args = getMethodArgumentValues(requestContext);
 		if (logger.isTraceEnabled()) {
 			StringBuilder sb = new StringBuilder("Invoking [");
 			sb.append(getBeanType().getSimpleName()).append(".");
@@ -90,7 +90,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 		boolean handlerMethodChainIsNotEmpty = (null != getHandlerMethodChain());
 		HandlerMethodContent handlerMethodContent = null;
 		if(handlerMethodChainIsNotEmpty) {
-			handlerMethodContent = new HandlerMethodContent(this, args, null, requestInfo.getLocale(), requestInfo);
+			handlerMethodContent = new HandlerMethodContent(this, args, null, requestContext.getLocale(), requestContext);
 			getHandlerMethodChain().before(handlerMethodContent);
 		}
 		
@@ -130,7 +130,7 @@ public class InvocableHandlerMethod extends HandlerMethod {
 	/**
 	 * Get the method argument values for the current request.
 	 */
-	protected Object[] getMethodArgumentValues(RequestInfo<?> requestInfo) throws CubeException {
+	protected Object[] getMethodArgumentValues(RequestContext<?> requestContext) throws CubeException {
 
 		MethodParameter[] parameters = getMethodParameters();
 		Object[] args = new Object[parameters.length];
@@ -141,9 +141,9 @@ public class InvocableHandlerMethod extends HandlerMethod {
 			if (args[i] != null) {
 				continue;
 			}
-			if (this.argumentResolvers.supportsParameter(parameter, requestInfo)) {
+			if (this.argumentResolvers.supportsParameter(parameter, requestContext)) {
 				try {
-					args[i] = this.argumentResolvers.resolveArgument(parameter, requestInfo, this.dataBinderFactory);
+					args[i] = this.argumentResolvers.resolveArgument(parameter, requestContext, this.dataBinderFactory);
 					continue;
 				} catch (CubeException ex) {
 					if (logger.isDebugEnabled()) {

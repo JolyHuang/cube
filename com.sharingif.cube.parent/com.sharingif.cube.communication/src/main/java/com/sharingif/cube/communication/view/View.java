@@ -1,7 +1,7 @@
 package com.sharingif.cube.communication.view;
 
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 /**
  * View
@@ -12,6 +12,6 @@ import com.sharingif.cube.core.request.RequestInfo;
  */
 public interface View {
 	
-	void view(RequestInfo<?> requestInfo, Object returnValue,  ExceptionContent exceptionContent);
+	void view(RequestContext<?> requestContext, Object returnValue,  ExceptionContent exceptionContent);
 	
 }

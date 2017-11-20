@@ -17,8 +17,8 @@ import com.sharingif.cube.communication.transport.AbstractHandlerMethodCommunica
 import com.sharingif.cube.communication.transport.ProxyInterfaceHandlerMethodCommunicationTransport;
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
-import com.sharingif.cube.core.request.RequestInfo;
-import com.sharingif.cube.core.request.RequestInfoResolver;
+import com.sharingif.cube.core.request.RequestContext;
+import com.sharingif.cube.core.request.RequestContextResolver;
 
 /**
  * 远程服务
@@ -31,17 +31,18 @@ public class RemoteServices {
 	
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
-	private RequestInfoResolver<Object[], ?> requestInfoResolver;
+	private RequestContextResolver<Object[], ?> requestContextResolver;
 	private AbstractHandlerMethodCommunicationTransportFactory<?,?,?,?,?,?> handlerMethodCommunicationTransportFactory;
 	private List<String> services;
 	
 	private Map<String, AbstractHandlerMethodCommunicationTransport<?,?,?,?,?,?>> cacheHandlerMethodCommunicationTransportMap = new HashMap<String,AbstractHandlerMethodCommunicationTransport<?,?,?,?,?,?>>(128);
 	
-	public RequestInfoResolver<Object[], ?> getRequestInfoResolver() {
-		return requestInfoResolver;
+	
+	public RequestContextResolver<Object[], ?> getRequestContextResolver() {
+		return requestContextResolver;
 	}
-	public void setRequestInfoResolver(RequestInfoResolver<Object[], ?> requestInfoResolver) {
-		this.requestInfoResolver = requestInfoResolver;
+	public void setRequestContextResolver(RequestContextResolver<Object[], ?> requestContextResolver) {
+		this.requestContextResolver = requestContextResolver;
 	}
 	public AbstractHandlerMethodCommunicationTransportFactory<?,?,?,?,?,?> getHandlerMethodCommunicationTransportFactory() {
 		return handlerMethodCommunicationTransportFactory;
@@ -89,9 +90,9 @@ public class RemoteServices {
 						cacheHandlerMethodCommunicationTransportMap.put(key, handlerMethodCommunicationTransport);
 					}
 					
-					RequestInfo<?> requestInfo = requestInfoResolver.resolveRequest(new Object[]{handlerMethodCommunicationTransport, args});
+					RequestContext<?> requestContext = requestContextResolver.resolveRequest(new Object[]{handlerMethodCommunicationTransport, args});
 					
-					return handlerMethodCommunicationTransport.doTransport(requestInfo);
+					return handlerMethodCommunicationTransport.doTransport(requestContext);
 				}
 				
 			});

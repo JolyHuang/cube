@@ -3,7 +3,7 @@ package com.sharingif.cube.web.vert.x.transport;
 import com.sharingif.cube.communication.exception.CommunicationException;
 import com.sharingif.cube.communication.http.HttpMethod;
 import com.sharingif.cube.communication.transport.Connection;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.vertx.core.Vertx;
@@ -20,7 +20,7 @@ import io.vertx.core.http.HttpHeaders;
  * @version v1.0
  * @since v1.0
  */
-public class VertXHttpJsonConnection implements Connection<RequestInfo<String>, String> {
+public class VertXHttpJsonConnection implements Connection<RequestContext<String>, String> {
 	
 	private final Vertx vertx = Vertx.vertx();
 	private final HttpClient client;
@@ -65,13 +65,13 @@ public class VertXHttpJsonConnection implements Connection<RequestInfo<String>, 
 	}
 	
 	@Override
-	public String connect(RequestInfo<String> vertXHttpContext) throws CommunicationException {
+	public String connect(RequestContext<String> vertXHttpContext) throws CommunicationException {
 		
 		return json(vertXHttpContext);
 		
 	}
 	
-	protected String json(RequestInfo<String> vertXHttpContext) {
+	protected String json(RequestContext<String> vertXHttpContext) {
 		Buffer buffer = null;
 		if(vertXHttpContext.getRequest() != null){
 			buffer = Buffer.buffer(vertXHttpContext.getRequest());

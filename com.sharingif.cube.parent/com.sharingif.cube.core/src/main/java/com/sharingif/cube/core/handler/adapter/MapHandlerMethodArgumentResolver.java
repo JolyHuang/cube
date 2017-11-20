@@ -15,7 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 /**
  * 能处理map类型的请求数据
@@ -27,8 +27,8 @@ import com.sharingif.cube.core.request.RequestInfo;
 public class MapHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
 	@Override
-	public boolean supportsParameter(MethodParameter parameter, RequestInfo<?> requestInfo) {
-		if (requestInfo.getRequest() instanceof Map) {
+	public boolean supportsParameter(MethodParameter parameter, RequestContext<?> requestContext) {
+		if (requestContext.getRequest() instanceof Map) {
 			return true;
 		} else {
 			return false;
@@ -36,12 +36,12 @@ public class MapHandlerMethodArgumentResolver implements HandlerMethodArgumentRe
 	}
 
 	@Override
-	public Object resolveArgument(MethodParameter parameter, RequestInfo<?> requestInfo, DataBinderFactory dataBinderFactory) throws CubeException {
+	public Object resolveArgument(MethodParameter parameter, RequestContext<?> requestContext, DataBinderFactory dataBinderFactory) throws CubeException {
 		String name = Conventions.getVariableNameForParameter(parameter);
-		Object attribute = createAttribute(name, parameter, requestInfo, dataBinderFactory);
-		DataBinder binder = dataBinderFactory.createBinder(requestInfo, attribute, name);
+		Object attribute = createAttribute(name, parameter, requestContext, dataBinderFactory);
+		DataBinder binder = dataBinderFactory.createBinder(requestContext, attribute, name);
 		if (binder.getTarget() != null) {
-			bindRequestParameters(binder, requestInfo);
+			bindRequestParameters(binder, requestContext);
 			validateIfApplicable(binder, parameter);
 			if (binder.getBindingResult().hasErrors() && isBindExceptionRequired(binder, parameter)) {
 				throw new BindValidationCubeException(binder.getBindingResult());
@@ -56,8 +56,8 @@ public class MapHandlerMethodArgumentResolver implements HandlerMethodArgumentRe
 	 * @param binder the data binder instance to use for the binding
 	 * @param request the current request
 	 */
-	protected void bindRequestParameters(DataBinder binder, RequestInfo<?> requestInfo) {
-		MutablePropertyValues mpvs = new MutablePropertyValues((Map<?,?>)requestInfo.getRequest());
+	protected void bindRequestParameters(DataBinder binder, RequestContext<?> requestContext) {
+		MutablePropertyValues mpvs = new MutablePropertyValues((Map<?,?>)requestContext.getRequest());
 		binder.bind(mpvs);
 	}
 	
@@ -91,7 +91,7 @@ public class MapHandlerMethodArgumentResolver implements HandlerMethodArgumentRe
 	 * @param request the current request
 	 * @return the created model attribute (never {@code null})
 	 */
-	protected Object createAttribute(String attributeName, MethodParameter methodParam, RequestInfo<?> requestInfo, DataBinderFactory dataBinderFactory) throws CubeException {
+	protected Object createAttribute(String attributeName, MethodParameter methodParam, RequestContext<?> requestContext, DataBinderFactory dataBinderFactory) throws CubeException {
 
 		return BeanUtils.instantiateClass(methodParam.getParameterType());
 	}

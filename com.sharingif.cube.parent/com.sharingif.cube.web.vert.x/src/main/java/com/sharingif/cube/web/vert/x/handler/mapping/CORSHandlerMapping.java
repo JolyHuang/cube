@@ -3,7 +3,7 @@ package com.sharingif.cube.web.vert.x.handler.mapping;
 import com.sharingif.cube.communication.http.HttpMethod;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.mapping.AbstractHandlerMapping;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.CorsHandler;
 
@@ -24,7 +24,7 @@ public class CORSHandlerMapping extends AbstractHandlerMapping<RoutingContext,Co
     }
 
     @Override
-    protected CorsHandler getHandlerInternal(RequestInfo<RoutingContext> request) throws CubeException {
+    protected CorsHandler getHandlerInternal(RequestContext<RoutingContext> request) throws CubeException {
 
         if(request.getMethod().equals(HttpMethod.OPTIONS.toString())) {
             return corsHandler;

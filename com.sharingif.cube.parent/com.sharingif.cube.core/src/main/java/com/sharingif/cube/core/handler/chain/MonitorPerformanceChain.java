@@ -31,8 +31,8 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain {
 		this.logger.info("{} begin===> thdId:{}, method:{}, trsId:{}"
 				,name
 				,Thread.currentThread().getId()
-				,content.getRequestInfo().getMethod()
-				,content.getRequestInfo().getLookupPath()
+				,content.getRequestContext().getMethod()
+				,content.getRequestContext().getLookupPath()
 				);
 		
 	}
@@ -46,8 +46,8 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain {
 		this.logger.info("{} end===> thdId:{}, method:{}, trsId:{}, exTime:{}"
 				,name
 				,Thread.currentThread().getId()
-				,content.getRequestInfo().getMethod()
-				,content.getRequestInfo().getLookupPath()
+				,content.getRequestContext().getMethod()
+				,content.getRequestContext().getLookupPath()
 				,(endCurrentTime-beginCurrentTime)
 				);
 		
@@ -74,8 +74,8 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain {
 			this.logger.error(loggerMessage
 					,name
 					,Thread.currentThread().getId()
-					,content.getRequestInfo().getMethod()
-					,content.getRequestInfo().getLookupPath()
+					,content.getRequestContext().getMethod()
+					,content.getRequestContext().getLookupPath()
 					,(endCurrentTime-beginCurrentTime)
 					,message
 					,localizedMessage
@@ -87,8 +87,8 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain {
 		this.logger.error(loggerMessage
 				,name
 				,Thread.currentThread().getId()
-				,content.getRequestInfo().getMethod()
-				,content.getRequestInfo().getLookupPath()
+				,content.getRequestContext().getMethod()
+				,content.getRequestContext().getLookupPath()
 				,(endCurrentTime-beginCurrentTime)
 				,message
 				,localizedMessage

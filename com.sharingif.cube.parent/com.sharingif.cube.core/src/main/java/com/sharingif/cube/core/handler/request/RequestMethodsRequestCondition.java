@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.sharingif.cube.core.handler.bind.annotation.RequestMethod;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 /**
  * A logical disjunction (' || ') request condition that matches a request
@@ -78,7 +78,7 @@ public final class RequestMethodsRequestCondition extends AbstractRequestConditi
 	 * the matched request method, or {@code null} if no request methods match
 	 */
 	@Override
-	public RequestMethodsRequestCondition getMatchingCondition(RequestInfo<?> request) {
+	public RequestMethodsRequestCondition getMatchingCondition(RequestContext<?> request) {
 		if (this.methods.isEmpty()) {
 			return this;
 		}
@@ -93,7 +93,7 @@ public final class RequestMethodsRequestCondition extends AbstractRequestConditi
 		return null;
 	}
 
-	private RequestMethod getRequestMethod(RequestInfo<?> request) {
+	private RequestMethod getRequestMethod(RequestContext<?> request) {
 		try {
 			return RequestMethod.valueOf(request.getMethod());
 		}
@@ -114,7 +114,7 @@ public final class RequestMethodsRequestCondition extends AbstractRequestConditi
 	 * contains the matching HTTP request method only or is otherwise empty.
 	 */
 	@Override
-	public int compareTo(RequestMethodsRequestCondition other, RequestInfo<?> request) {
+	public int compareTo(RequestMethodsRequestCondition other, RequestContext<?> request) {
 		return (other.methods.size() - this.methods.size());
 	}
 

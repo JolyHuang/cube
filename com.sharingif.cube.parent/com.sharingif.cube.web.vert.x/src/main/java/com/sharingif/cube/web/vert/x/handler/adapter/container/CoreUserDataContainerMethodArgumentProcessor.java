@@ -2,11 +2,11 @@ package com.sharingif.cube.web.vert.x.handler.adapter.container;
 
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import com.sharingif.cube.core.user.ICoreUser;
 import com.sharingif.cube.web.user.CoreUserHttpSessionManage;
 import com.sharingif.cube.web.user.IWebUserManage;
-import com.sharingif.cube.web.vert.x.request.VertXRequestInfo;
+import com.sharingif.cube.web.vert.x.request.VertXRequestContext;
 import org.springframework.core.MethodParameter;
 
 /**
@@ -31,10 +31,10 @@ public class CoreUserDataContainerMethodArgumentProcessor implements DataContain
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, RequestInfo<?> requestInfo, DataBinderFactory dataBinderFactory) throws CubeException {
+    public Object resolveArgument(MethodParameter parameter, RequestContext<?> requestContext, DataBinderFactory dataBinderFactory) throws CubeException {
 
-        VertXRequestInfo vertXRequestInfo = (VertXRequestInfo)requestInfo;
+        VertXRequestContext vertXRequestContext = (VertXRequestContext)requestContext;
 
-        return webUserManage.getUser(vertXRequestInfo.getRequest());
+        return webUserManage.getUser(vertXRequestContext.getRequest());
     }
 }

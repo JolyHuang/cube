@@ -3,7 +3,7 @@ package com.sharingif.cube.core.handler.bind.support;
 import org.springframework.validation.DataBinder;
 
 import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 
 
@@ -33,12 +33,12 @@ public class DefaultDataBinderFactory implements DataBinderFactory {
 	 * @throws Exception in case of invalid state or arguments
 	 */
 	@Override
-	public final DataBinder createBinder(RequestInfo<?> requestInfo, Object target, String objectName) throws CubeException {
-		DataBinder dataBinder = createBinderInstance(target, objectName, requestInfo);
+	public final DataBinder createBinder(RequestContext<?> requestContext, Object target, String objectName) throws CubeException {
+		DataBinder dataBinder = createBinderInstance(target, objectName, requestContext);
 		if (this.initializer != null) {
-			this.initializer.initBinder(dataBinder, requestInfo);
+			this.initializer.initBinder(dataBinder, requestContext);
 		}
-		initBinder(dataBinder, requestInfo);
+		initBinder(dataBinder, requestContext);
 		return dataBinder;
 	}
 
@@ -50,7 +50,7 @@ public class DefaultDataBinderFactory implements DataBinderFactory {
 	 * @param webRequest the current request
 	 * @throws Exception in case of invalid state or arguments
 	 */
-	protected DataBinder createBinderInstance(Object target, String objectName, RequestInfo<?> requestInfo) throws CubeException {
+	protected DataBinder createBinderInstance(Object target, String objectName, RequestContext<?> requestContext) throws CubeException {
 		return new DataBinder(target, objectName);
 	}
 
@@ -62,7 +62,7 @@ public class DefaultDataBinderFactory implements DataBinderFactory {
 	 * @param webRequest the current request
 	 * @throws Exception if initialization fails
 	 */
-	protected void initBinder(DataBinder dataBinder, RequestInfo<?> requestInfo) throws CubeException {
+	protected void initBinder(DataBinder dataBinder, RequestContext<?> requestContext) throws CubeException {
 	}
 
 }

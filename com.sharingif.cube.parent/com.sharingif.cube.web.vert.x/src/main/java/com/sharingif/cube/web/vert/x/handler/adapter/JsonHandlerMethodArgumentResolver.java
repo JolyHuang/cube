@@ -9,9 +9,9 @@ import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
 import com.sharingif.cube.core.handler.adapter.HandlerMethodArgumentResolver;
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import com.sharingif.cube.core.transport.exception.MarshallerException;
-import com.sharingif.cube.web.vert.x.request.VertXRequestInfo;
+import com.sharingif.cube.web.vert.x.request.VertXRequestContext;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.ext.web.RoutingContext;
 import org.slf4j.Logger;
@@ -50,16 +50,16 @@ public class JsonHandlerMethodArgumentResolver implements HandlerMethodArgumentR
 	}
 
 	@Override
-	public boolean supportsParameter(MethodParameter parameter, RequestInfo<?> requestInfo) {
-		MediaType candidateContentType = MediaType.parseMediaType(requestInfo.getMediaType());
+	public boolean supportsParameter(MethodParameter parameter, RequestContext<?> requestContext) {
+		MediaType candidateContentType = MediaType.parseMediaType(requestContext.getMediaType());
 
 		return MediaType.APPLICATION_JSON.isCompatibleWith(candidateContentType);
 	}
 
 	@Override
-	public Object resolveArgument(MethodParameter parameter, RequestInfo<?> requestInfo, DataBinderFactory dataBinderFactory) throws CubeException {
-		VertXRequestInfo vertXRequestInfo = (VertXRequestInfo)requestInfo;
-		RoutingContext routingContext = vertXRequestInfo.getRoutingContext();
+	public Object resolveArgument(MethodParameter parameter, RequestContext<?> requestContext, DataBinderFactory dataBinderFactory) throws CubeException {
+		VertXRequestContext vertXRequestContext = (VertXRequestContext)requestContext;
+		RoutingContext routingContext = vertXRequestContext.getRoutingContext();
 		Buffer buffer = routingContext.getBody();
 		if(buffer.length() == 0) {
 			return null;
@@ -68,7 +68,7 @@ public class JsonHandlerMethodArgumentResolver implements HandlerMethodArgumentR
 		String name = Conventions.getVariableNameForParameter(parameter);
 		Object arg = readWithMessageConverters(parameter, buffer);
 
-		DataBinder binder = dataBinderFactory.createBinder(requestInfo, arg, name);
+		DataBinder binder = dataBinderFactory.createBinder(requestContext, arg, name);
 		if (arg != null) {
 			validateIfApplicable(binder, parameter);
 			if (binder.getBindingResult().hasErrors() && isBindExceptionRequired(binder, parameter)) {

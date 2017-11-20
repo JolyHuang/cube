@@ -17,7 +17,7 @@ import com.sharingif.cube.communication.transport.ProxyInterfaceHandlerMethodCom
 import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.handler.bind.support.ConfigurableBindingInitializer;
 import com.sharingif.cube.core.handler.bind.support.DefaultDataBinderFactory;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import com.sharingif.cube.web.vert.x.transport.VertXHttpJsonConnection;
 
 
@@ -37,7 +37,7 @@ public class VertXHttpConnectionTest {
 	@Test
 	public void testPost() {
 		
-		RequestInfo<String> vertXHttpJsonContext = new RequestInfo<String>(MediaType.APPLICATION_JSON_VALUE, "user/add", Locale.getDefault(), HttpMethod.POST.name(), "{\"name\":\"Joly\",\"age\":18,\"birthday\":1482847605601}");
+		RequestContext<String> vertXHttpJsonContext = new RequestContext<String>(MediaType.APPLICATION_JSON_VALUE, "user/add", Locale.getDefault(), HttpMethod.POST.name(), "{\"name\":\"Joly\",\"age\":18,\"birthday\":1482847605601}");
 		
 		vertXHttpConnection.connect(vertXHttpJsonContext);
 	}
@@ -45,7 +45,7 @@ public class VertXHttpConnectionTest {
 	@Test
 	public void testGet() {
 		
-		RequestInfo<String> vertXHttpJsonContext = new RequestInfo<String>(MediaType.APPLICATION_JSON_VALUE, "user/get/123/", Locale.getDefault(), HttpMethod.POST.name(), null);
+		RequestContext<String> vertXHttpJsonContext = new RequestContext<String>(MediaType.APPLICATION_JSON_VALUE, "user/get/123/", Locale.getDefault(), HttpMethod.POST.name(), null);
 		
 		vertXHttpConnection.connect(vertXHttpJsonContext);
 	}
@@ -70,8 +70,8 @@ public class VertXHttpConnectionTest {
 				
 				proxyInterfaceHandlerMethodCommunicationTransport.setTransform(transform);
 				
-				RequestInfo<Object[]> requestInfo = new RequestInfo<Object[]>(MediaType.APPLICATION_JSON.toString(), "user/get/123/", null, HttpMethod.GET.name(), null);
-				User user = (User) proxyInterfaceHandlerMethodCommunicationTransport.doTransport(requestInfo);
+				RequestContext<Object[]> requestContext = new RequestContext<Object[]>(MediaType.APPLICATION_JSON.toString(), "user/get/123/", null, HttpMethod.GET.name(), null);
+				User user = (User) proxyInterfaceHandlerMethodCommunicationTransport.doTransport(requestContext);
 				System.out.println("returnValue:"+user);
 				
 //				User user = new User();

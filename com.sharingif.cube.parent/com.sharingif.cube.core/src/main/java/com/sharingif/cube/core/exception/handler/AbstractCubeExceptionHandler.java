@@ -2,7 +2,7 @@ package com.sharingif.cube.core.exception.handler;
 
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.UnknownCubeException;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import com.sharingif.cube.core.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ import java.util.Locale;
  * @version v1.0
  * @since v1.0
  */
-public abstract class AbstractCubeExceptionHandler<RI extends RequestInfo<?>, H extends Object> extends ApplicationObjectSupport implements IExceptionHandler<RI,H> {
+public abstract class AbstractCubeExceptionHandler<RI extends RequestContext<?>, H extends Object> extends ApplicationObjectSupport implements IExceptionHandler<RI,H> {
 
 
 	private static final Field DETAIL_MESSAGE_FIELD;
@@ -106,20 +106,20 @@ public abstract class AbstractCubeExceptionHandler<RI extends RequestInfo<?>, H 
 	}
 
 	/**
-	 * @param requestInfo : 错误输入信息
+	 * @param requestContext : 错误输入信息
 	 * @param handler : 请求处理器
 	 * @param exception : 异常
 	 * @return O : 异常处理结果
 	 */
-	public ExceptionContent handler(RI requestInfo, H handler, Exception exception) {
+	public ExceptionContent handler(RI requestContext, H handler, Exception exception) {
 
 		ICubeException cubeException = convertException(exception);
 
-		resolverMessages(cubeException, requestInfo.getLocale());
+		resolverMessages(cubeException, requestContext.getLocale());
 
-		wirteLog(requestInfo, handler, cubeException);
+		wirteLog(requestContext, handler, cubeException);
 
-		ExceptionContent result = handlerException(requestInfo, handler, cubeException);
+		ExceptionContent result = handlerException(requestContext, handler, cubeException);
 		result.setCubeException(cubeException);
 
 		return result;

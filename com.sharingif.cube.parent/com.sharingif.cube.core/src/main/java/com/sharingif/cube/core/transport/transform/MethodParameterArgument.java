@@ -3,10 +3,10 @@ package com.sharingif.cube.core.transport.transform;
 import org.springframework.core.MethodParameter;
 
 import com.sharingif.cube.core.handler.bind.support.DataBinderFactory;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 /**
- * 包含MethodParameter、RequestInfo、DataBinderFactory、connect return
+ * 包含MethodParameter、RequestContext、DataBinderFactory、connect return
  * 2017年5月12日 上午11:22:30
  * @author Joly
  * @version v1.0
@@ -15,14 +15,14 @@ import com.sharingif.cube.core.request.RequestInfo;
 public class MethodParameterArgument<RI,CO> {
 	
 	private MethodParameter methodParameter;
-	private RequestInfo<RI> requestInfo;
+	private RequestContext<RI> requestContext;
 	private DataBinderFactory dataBinderFactory;
 	private CO connectReturnValue;
 	
-	public MethodParameterArgument(MethodParameter methodParameter, RequestInfo<RI> requestInfo, DataBinderFactory dataBinderFactory, CO connectReturnValue) {
+	public MethodParameterArgument(MethodParameter methodParameter, RequestContext<RI> requestContext, DataBinderFactory dataBinderFactory, CO connectReturnValue) {
 		super();
 		this.methodParameter = methodParameter;
-		this.requestInfo = requestInfo;
+		this.requestContext = requestContext;
 		this.dataBinderFactory = dataBinderFactory;
 		this.connectReturnValue = connectReturnValue;
 	}
@@ -30,8 +30,8 @@ public class MethodParameterArgument<RI,CO> {
 	public MethodParameter getMethodParameter() {
 		return methodParameter;
 	}
-	public RequestInfo<RI> getRequestInfo() {
-		return requestInfo;
+	public RequestContext<RI> getRequestContext() {
+		return requestContext;
 	}
 	public CO getConnectReturnValue() {
 		return connectReturnValue;

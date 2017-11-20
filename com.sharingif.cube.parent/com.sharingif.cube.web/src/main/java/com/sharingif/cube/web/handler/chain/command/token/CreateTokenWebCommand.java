@@ -2,7 +2,7 @@ package com.sharingif.cube.web.handler.chain.command.token;
 
 import com.sharingif.cube.communication.http.HttpRequest;
 import com.sharingif.cube.communication.http.HttpResponse;
-import com.sharingif.cube.communication.http.request.HttpRequestInfo;
+import com.sharingif.cube.communication.http.request.HttpRequestContext;
 import com.sharingif.cube.components.token.IToken;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
@@ -33,9 +33,9 @@ public class CreateTokenWebCommand extends AbstractHandlerMethodCommand {
 
 	@Override
 	public void execute(HandlerMethodContent content) throws CubeException {
-		HttpRequestInfo<HttpRequest,HttpResponse> httpRequestInfo = content.getRequestInfo();
+		HttpRequestContext<HttpRequest,HttpResponse> httpRequestContext = content.getRequestContext();
 
-		IToken token = webTokenManager.generateToken(httpRequestInfo.getRequest());
+		IToken token = webTokenManager.generateToken(httpRequestContext.getRequest());
 		
 		content.changeArgsValue(token);
 	}

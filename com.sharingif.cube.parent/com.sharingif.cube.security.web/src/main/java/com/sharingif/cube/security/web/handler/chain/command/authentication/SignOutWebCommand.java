@@ -3,7 +3,7 @@ package com.sharingif.cube.security.web.handler.chain.command.authentication;
 
 import com.sharingif.cube.communication.http.HttpRequest;
 import com.sharingif.cube.communication.http.HttpResponse;
-import com.sharingif.cube.communication.http.request.HttpRequestInfo;
+import com.sharingif.cube.communication.http.request.HttpRequestContext;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.core.handler.chain.command.AbstractHandlerMethodCommand;
@@ -33,9 +33,9 @@ public class SignOutWebCommand extends AbstractHandlerMethodCommand {
 
 	@Override
 	public void execute(HandlerMethodContent content) throws CubeException {
-		HttpRequestInfo<HttpRequest,HttpResponse> httpRequestInfo = content.getRequestInfo();
+		HttpRequestContext<HttpRequest,HttpResponse> httpRequestContext = content.getRequestContext();
 		
-		signOutHandler.handleUserLogout(httpRequestInfo.getRequest(), httpRequestInfo.getResponse());
+		signOutHandler.handleUserLogout(httpRequestContext.getRequest(), httpRequestContext.getResponse());
 	}
 	
 	

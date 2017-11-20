@@ -1,7 +1,7 @@
 package com.sharingif.cube.core.exception.handler;
 
 import com.sharingif.cube.core.exception.ICubeException;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import org.springframework.beans.factory.InitializingBean;
 
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import java.util.Map;
  * @version v1.0
  * @since v1.0
  */
-public class MultiCubeExceptionHandler<RI extends RequestInfo<?>, H extends Object> extends AbstractCubeExceptionHandler<RI,H> implements InitializingBean {
+public class MultiCubeExceptionHandler<RI extends RequestContext<?>, H extends Object> extends AbstractCubeExceptionHandler<RI,H> implements InitializingBean {
 	
 	private Map<String,AbstractCubeExceptionHandler<RI,H>> cacheExceptionHandlers = new HashMap<String,AbstractCubeExceptionHandler<RI,H>>(20);
 	
@@ -48,35 +48,35 @@ public class MultiCubeExceptionHandler<RI extends RequestInfo<?>, H extends Obje
 	}
 	
 	@Override
-	public void wirteLog(RI requestInfo, H handler, ICubeException cubeException) {
+	public void wirteLog(RI requestContext, H handler, ICubeException cubeException) {
 	}
 	
 	@Override
-	public ExceptionContent handlerException(RI requestInfo, H handler, ICubeException cubeException) {
+	public ExceptionContent handlerException(RI requestContext, H handler, ICubeException cubeException) {
 		return null;
 	}
 	
 	@Override
-	public ExceptionContent handler(RI requestInfo, H handler, Exception exception) {
+	public ExceptionContent handler(RI requestContext, H handler, Exception exception) {
 		try {
-			return handlerInternal(requestInfo, handler, exception);
+			return handlerInternal(requestContext, handler, exception);
 		} catch (Exception e) {
 			this.logger.error("execute cubeExceptionHandler error", e);
-			return cubeExceptionHandlers.get(cubeExceptionHandlers.size()-1).handler(requestInfo, handler, e);
+			return cubeExceptionHandlers.get(cubeExceptionHandlers.size()-1).handler(requestContext, handler, e);
 		}
 	}
 	
-	protected ExceptionContent handlerInternal(RI requestInfo, H handler, Exception exception) {
+	protected ExceptionContent handlerInternal(RI requestContext, H handler, Exception exception) {
 		String cacheKey = exception.getClass().getName();
 		AbstractCubeExceptionHandler<RI,H> cacheExceptionHandler = cacheExceptionHandlers.get(cacheKey);
 		
 		if(cacheExceptionHandler != null){
-			return cacheExceptionHandler.handler(requestInfo, handler, exception);
+			return cacheExceptionHandler.handler(requestContext, handler, exception);
 		}
 		
 		for(AbstractCubeExceptionHandler<RI,H> cubeExceptionHandler : cubeExceptionHandlers){
 			if(cubeExceptionHandler.supports(exception)) {
-				ExceptionContent result = cubeExceptionHandler.handler(requestInfo, handler, exception);
+				ExceptionContent result = cubeExceptionHandler.handler(requestContext, handler, exception);
 				cacheExceptionHandlers.put(cacheKey, cubeExceptionHandler);
 				return result;
 			}

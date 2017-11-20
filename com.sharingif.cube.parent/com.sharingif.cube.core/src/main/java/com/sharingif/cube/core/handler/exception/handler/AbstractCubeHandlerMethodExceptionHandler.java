@@ -5,7 +5,7 @@ import com.sharingif.cube.core.exception.handler.AbstractCubeExceptionHandler;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
 import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.handler.request.RequestLocalContextHolder;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import com.sharingif.cube.core.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ import java.util.Locale;
  * @version v1.0
  * @since v1.0
  */
-public abstract class AbstractCubeHandlerMethodExceptionHandler<RI extends RequestInfo<?>> extends AbstractCubeExceptionHandler<RI,HandlerMethod> {
+public abstract class AbstractCubeHandlerMethodExceptionHandler<RI extends RequestContext<?>> extends AbstractCubeExceptionHandler<RI,HandlerMethod> {
 	
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -48,7 +48,7 @@ public abstract class AbstractCubeHandlerMethodExceptionHandler<RI extends Reque
 		}
 	}
 	
-	public void wirteLogInternal(RI requestInfo, HandlerMethod handlerMethod, ICubeException cubeException, Locale locale, Long exTime) {
+	public void wirteLogInternal(RI requestContext, HandlerMethod handlerMethod, ICubeException cubeException, Locale locale, Long exTime) {
 		String loggerMessage = "transaction error===> thdId:{}, method:{}, trsId:{}, exTime:{}, message:{}, localizedMessage:{}";
 		
 		
@@ -56,8 +56,8 @@ public abstract class AbstractCubeHandlerMethodExceptionHandler<RI extends Reque
 			
 			this.logger.error(loggerMessage
 					,Thread.currentThread().getId()
-					,requestInfo.getMethod()
-					,requestInfo.getLookupPath()
+					,requestContext.getMethod()
+					,requestContext.getLookupPath()
 					,exTime
 					,cubeException.getMessage()
 					,cubeException.getLocalizedMessage()
@@ -67,8 +67,8 @@ public abstract class AbstractCubeHandlerMethodExceptionHandler<RI extends Reque
 		
 		this.logger.error(loggerMessage
 				,Thread.currentThread().getId()
-				,requestInfo.getMethod()
-				,requestInfo.getLookupPath()
+				,requestContext.getMethod()
+				,requestContext.getLookupPath()
 				,exTime
 				,cubeException.getMessage()
 				,cubeException.getLocalizedMessage()
@@ -77,32 +77,32 @@ public abstract class AbstractCubeHandlerMethodExceptionHandler<RI extends Reque
 	}
 	
 	@Override
-	public void wirteLog(RI requestInfo, HandlerMethod handlerMethod, ICubeException cubeException) {
+	public void wirteLog(RI requestContext, HandlerMethod handlerMethod, ICubeException cubeException) {
 		Long beginCurrentTime = RequestLocalContextHolder.getRequestDateTime();
 		if(beginCurrentTime == null) {
 			beginCurrentTime = Long.valueOf(0);
 		}
 		Long endCurrentTime = System.currentTimeMillis();
-		wirteLogInternal(requestInfo, handlerMethod, cubeException, requestInfo.getLocale(), (endCurrentTime-beginCurrentTime));
+		wirteLogInternal(requestContext, handlerMethod, cubeException, requestContext.getLocale(), (endCurrentTime-beginCurrentTime));
 		
 	}
 	
 	/**
-	 * @param requestInfo : 错误输入信息
+	 * @param requestContext : 错误输入信息
 	 * @param handlerMethod : 请求处理器
 	 * @param exception : 异常
 	 * @return O : 异常处理结果
 	 */
-	public ExceptionContent handler(RI requestInfo, HandlerMethod handlerMethod, Exception exception) {
+	public ExceptionContent handler(RI requestContext, HandlerMethod handlerMethod, Exception exception) {
 		
 		if(supports(exception)){
 			ICubeException cubeException = convertException(exception);
 			
-			resolverMessages(cubeException, requestInfo.getLocale());
+			resolverMessages(cubeException, requestContext.getLocale());
 			
-			wirteLog(requestInfo, handlerMethod, cubeException);
+			wirteLog(requestContext, handlerMethod, cubeException);
 
-			ExceptionContent result = handlerException(requestInfo, handlerMethod, cubeException);
+			ExceptionContent result = handlerException(requestContext, handlerMethod, cubeException);
 			result.setCubeException(cubeException);
 			
 			return result;

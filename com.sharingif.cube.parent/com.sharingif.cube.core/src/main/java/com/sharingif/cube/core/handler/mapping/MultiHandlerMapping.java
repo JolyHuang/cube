@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.exception.NoHandlerMappingFoundException;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 /**
  * HandlerMapping 集合
@@ -35,15 +35,15 @@ public class MultiHandlerMapping implements HandlerMapping<Object,Object> {
 
     @SuppressWarnings("unchecked")
 	@Override
-    public Object getHandler(RequestInfo<Object> requestInfo) throws CubeException {
+    public Object getHandler(RequestContext<Object> requestContext) throws CubeException {
         for (HandlerMapping<Object,Object> hm : getHandlerMappings()) {
-            Object handler = hm.getHandler(requestInfo);
+            Object handler = hm.getHandler(requestContext);
             if (handler != null) {
                 return handler;
             }
         }
 
-        logger.error("No mapping found for request with URI {}", requestInfo.getLookupPath());
+        logger.error("No mapping found for request with URI {}", requestContext.getLookupPath());
         throw new NoHandlerMappingFoundException();
     }
 

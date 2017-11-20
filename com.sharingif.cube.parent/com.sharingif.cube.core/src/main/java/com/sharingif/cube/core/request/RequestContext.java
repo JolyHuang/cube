@@ -9,7 +9,7 @@ import java.util.Locale;
  * @version v1.0
  * @since v1.0
  */
-public class RequestInfo<T> {
+public class RequestContext<T> {
 	
 	private String mediaType;
 	private String lookupPath;
@@ -36,7 +36,7 @@ public class RequestInfo<T> {
 		return request;
 	}
 	
-	public RequestInfo(String mediaType, String lookupPath, Locale locale, String method, T request) {
+	public RequestContext(String mediaType, String lookupPath, Locale locale, String method, T request) {
 		if(null != mediaType) {
 			mediaType = mediaType.toLowerCase();
 		}

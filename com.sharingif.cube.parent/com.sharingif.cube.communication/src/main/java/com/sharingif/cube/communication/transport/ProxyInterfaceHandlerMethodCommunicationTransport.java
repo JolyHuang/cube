@@ -5,7 +5,7 @@ import com.sharingif.cube.communication.exception.BusinessCommunicationException
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import com.sharingif.cube.core.transport.exception.MarshallerException;
 import com.sharingif.cube.core.transport.transform.MethodParameterArgument;
 import com.sharingif.cube.core.util.CubeExceptionUtil;
@@ -17,17 +17,17 @@ import com.sharingif.cube.core.util.CubeExceptionUtil;
  * @version v1.0
  * @since v1.0
  */
-public class ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> extends AbstractHandlerMethodCommunicationTransport<RequestInfo<Object[]>,MO,RequestInfo<MO>,CO,MethodParameterArgument<Object[],CO>,UO> {
+public class ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> extends AbstractHandlerMethodCommunicationTransport<RequestContext<Object[]>,MO,RequestContext<MO>,CO,MethodParameterArgument<Object[],CO>,UO> {
 
 	public ProxyInterfaceHandlerMethodCommunicationTransport(HandlerMethod handlerMethod) {
 		super(handlerMethod);
 	}
 	
 	@Override
-	public Object doTransport(RequestInfo<Object[]> requestInfo) throws CubeException {
+	public Object doTransport(RequestContext<Object[]> requestContext) throws CubeException {
 		
 		boolean handlerMethodChainIsNotEmpty = (null != getHandlerMethodChain());
-		HandlerMethodContent handlerMethodContent = new HandlerMethodContent(this, requestInfo.getRequest(), null, requestInfo.getLocale(), requestInfo);
+		HandlerMethodContent handlerMethodContent = new HandlerMethodContent(this, requestContext.getRequest(), null, requestContext.getLocale(), requestContext);
 		
 		if(handlerMethodChainIsNotEmpty) {
 			getHandlerMethodChain().before(handlerMethodContent);
@@ -35,7 +35,7 @@ public class ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> extends
 		
 		Object returnValue = null;
 		try {
-			returnValue = doTransportInternal(handlerMethodContent.getRequestInfo());
+			returnValue = doTransportInternal(handlerMethodContent.getRequestContext());
 		} catch (Exception exception) {
 			if(handlerMethodChainIsNotEmpty) {
 				try {
@@ -63,12 +63,12 @@ public class ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> extends
 		
 	}
 	
-	public Object doTransportInternal(RequestInfo<Object[]> requestInfo) throws CubeException {
-		MO marshallerData = marshaller(requestInfo);
+	public Object doTransportInternal(RequestContext<Object[]> requestContext) throws CubeException {
+		MO marshallerData = marshaller(requestContext);
 		
-		CO connectReceiveMessage = connect(requestInfo, marshallerData);
+		CO connectReceiveMessage = connect(requestContext, marshallerData);
 		
-		UO unmarshallerData = unmarshaller(connectReceiveMessage, requestInfo);
+		UO unmarshallerData = unmarshaller(connectReceiveMessage, requestContext);
 		
 		handleException(unmarshallerData);
 
@@ -80,20 +80,20 @@ public class ProxyInterfaceHandlerMethodCommunicationTransport<MO,CO,UO> extends
 		return unmarshallerData;
 	}
 	
-	protected MO marshaller(RequestInfo<Object[]> requestInfo) throws MarshallerException {
-		return getTransform().marshaller(requestInfo);
+	protected MO marshaller(RequestContext<Object[]> requestContext) throws MarshallerException {
+		return getTransform().marshaller(requestContext);
 	}
 	
-	protected CO connect(RequestInfo<Object[]> requestInfo, MO marshallerData) {
-		RequestInfo<MO> httpJsonContext = new RequestInfo<MO>(requestInfo.getMediaType(), requestInfo.getLookupPath(), requestInfo.getLocale(), requestInfo.getMethod(), marshallerData);
+	protected CO connect(RequestContext<Object[]> requestContext, MO marshallerData) {
+		RequestContext<MO> httpJsonContext = new RequestContext<MO>(requestContext.getMediaType(), requestContext.getLookupPath(), requestContext.getLocale(), requestContext.getMethod(), marshallerData);
 		
 		CO connectReturnValue = getConnection().connect(httpJsonContext);
 		
 		return connectReturnValue;
 	}
 	
-	protected UO unmarshaller(CO connectReceiveMessage, RequestInfo<Object[]> requestInfo) throws MarshallerException {
-		MethodParameterArgument<Object[],CO> methodParameterArgument = new MethodParameterArgument<Object[],CO>(getReturnType(), requestInfo, getDataBinderFactory(), connectReceiveMessage);
+	protected UO unmarshaller(CO connectReceiveMessage, RequestContext<Object[]> requestContext) throws MarshallerException {
+		MethodParameterArgument<Object[],CO> methodParameterArgument = new MethodParameterArgument<Object[],CO>(getReturnType(), requestContext, getDataBinderFactory(), connectReceiveMessage);
 		
 		return getTransform().unmarshaller(methodParameterArgument);
 	}

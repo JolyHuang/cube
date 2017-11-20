@@ -2,7 +2,7 @@ package com.sharingif.cube.core.handler.chain;
 
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
 import com.sharingif.cube.core.handler.HandlerMethod;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -15,20 +15,20 @@ public class HandlerMethodContent {
 			,Object[] args
 			,Object returnValue
 			,Locale locale
-			,RequestInfo<?> requestInfo
+			,RequestContext<?> requestContext
 	) {
 		this.handlerMethod = handlerMethod;
 		this.args = args;
 		this.returnValue = returnValue;
 		this.locale = locale;
-		this.requestInfo = requestInfo;
+		this.requestContext = requestContext;
 	}
 
 	private HandlerMethod handlerMethod;
 	private Object args[];
 	private Object returnValue;
 	private Locale locale;
-	private RequestInfo<?> requestInfo;
+	private RequestContext<?> requestContext;
 
 	private String viewName;
 
@@ -56,8 +56,8 @@ public class HandlerMethodContent {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends RequestInfo<?>> T getRequestInfo() {
-		return (T)requestInfo;
+	public <T extends RequestContext<?>> T getRequestContext() {
+		return (T)requestContext;
 	}
 	
 	@SuppressWarnings("unchecked")

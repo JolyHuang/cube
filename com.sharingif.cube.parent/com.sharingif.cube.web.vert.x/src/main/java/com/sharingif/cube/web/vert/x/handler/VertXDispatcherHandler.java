@@ -6,7 +6,7 @@ import com.sharingif.cube.web.vert.x.http.VertXHttpRequest;
 import com.sharingif.cube.web.vert.x.http.VertXHttpResponse;
 import com.sharingif.cube.web.vert.x.http.VertXHttpSession;
 import com.sharingif.cube.web.vert.x.request.ExtendedRoutingContext;
-import com.sharingif.cube.web.vert.x.request.VertXRequestInfo;
+import com.sharingif.cube.web.vert.x.request.VertXRequestContext;
 
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpServerRequest;
@@ -34,7 +34,7 @@ public class VertXDispatcherHandler extends AbstractDispatcherHandler<ExtendedRo
 		VertXHttpRequest vertXHttpRequest = new VertXHttpRequest(routingContext.request());
 		VertXHttpSession vertXHttpSession = new VertXHttpSession(request.getRoutingContext().session());
 		vertXHttpRequest.setHttpSession(vertXHttpSession);
-		VertXRequestInfo requestInfo = new VertXRequestInfo(
+		VertXRequestContext requestContext = new VertXRequestContext(
 				mediaType
 				,lookupPath
 				,null
@@ -49,7 +49,7 @@ public class VertXDispatcherHandler extends AbstractDispatcherHandler<ExtendedRo
 				,null
 				,null
 				,null
-				,requestInfo
+				,requestContext
 		);
 		
 		return webHandlerMethodContent;

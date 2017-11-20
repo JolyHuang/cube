@@ -2,7 +2,7 @@ package com.sharingif.cube.communication.http.apache.transport;
 
 import com.sharingif.cube.communication.exception.CommunicationException;
 import com.sharingif.cube.communication.http.HttpMethod;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 import com.sharingif.cube.core.util.StringUtils;
 import org.apache.http.HttpHost;
 import org.apache.http.ParseException;
@@ -30,7 +30,7 @@ import java.io.IOException;
  * @Version:      [v1.0] 
  *    
  */
-public class HttpJsonConnection extends AbstractHttpConnection<RequestInfo<String>, String> implements InitializingBean {
+public class HttpJsonConnection extends AbstractHttpConnection<RequestContext<String>, String> implements InitializingBean {
 
 	public HttpJsonConnection(String address, String contextPath) {
 		super(address,contextPath);
@@ -41,7 +41,7 @@ public class HttpJsonConnection extends AbstractHttpConnection<RequestInfo<Strin
 	}
 
 	@Override
-	public String connect(RequestInfo<String> httpContext) throws CommunicationException {
+	public String connect(RequestContext<String> httpContext) throws CommunicationException {
 		
 		HttpHost httpHost = getHttpHost();
 		String path = handlePath(httpContext);
@@ -90,7 +90,7 @@ public class HttpJsonConnection extends AbstractHttpConnection<RequestInfo<Strin
 		
 	}
 	
-	protected CloseableHttpResponse connect(HttpHost httpHost, String path, RequestInfo<String> httpContext) throws IOException {
+	protected CloseableHttpResponse connect(HttpHost httpHost, String path, RequestContext<String> httpContext) throws IOException {
 		
 		if(getDebug()) {
 			this.logger.info("send message:{}", httpContext.getRequest());

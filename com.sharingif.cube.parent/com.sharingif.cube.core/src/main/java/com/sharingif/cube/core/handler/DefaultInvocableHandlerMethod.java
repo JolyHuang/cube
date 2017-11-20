@@ -3,7 +3,7 @@ package com.sharingif.cube.core.handler;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.adapter.HandlerMethodReturnValueHandler;
 import com.sharingif.cube.core.handler.adapter.HandlerMethodReturnValueHandlerComposite;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 /**
  * 默认InvocableHandlerMethod
@@ -35,9 +35,9 @@ public class DefaultInvocableHandlerMethod extends InvocableHandlerMethod {
 	 * @param mavContainer the ModelAndViewContainer for this request
 	 * @param providedArgs "given" arguments matched by type (not resolved)
 	 */
-	public Object invokeAndHandle(RequestInfo<?> requestInfo) throws CubeException {
+	public Object invokeAndHandle(RequestContext<?> requestContext) throws CubeException {
 		
-		Object returnValue = invokeForRequest(requestInfo);
+		Object returnValue = invokeForRequest(requestContext);
 		
 		if(returnValue == null)
 			return null;
@@ -46,7 +46,7 @@ public class DefaultInvocableHandlerMethod extends InvocableHandlerMethod {
 			if(returnValueHandlers == null) {
 				return returnValue;
 			} else {
-				return this.returnValueHandlers.handleReturnValue(requestInfo, returnValue, getReturnValueType(returnValue), getDataBinderFactory());
+				return this.returnValueHandlers.handleReturnValue(requestContext, returnValue, getReturnValueType(returnValue), getDataBinderFactory());
 			}
 		} catch (CubeException ex) {
 			if (logger.isTraceEnabled()) {

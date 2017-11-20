@@ -2,7 +2,7 @@ package com.sharingif.cube.web.handler.chain.command.token;
 
 import com.sharingif.cube.communication.http.HttpRequest;
 import com.sharingif.cube.communication.http.HttpResponse;
-import com.sharingif.cube.communication.http.request.HttpRequestInfo;
+import com.sharingif.cube.communication.http.request.HttpRequestContext;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.exception.validation.TokenValidationCubeException;
 import com.sharingif.cube.core.exception.validation.ValidationCubeException;
@@ -39,9 +39,9 @@ public class VerifyCaptchTokenWebCommand extends AbstractHandlerMethodCommand {
 	@Override
 	public void execute(HandlerMethodContent content) throws CubeException {
 		try {
-			HttpRequestInfo<HttpRequest,HttpResponse> httpRequestInfo = content.getRequestInfo();
+			HttpRequestContext<HttpRequest,HttpResponse> httpRequestContext = content.getRequestContext();
 			
-			webTokenManager.verifyToken(httpRequestInfo.getRequest());
+			webTokenManager.verifyToken(httpRequestContext.getRequest());
 		} catch (TokenValidationCubeException e) {
 			throw new ValidationCubeException(e.getMessage());
 		}

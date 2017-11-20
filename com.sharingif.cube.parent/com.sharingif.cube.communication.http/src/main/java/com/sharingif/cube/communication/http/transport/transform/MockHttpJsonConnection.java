@@ -12,7 +12,7 @@ import com.sharingif.cube.communication.exception.CommunicationException;
 import com.sharingif.cube.communication.transport.Connection;
 import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.exception.CubeRuntimeException;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 /**
  * 模拟http json通讯
@@ -21,7 +21,7 @@ import com.sharingif.cube.core.request.RequestInfo;
  * @version v1.0
  * @since v1.0
  */
-public class MockHttpJsonConnection implements Connection<RequestInfo<String>, String> {
+public class MockHttpJsonConnection implements Connection<RequestContext<String>, String> {
 	
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
@@ -39,7 +39,7 @@ public class MockHttpJsonConnection implements Connection<RequestInfo<String>, S
 	}
 	
 	@Override
-	public String connect(RequestInfo<String> obj) throws CommunicationException {
+	public String connect(RequestContext<String> obj) throws CommunicationException {
 		this.logger.info("send message:{}", obj.getRequest());
 		String receiveMessage = properties.getProperty(obj.getLookupPath());
 		this.logger.info("receive message:{}", receiveMessage);

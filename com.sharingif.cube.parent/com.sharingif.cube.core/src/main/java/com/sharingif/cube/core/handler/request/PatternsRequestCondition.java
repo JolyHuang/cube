@@ -15,7 +15,7 @@ import org.springframework.util.PathMatcher;
 import org.springframework.util.StringUtils;
 
 import com.sharingif.cube.core.handler.AbstractRequestCondition;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 /**
  * A logical disjunction (' || ') request condition that matches a request
@@ -204,13 +204,13 @@ public final class PatternsRequestCondition extends AbstractRequestCondition<Pat
 	 * or {@code null} if no patterns match.
 	 */
 	@Override
-	public PatternsRequestCondition getMatchingCondition(RequestInfo<?> requestInfo) {
+	public PatternsRequestCondition getMatchingCondition(RequestContext<?> requestContext) {
 
 		if (this.patterns.isEmpty()) {
 			return this;
 		}
 
-		String lookupPath = requestInfo.getLookupPath();
+		String lookupPath = requestContext.getLookupPath();
 		List<String> matches = getMatchingPatterns(lookupPath);
 
 		return matches.isEmpty() ? null :
@@ -260,8 +260,8 @@ public final class PatternsRequestCondition extends AbstractRequestCondition<Pat
 	 * the best matches on top.
 	 */
 	@Override
-	public int compareTo(PatternsRequestCondition other, RequestInfo<?> requestInfo) {
-		String lookupPath = requestInfo.getLookupPath();
+	public int compareTo(PatternsRequestCondition other, RequestContext<?> requestContext) {
+		String lookupPath = requestContext.getLookupPath();
 		Comparator<String> patternComparator = this.pathMatcher.getPatternComparator(lookupPath);
 		Iterator<String> iterator = this.patterns.iterator();
 		Iterator<String> iteratorOther = other.patterns.iterator();

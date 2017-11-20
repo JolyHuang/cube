@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContextAware;
 
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.HandlerMethod;
-import com.sharingif.cube.core.request.RequestInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 /**
  * Abstract base class for {@link HandlerAdapter} implementations that support
@@ -36,11 +36,11 @@ public abstract class AbstractHandlerMethodAdapter implements HandlerAdapter<Obj
 	protected abstract boolean supportsInternal(HandlerMethod handlerMethod);
 	
 	@Override
-	public Object handle(RequestInfo<Object> request, HandlerMethod handlerMethod) throws CubeException {
+	public Object handle(RequestContext<Object> request, HandlerMethod handlerMethod) throws CubeException {
 		return handleInternal(request, handlerMethod);
 	}
 
-	protected abstract Object handleInternal(RequestInfo<?> request, HandlerMethod handlerMethod) throws CubeException;
+	protected abstract Object handleInternal(RequestContext<?> request, HandlerMethod handlerMethod) throws CubeException;
 	
 	private ApplicationContext applicationContext;
 	

@@ -6,7 +6,7 @@ import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.chain.AbstractHandlerMethodChain;
 import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.web.springmvc.http.SpringMVCHttpRequest;
-import com.sharingif.cube.web.springmvc.request.SpringMVCHttpRequestInfo;
+import com.sharingif.cube.web.springmvc.request.SpringMVCHttpRequestContext;
 
 /**
  * 交易成功后保存请求地址，当出现验证异常时回跳到此地址
@@ -26,8 +26,8 @@ public class ViewRefererChain extends AbstractHandlerMethodChain {
 
 	@Override
 	public void after(HandlerMethodContent content) throws CubeException {
-		SpringMVCHttpRequestInfo httpRequestInfo = content.getRequestInfo();
-		SpringMVCHttpRequest springMVCHttpRequest = httpRequestInfo.getRequest();
+		SpringMVCHttpRequestContext httpRequestContext = content.getRequestContext();
+		SpringMVCHttpRequest springMVCHttpRequest = httpRequestContext.getRequest();
 
 		springMVCHttpRequest.setAttribute(VIEW_REFERER_NAME, new UrlPathHelper().getLookupPathForRequest(springMVCHttpRequest.getHttpServletRequest()));
 	}
