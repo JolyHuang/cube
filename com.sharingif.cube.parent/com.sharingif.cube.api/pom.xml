@@ -3,7 +3,7 @@
     <parent>
         <artifactId>com.sharingif.cube.parent</artifactId>
         <groupId>com.sharingif.cube</groupId>
-        <version>3.0.1-RELEASE</version>
+        <version>4.0.0-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>com.sharingif.cube.api</artifactId>
