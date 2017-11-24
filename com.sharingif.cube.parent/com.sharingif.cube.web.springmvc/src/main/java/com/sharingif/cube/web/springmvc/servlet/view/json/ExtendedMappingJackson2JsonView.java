@@ -8,11 +8,7 @@ import com.sharingif.cube.core.exception.UnknownCubeException;
 import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
 import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.handler.bind.annotation.SettingConstants;
-import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.web.springmvc.handler.annotation.ExtendedServletInvocableHandlerMethod;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -43,10 +39,6 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 	private String dataName = JsonModel.DATA;
 
 	private MockMappingJackson2JsonView mockMappingJackson2JsonView;
-	@Autowired
-	private Environment env;
-
-
 
 	public ExtendedMappingJackson2JsonView(){
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -97,10 +89,9 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 	public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		HandlerMethod HandlerMethod = (HandlerMethod)request.getAttribute(ExtendedServletInvocableHandlerMethod.HANDLER_METHOD);
-		if((mockMappingJackson2JsonView != null) && (HandlerMethod != null) && (env != null)) {
-			String springProfilesActive = env.getProperty("spring.profiles.active");
+		if((mockMappingJackson2JsonView != null) && (HandlerMethod != null)) {
 			String useMock = HandlerMethod.getSettings().get(SettingConstants.USE_MOCK_VIEW);
-			if(SettingConstants.USE_MOCK_VIEW_YES.equals(useMock) && "TEST".equals(springProfilesActive)) {
+			if(SettingConstants.USE_MOCK_VIEW_YES.equals(useMock)) {
 				mockMappingJackson2JsonView.render(model, request, response);
 				return;
 			}
