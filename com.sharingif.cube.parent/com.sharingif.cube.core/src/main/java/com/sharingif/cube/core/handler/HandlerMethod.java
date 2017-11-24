@@ -132,7 +132,7 @@ public class HandlerMethod {
 	protected Map<String,String> initSettings(Method method) {
 		Settings settingsAnnotation = method.getAnnotation(Settings.class);
 		if(null == settingsAnnotation){
-			return null;
+			return new HashMap<String,String>();
 		}
 		Map<String,String> settings = new HashMap<String,String>(settingsAnnotation.settings().length);
 		for(Setting s : settingsAnnotation.settings()) {
