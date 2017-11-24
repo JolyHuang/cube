@@ -29,23 +29,26 @@ public class MockMappingJackson2JsonView extends MappingJackson2JsonView {
     private Properties properties;
     private UrlPathHelper urlPathHelper = new UrlPathHelper();
 
-    public MockMappingJackson2JsonView(String filePath) {
-        try {
-            InputStream in = CubeConfigure.class.getClassLoader().getResourceAsStream(filePath);
-            properties = new Properties();
-            properties.load(new BufferedReader(new InputStreamReader(in,CubeConfigure.DEFAULT_ENCODING)));
-        } catch (Exception e) {
-            logger.error("file path error, path:{}", filePath);
-            throw new CubeRuntimeException(e);
-        }
-    }
-
     @Override
     public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("application/json");
         String lookupPath = urlPathHelper.getLookupPathForRequest(request);
-        String value = (String) properties.get(lookupPath);
-        response.getOutputStream().write(value.getBytes(CubeConfigure.DEFAULT_ENCODING));
+        String path = "config/mock"+lookupPath+".json";
+
+        StringBuilder sb = new StringBuilder();
+        try {
+            InputStream in = CubeConfigure.class.getClassLoader().getResourceAsStream(path);
+            BufferedReader br = new BufferedReader(new InputStreamReader(in));
+            String line= null;
+            while ((line=br.readLine())!=null) {
+                sb.append(line);
+            }
+        } catch (Exception e) {
+            logger.error("file path error, path:{}", path);
+            throw new CubeRuntimeException(e);
+        }
+
+        response.getOutputStream().write(sb.toString().getBytes(CubeConfigure.DEFAULT_ENCODING));
     }
 
 

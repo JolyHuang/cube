@@ -13,6 +13,7 @@ import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.method.support.HandlerMethodArgumentResolverComposite;
 import org.springframework.web.method.support.ModelAndViewContainer;
@@ -36,6 +37,8 @@ import com.sharingif.cube.web.springmvc.request.SpringMVCHttpRequestContext;
  * @since v1.0
  */
 public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandlerMethod {
+
+	public static final String HANDLER_METHOD = "_HANDLER_METHOD";
 
 	private com.sharingif.cube.core.handler.HandlerMethod cubeHandlerMethod;
 
@@ -154,6 +157,8 @@ public class ExtendedServletInvocableHandlerMethod extends ServletInvocableHandl
 			logger.trace("Method [" + ClassUtils.getQualifiedMethodName(getMethod(), getBeanType()) +
 					"] returned [" + returnValue + "]");
 		}
+
+		request.setAttribute(HANDLER_METHOD, cubeHandlerMethod, RequestAttributes.SCOPE_REQUEST);
 		
 		if(handlerMethodChainIsNotEmpty) {
 			return handlerMethodContent.getReturnValue();

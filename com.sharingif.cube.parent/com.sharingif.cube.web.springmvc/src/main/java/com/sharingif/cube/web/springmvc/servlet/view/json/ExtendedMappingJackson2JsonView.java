@@ -6,6 +6,13 @@ import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.UnknownCubeException;
 import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
+import com.sharingif.cube.core.handler.HandlerMethod;
+import com.sharingif.cube.core.handler.bind.annotation.SettingConstants;
+import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
+import com.sharingif.cube.web.springmvc.handler.annotation.ExtendedServletInvocableHandlerMethod;
+import com.sun.org.apache.xpath.internal.operations.Bool;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -35,10 +42,16 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 	private String tranStatusName = JsonModel.TRAN_STATUS;
 	private String dataName = JsonModel.DATA;
 
+	private MockMappingJackson2JsonView mockMappingJackson2JsonView;
+	@Autowired
+	private Environment env;
+
+
 
 	public ExtendedMappingJackson2JsonView(){
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.setTimeZone(TimeZone.getTimeZone(CubeConfigure.DEFAULT_TIME_ZONE));
+		mockMappingJackson2JsonView = new MockMappingJackson2JsonView();
 		super.setObjectMapper(objectMapper);
 	}
 	
@@ -78,6 +91,22 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 	}
 	public void setDataName(String dataName) {
 		this.dataName = dataName;
+	}
+
+	@Override
+	public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+		HandlerMethod HandlerMethod = (HandlerMethod)request.getAttribute(ExtendedServletInvocableHandlerMethod.HANDLER_METHOD);
+		if((mockMappingJackson2JsonView != null) && (HandlerMethod != null) && (env != null)) {
+			String springProfilesActive = env.getProperty("spring.profiles.active");
+			String useMock = HandlerMethod.getSettings().get(SettingConstants.USE_MOCK_VIEW);
+			if(SettingConstants.USE_MOCK_VIEW_YES.equals(useMock) && "TEST".equals(springProfilesActive)) {
+				mockMappingJackson2JsonView.render(model, request, response);
+				return;
+			}
+		}
+
+		super.render(model, request, response);
 	}
 
 	@Override
