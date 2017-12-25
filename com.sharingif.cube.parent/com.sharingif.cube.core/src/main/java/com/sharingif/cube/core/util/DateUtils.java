@@ -1,5 +1,7 @@
 package com.sharingif.cube.core.util;
 
+import com.sharingif.cube.core.exception.CubeRuntimeException;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -58,9 +60,13 @@ public class DateUtils {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static Date getDate(String date,String fromFormat) throws ParseException{
+	public static Date getDate(String date,String fromFormat) {
 		SimpleDateFormat fromSimpleDateFormat = new SimpleDateFormat(fromFormat);
-		return fromSimpleDateFormat.parse(date);
+		try {
+			return fromSimpleDateFormat.parse(date);
+		} catch (ParseException e) {
+			throw new CubeRuntimeException("parse date exception", e);
+		}
 	}
 	
 	/**
@@ -71,7 +77,7 @@ public class DateUtils {
 	 * @return
 	 * @throws ParseException
 	 */
-	public static String getDate(String date,String fromFormat,String toFormat) throws ParseException{
+	public static String getDate(String date,String fromFormat,String toFormat){
 		Date fromDate=getDate(date, fromFormat);
 		return new SimpleDateFormat(toFormat).format(fromDate);
 	}
@@ -126,7 +132,7 @@ public class DateUtils {
 	 * @param endDate	： 结束日期
 	 * @return
 	 */
-	public static int intervalDay(Date startDate, Date endDate) throws ParseException {
+	public static int intervalDay(Date startDate, Date endDate) {
 		startDate = getDate(getDate(startDate,DATE_COMPACT_FORMAT),DATE_COMPACT_FORMAT);
 		endDate = getDate(getDate(endDate,DATE_COMPACT_FORMAT),DATE_COMPACT_FORMAT);
 		long intervalDay = (startDate.getTime() - endDate.getTime())/(24*60*60*1000L);
