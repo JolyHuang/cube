@@ -88,9 +88,9 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 	@Override
 	public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		HandlerMethod HandlerMethod = (HandlerMethod)request.getAttribute(ExtendedServletInvocableHandlerMethod.HANDLER_METHOD);
-		if((mockMappingJackson2JsonView != null) && (HandlerMethod != null)) {
-			String useMock = HandlerMethod.getSettings().get(SettingConstants.USE_MOCK_VIEW);
+		HandlerMethod handlerMethod = (HandlerMethod)request.getAttribute(ExtendedServletInvocableHandlerMethod.HANDLER_METHOD);
+		if((mockMappingJackson2JsonView != null) && (handlerMethod != null)) {
+			String useMock = handlerMethod.getSettings().get(SettingConstants.USE_MOCK_VIEW);
 			if(SettingConstants.USE_MOCK_VIEW_YES.equals(useMock)) {
 				mockMappingJackson2JsonView.render(model, request, response);
 				return;

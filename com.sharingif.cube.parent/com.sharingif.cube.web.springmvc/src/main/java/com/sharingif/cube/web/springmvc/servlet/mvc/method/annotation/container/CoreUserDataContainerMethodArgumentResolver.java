@@ -1,16 +1,13 @@
 package com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.container;
 
-import javax.servlet.http.HttpServletRequest;
-
+import com.sharingif.cube.core.user.CoreUserContextHolder;
+import com.sharingif.cube.core.user.ICoreUser;
+import com.sharingif.cube.web.user.CoreUserHttpSessionManage;
+import com.sharingif.cube.web.user.IWebUserManage;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.ModelAndViewContainer;
-
-import com.sharingif.cube.core.user.ICoreUser;
-import com.sharingif.cube.web.springmvc.http.SpringMVCHttpRequest;
-import com.sharingif.cube.web.user.CoreUserHttpSessionManage;
-import com.sharingif.cube.web.user.IWebUserManage;
 
 /**   
  *  
@@ -38,7 +35,7 @@ public class CoreUserDataContainerMethodArgumentResolver implements DataContaine
 
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-		return webUserManage.getUser(new SpringMVCHttpRequest(webRequest.getNativeRequest(HttpServletRequest.class)));
+		return CoreUserContextHolder.getContext();
 	}
 	
 	
