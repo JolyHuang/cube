@@ -1,6 +1,7 @@
 package com.sharingif.cube.components.json;
 
 
+import java.io.InputStream;
 
 /**
  *
@@ -23,12 +24,21 @@ public interface IJsonService {
 	String objectoJson(Object obj) ;
 
 	/**
-	 *
+	 * json字符串转对象
 	 * @param jsonString
 	 * @param cla
 	 * @param <T>
 	 * @return
 	 */
 	<T> T jsonToObject(String jsonString, Class<T> cla);
+
+	/**
+	 * json数据流转对象
+	 * @param jsonInputStream
+	 * @param cla
+	 * @param <T>
+	 * @return
+	 */
+	<T> T jsonToObject(InputStream jsonInputStream, Class<T> cla);
 
 }

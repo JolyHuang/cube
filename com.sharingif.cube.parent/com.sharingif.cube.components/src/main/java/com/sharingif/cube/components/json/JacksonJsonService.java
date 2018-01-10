@@ -5,6 +5,7 @@ import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.exception.CubeRuntimeException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.TimeZone;
 
 /**
@@ -44,6 +45,15 @@ public class JacksonJsonService implements IJsonService {
 	public <T> T jsonToObject(String jsonString, Class<T> cla) {
 		try {
 			return objectMapper.readValue(jsonString, cla);
+		} catch (IOException e) {
+			throw new CubeRuntimeException("convert json to object error", e);
+		}
+	}
+
+	@Override
+	public <T> T jsonToObject(InputStream jsonInputStream, Class<T> cla) {
+		try {
+			return objectMapper.readValue(jsonInputStream, cla);
 		} catch (IOException e) {
 			throw new CubeRuntimeException("convert json to object error", e);
 		}
