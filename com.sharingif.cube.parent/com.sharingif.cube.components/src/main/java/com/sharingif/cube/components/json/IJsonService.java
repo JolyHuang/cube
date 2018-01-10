@@ -22,4 +22,13 @@ public interface IJsonService {
 	 */
 	String objectoJson(Object obj) ;
 
+	/**
+	 *
+	 * @param jsonString
+	 * @param cla
+	 * @param <T>
+	 * @return
+	 */
+	<T> T jsonToObject(String jsonString, Class<T> cla);
+
 }

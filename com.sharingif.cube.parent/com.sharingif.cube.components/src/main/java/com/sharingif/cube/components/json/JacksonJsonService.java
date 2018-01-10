@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.exception.CubeRuntimeException;
 
+import java.io.IOException;
 import java.util.TimeZone;
 
 /**
@@ -26,13 +27,9 @@ public class JacksonJsonService implements IJsonService {
 		objectMapper.setTimeZone(TimeZone.getTimeZone(CubeConfigure.DEFAULT_TIME_ZONE));
 	}
 	
-	public ObjectMapper getObjectMapper() {
-		return objectMapper;
-	}
 	public void setObjectMapper(ObjectMapper objectMapper) {
 		this.objectMapper = objectMapper;
 	}
-
 
 	@Override
 	public String objectoJson(Object obj) {
@@ -42,5 +39,14 @@ public class JacksonJsonService implements IJsonService {
 			throw new CubeRuntimeException("convert object to json error", e);
 		}
 	}
-	
+
+	@Override
+	public <T> T jsonToObject(String jsonString, Class<T> cla) {
+		try {
+			return objectMapper.readValue(jsonString, cla);
+		} catch (IOException e) {
+			throw new CubeRuntimeException("convert json to object error", e);
+		}
+	}
+
 }
