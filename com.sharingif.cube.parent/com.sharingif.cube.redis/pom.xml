@@ -1,0 +1,73 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>com.sharingif.cube.parent</artifactId>
+        <groupId>com.sharingif.cube</groupId>
+        <version>4.0.0-RELEASE</version>
+    </parent>
+    <artifactId>com.sharingif.cube.redis</artifactId>
+    <name>com.sharingif.cube.redis</name>
+    <url>http://maven.apache.org</url>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>com.sharingif.cube.core</artifactId>
+            <version>${maven.project.com.sharingif.cube.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${maven.project.springframework.groupId}</groupId>
+            <artifactId>spring-oxm</artifactId>
+            <version>${maven.project.springframework.release.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${maven.project.springframework.groupId}</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${maven.project.springframework.release.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${maven.project.springframework.groupId}</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${maven.project.springframework.release.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+            <version>1.3.1.RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>${maven.project.springframework.groupId}</groupId>
+                    <artifactId>spring-tx</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>${maven.project.springframework.groupId}</groupId>
+                    <artifactId>spring-oxm</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>${maven.project.springframework.groupId}</groupId>
+                    <artifactId>spring-aop</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>${maven.project.springframework.groupId}</groupId>
+                    <artifactId>spring-context</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>${maven.project.springframework.groupId}</groupId>
+                    <artifactId>spring-context-support</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>biz.paluch.redis</groupId>
+            <artifactId>lettuce</artifactId>
+            <version>3.5.0.Final</version>
+        </dependency>
+    </dependencies>
+
+</project>
