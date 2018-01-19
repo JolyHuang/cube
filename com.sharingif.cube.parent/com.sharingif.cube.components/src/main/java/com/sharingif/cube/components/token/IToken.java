@@ -1,4 +1,7 @@
 package com.sharingif.cube.components.token;
+
+import java.io.Serializable;
+
 /**   
  *  
  * @Description:  [IToken]   
@@ -10,7 +13,7 @@ package com.sharingif.cube.components.token;
  * @Version:      [v1.0] 
  *    
  */
-public interface IToken {
+public interface IToken extends Serializable {
 	
 	/**
 	 * @return 生成时间

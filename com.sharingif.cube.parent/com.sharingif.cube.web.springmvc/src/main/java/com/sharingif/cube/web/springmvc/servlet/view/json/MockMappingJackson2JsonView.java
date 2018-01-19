@@ -13,7 +13,6 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * json 视图挡板
@@ -26,7 +25,6 @@ public class MockMappingJackson2JsonView extends MappingJackson2JsonView {
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private Properties properties;
     private UrlPathHelper urlPathHelper = new UrlPathHelper();
 
     @Override

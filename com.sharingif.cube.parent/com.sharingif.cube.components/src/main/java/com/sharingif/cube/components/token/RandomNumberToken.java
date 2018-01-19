@@ -15,8 +15,12 @@ import java.util.Random;
  * 
  */
 public class RandomNumberToken extends Token {
-	
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3954199560341188047L;
+	
 	private static final Random random = new SecureRandom();
 	
 	public RandomNumberToken(String uniqueId){

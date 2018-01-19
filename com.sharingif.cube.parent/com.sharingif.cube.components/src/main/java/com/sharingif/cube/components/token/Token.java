@@ -13,6 +13,8 @@ package com.sharingif.cube.components.token;
  */
 public class Token implements IToken {
 	
+	private static final long serialVersionUID = -2101517252789755432L;
+	
 	private long createDate;										// 生成时间
 	private String uniqueId;										// token唯一id
 	private boolean unavailable;									// 已失效
