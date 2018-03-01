@@ -35,9 +35,12 @@ public class CoreUserHttpSessionManageWebCommand extends AbstractHandlerMethodCo
 
 	@Override
 	public void execute(HandlerMethodContent content) throws CubeException {
+
+		ICoreUser user = (ICoreUser)content.getReturnValue();
+
 		HttpRequestContext<HttpRequest,HttpResponse> httpRequestContext = content.getRequestContext();
 		
-		webUserManage.persistenceUser(httpRequestContext.getRequest(), content.getObject(ICoreUser.class));
+		webUserManage.persistenceUser(httpRequestContext.getRequest(), user);
 	}
 
 }
