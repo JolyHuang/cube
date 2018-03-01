@@ -1,28 +1,26 @@
 package com.sharingif.cube.security.web.spring.authentication;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-import java.util.TreeMap;
-
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.web.context.HttpRequestResponseHolder;
-import org.springframework.security.web.context.SecurityContextRepository;
-
 import com.sharingif.cube.communication.http.HttpRequest;
 import com.sharingif.cube.communication.http.HttpResponse;
 import com.sharingif.cube.components.password.IPassword;
 import com.sharingif.cube.core.user.ICoreUser;
 import com.sharingif.cube.security.authentication.authority.IAuthorityRepertory;
 import com.sharingif.cube.security.web.authentication.ISecurityContextPersistenceHandler;
-import com.sharingif.cube.web.springmvc.http.SpringMVCHttpResponse;
 import com.sharingif.cube.web.springmvc.http.SpringMVCHttpRequest;
+import com.sharingif.cube.web.springmvc.http.SpringMVCHttpResponse;
 import com.sharingif.cube.web.user.IWebUserManage;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.web.context.HttpRequestResponseHolder;
+import org.springframework.security.web.context.SecurityContextRepository;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.TreeMap;
 
 
 /**   
@@ -40,8 +38,7 @@ public class StringTreeMapAuthoritySecurityContextPersistenceHandlerImpl impleme
 	
 	private SecurityContextRepository securityContextRepository;
 	private IWebUserManage webUserManage;
-	private SessionRegistry sessionRegistry;
-	
+
 	public SecurityContextRepository getSecurityContextRepository() {
 		return securityContextRepository;
 	}
@@ -53,12 +50,6 @@ public class StringTreeMapAuthoritySecurityContextPersistenceHandlerImpl impleme
 	}
 	public void setWebUserManage(IWebUserManage webUserManage) {
 		this.webUserManage = webUserManage;
-	}
-	public SessionRegistry getSessionRegistry() {
-		return sessionRegistry;
-	}
-	public void setSessionRegistry(SessionRegistry sessionRegistry) {
-		this.sessionRegistry = sessionRegistry;
 	}
 
 	@Override
@@ -74,8 +65,7 @@ public class StringTreeMapAuthoritySecurityContextPersistenceHandlerImpl impleme
         securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(coreUser, ((IPassword)coreUser).getPassword(), getAuthorities(coreUser)));
         
         securityContextRepository.saveContext(securityContext, holder.getRequest(), holder.getResponse());
-        sessionRegistry.registerNewSession(request.getSession(false).getId(), coreUser);
-        
+
 	}
 	
 	@SuppressWarnings("unchecked")

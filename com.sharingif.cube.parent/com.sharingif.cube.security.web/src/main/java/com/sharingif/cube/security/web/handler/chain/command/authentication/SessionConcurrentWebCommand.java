@@ -36,8 +36,9 @@ public class SessionConcurrentWebCommand extends AbstractHandlerMethodCommand {
 	@Override
 	public void execute(HandlerMethodContent content) throws CubeException {
 		HttpRequestContext<HttpRequest,HttpResponse> httpRequestContext = content.getRequestContext();
-		
-		sessionConcurrentHandler.handleSessionConcurrent(content.findObject(ICoreUser.class), httpRequestContext.getRequest(), httpRequestContext.getResponse());
+
+		ICoreUser coreUser = (ICoreUser)content.getReturnValue();
+		sessionConcurrentHandler.handleSessionConcurrent(coreUser, httpRequestContext.getRequest(), httpRequestContext.getResponse());
 	}
 
 }

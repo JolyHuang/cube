@@ -33,7 +33,7 @@ public class CoreUserUniqueIdCommand extends AbstractHandlerMethodCommand {
 
 	@Override
 	public void execute(HandlerMethodContent content) throws CubeException {
-		ICoreUser coreUser = content.getObject(ICoreUser.class);
+		ICoreUser coreUser = (ICoreUser)content.getReturnValue();
 		coreUserUniqueIdHandler.handleCoreUserUniqueId(coreUser);
 	}
 
