@@ -89,13 +89,17 @@ public class SpringMVCHttpRequest implements HttpRequest {
 
 	@Override
 	public HttpSession getSession(boolean create) {
-		if(httpSession == null) {
+
+		if(create || httpSession == null) {
 			javax.servlet.http.HttpSession httpServletSession = getHttpServletRequest().getSession(create);
 			if(httpServletSession == null) {
 				return null;
 			}
 			httpSession = new SpringMVCHttpSession(httpServletSession);
+		} else {
+			return httpSession;
 		}
+
 		return httpSession;
 	}
 
