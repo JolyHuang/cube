@@ -64,7 +64,7 @@ public class AESECBEncryptorTest {
 	@Test
 	public void test() throws UnsupportedEncodingException {
 		Base64Coder base64Coder = new Base64Coder();
-		byte[] keysByte = base64Coder.decode("5+5u1xAgI9VnoO5R/8rU7oirbiudRggkL2e8bPgu1g0=");
+		byte[] keysByte = base64Coder.decode("yep8tDO2PY3H1foJPRczDw==");
 		AESECBEncryptor encryptor = new AESECBEncryptor(keysByte, base64Coder);
 		System.out.println(encryptor.encrypt("323hdre@1!@#EWH"));
 		System.out.println(encryptor.decrypt("QlroHFybYnzi0gz1zOPY0fl4tduFyfcV7P5fJMl8FOU="));
