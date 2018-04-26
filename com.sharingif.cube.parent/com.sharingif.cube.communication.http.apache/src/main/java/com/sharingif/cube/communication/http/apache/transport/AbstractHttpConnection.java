@@ -1,11 +1,17 @@
 package com.sharingif.cube.communication.http.apache.transport;
 
+import com.sharingif.cube.communication.exception.CommunicationException;
+import com.sharingif.cube.communication.http.HttpMethod;
 import com.sharingif.cube.communication.transport.Connection;
 import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.request.RequestContext;
 import com.sharingif.cube.core.util.StringUtils;
 import org.apache.http.*;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.config.*;
 import org.apache.http.conn.ManagedHttpClientConnection;
@@ -13,6 +19,8 @@ import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.DefaultHttpResponseFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -30,10 +38,13 @@ import org.apache.http.message.BasicLineParser;
 import org.apache.http.message.LineParser;
 import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.CharArrayBuffer;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 
 import javax.net.ssl.SSLContext;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.CodingErrorAction;
 import java.util.Map;
@@ -45,7 +56,7 @@ import java.util.Map;
  * @version v1.0
  * @since v1.0
  */
-public abstract class AbstractHttpConnection<I,O> implements Connection<I,O> {
+public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, InitializingBean {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -54,6 +65,7 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O> {
     private String address;
     private String contextPath;
     private boolean useHttps;
+    private ContentType contentType;
 
     private int connectionRequestTimeout = 1000;
     private int connectTimeout = 5000;
@@ -103,6 +115,12 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O> {
     }
     public void setUseHttps(boolean useHttps) {
         this.useHttps = useHttps;
+    }
+    public ContentType getContentType() {
+        return contentType;
+    }
+    public void setContentType(ContentType contentType) {
+        this.contentType = contentType;
     }
 
     public int getConnectionRequestTimeout() {
@@ -333,6 +351,84 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O> {
                 .setConnectionManager(connManager)
                 .setDefaultRequestConfig(requestConfig)
                 .build();
+    }
+
+    public String connect(RequestContext<String> httpContext) throws CommunicationException {
+
+        HttpHost httpHost = getHttpHost();
+        String path = handlePath(httpContext);
+
+
+        CloseableHttpResponse response = null;
+        try {
+            response = connect(httpHost, path, httpContext);
+        } catch (ClientProtocolException e) {
+            throw new CommunicationException("client protocol exception", e);
+        } catch (IOException e) {
+            throw new CommunicationException("client io exception", e);
+        }
+
+        int statusCode = response.getStatusLine().getStatusCode();
+        if(statusCode != 200) {
+            connectErrorLog(httpContext, httpHost, path, statusCode);
+            throw new CommunicationException("client protocol exception");
+        }
+
+        try {
+            String receiveMessage = EntityUtils.toString(response.getEntity(), getEncoding());
+
+            if(getDebug()) {
+                this.logger.info("receive message:{}", receiveMessage);
+            }
+
+            if(StringUtils.isEmpty(receiveMessage) || "".equals(receiveMessage.trim())) {
+                throw new CommunicationException("The receive message is empty");
+            }
+
+            return receiveMessage;
+        } catch (ParseException e) {
+            throw new CommunicationException("EntityUtils parse exception", e);
+        } catch (IOException e) {
+            throw new CommunicationException("EntityUtils io exception", e);
+        } finally {
+            if(null != response) {
+                try {
+                    response.close();
+                } catch (IOException e) {
+                    throw new CommunicationException("close reponse exception");
+                }
+            }
+        }
+
+    }
+
+    protected CloseableHttpResponse connect(HttpHost httpHost, String path, RequestContext<String> httpContext) throws IOException {
+
+        if(getDebug()) {
+            this.logger.info("send message:{}", httpContext.getRequest());
+        }
+
+        if(httpContext.getMethod().equals(HttpMethod.GET.name())) {
+            HttpGet httpGet = new HttpGet(getUrl(httpHost, path));
+            addHeader(httpGet);
+            return getHttpclient().execute(httpGet);
+        }
+        if(httpContext.getMethod().equals(HttpMethod.POST.name())) {
+            HttpPost httpPost = new HttpPost(path);
+            addHeader(httpPost);
+            if(!StringUtils.isEmpty(httpContext.getRequest())) {
+                httpPost.setEntity(new StringEntity(httpContext.getRequest(), getContentType()));
+            }
+            return getHttpclient().execute(httpHost, httpPost);
+        }
+
+        this.logger.error("method type error, method value:{}", httpContext.getMethod());
+        throw new CommunicationException("method type error");
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        init();
     }
 
 }

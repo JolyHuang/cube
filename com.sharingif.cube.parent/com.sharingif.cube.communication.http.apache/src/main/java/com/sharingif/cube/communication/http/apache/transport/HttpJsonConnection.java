@@ -34,84 +34,12 @@ public class HttpJsonConnection extends AbstractHttpConnection<RequestContext<St
 
 	public HttpJsonConnection(String address, String contextPath) {
 		super(address,contextPath);
+		setContentType(ContentType.APPLICATION_JSON);
 	}
 
 	public HttpJsonConnection(String host, int port, String contextPath) {
 		super(host,port,contextPath);
-	}
-
-	@Override
-	public String connect(RequestContext<String> httpContext) throws CommunicationException {
-		
-		HttpHost httpHost = getHttpHost();
-		String path = handlePath(httpContext);
-
-		
-		CloseableHttpResponse response = null;
-		try {
-			response = connect(httpHost, path, httpContext);
-		} catch (ClientProtocolException e) {
-			throw new CommunicationException("client protocol exception", e);
-		} catch (IOException e) {
-			throw new CommunicationException("client io exception", e);
-		}
-		
-		int statusCode = response.getStatusLine().getStatusCode();
-		if(statusCode != 200) {
-			connectErrorLog(httpContext, httpHost, path, statusCode);
-			throw new CommunicationException("client protocol exception");
-		}
-		
-		try {
-			String receiveMessage = EntityUtils.toString(response.getEntity(), getEncoding());
-			
-			if(getDebug()) {
-				this.logger.info("receive message:{}", receiveMessage);
-			}
-			
-			if(StringUtils.isEmpty(receiveMessage) || "".equals(receiveMessage.trim())) {
-				throw new CommunicationException("The receive message is empty");
-			}
-			
-			return receiveMessage;
-		} catch (ParseException e) {
-			throw new CommunicationException("EntityUtils parse exception", e);
-		} catch (IOException e) {
-			throw new CommunicationException("EntityUtils io exception", e);
-		} finally {
-			if(null != response) {
-				try {
-					response.close();
-				} catch (IOException e) {
-					throw new CommunicationException("close reponse exception");
-				}
-			}
-		}
-		
-	}
-	
-	protected CloseableHttpResponse connect(HttpHost httpHost, String path, RequestContext<String> httpContext) throws IOException {
-		
-		if(getDebug()) {
-			this.logger.info("send message:{}", httpContext.getRequest());
-		}
-		
-		if(httpContext.getMethod().equals(HttpMethod.GET.name())) {
-			HttpGet httpGet = new HttpGet(getUrl(httpHost, path));
-			addHeader(httpGet);
-			return getHttpclient().execute(httpGet);
-		}
-		if(httpContext.getMethod().equals(HttpMethod.POST.name())) {
-			HttpPost httpPost = new HttpPost(path);
-			addHeader(httpPost);
-			if(!StringUtils.isEmpty(httpContext.getRequest())) {
-				httpPost.setEntity(new StringEntity(httpContext.getRequest(), ContentType.APPLICATION_JSON));
-			}
-			return getHttpclient().execute(httpHost, httpPost);
-		}
-		
-		this.logger.error("method type error, method value:{}", httpContext.getMethod());
-		throw new CommunicationException("method type error");
+		setContentType(ContentType.APPLICATION_JSON);
 	}
 
 	@Override
@@ -120,9 +48,4 @@ public class HttpJsonConnection extends AbstractHttpConnection<RequestContext<St
 		super.addHeader(httpRequest);
 	}
 
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		init();
-	}
-	
 }
