@@ -4,6 +4,7 @@ import com.sharingif.cube.communication.exception.CommunicationException;
 import com.sharingif.cube.communication.http.HttpMethod;
 import com.sharingif.cube.communication.transport.Connection;
 import com.sharingif.cube.core.config.CubeConfigure;
+import com.sharingif.cube.core.exception.CubeRuntimeException;
 import com.sharingif.cube.core.request.RequestContext;
 import com.sharingif.cube.core.util.StringUtils;
 import org.apache.http.*;
@@ -44,9 +45,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
 import javax.net.ssl.SSLContext;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.CodingErrorAction;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
 import java.util.Map;
 
 /**
@@ -72,6 +78,10 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
     private int soTimeout = 5000;
     private int maxTotal = 200;
     private int defaultMaxPerRoute = 200;
+
+    private byte[] cert;
+    private String certPassword;
+    private SSLContext sslcontext;
 
     private CloseableHttpClient httpclient;
 
@@ -155,6 +165,25 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
     }
     public CloseableHttpClient getHttpclient() {
         return httpclient;
+    }
+
+    public byte[] getCert() {
+        return cert;
+    }
+    public void setCert(byte[] cert) {
+        this.cert = cert;
+    }
+    public String getCertPassword() {
+        return certPassword;
+    }
+    public void setCertPassword(String certPassword) {
+        this.certPassword = certPassword;
+    }
+    public SSLContext getSslcontext() {
+        return sslcontext;
+    }
+    public void setSslcontext(SSLContext sslcontext) {
+        this.sslcontext = sslcontext;
     }
 
     public boolean getDebug() {
@@ -304,7 +333,21 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
 
         // SSL context for secure connections can be created either based on
         // system or application specific properties.
-        SSLContext sslcontext = SSLContexts.createSystemDefault();
+        if(getSslcontext() == null) {
+            try {
+                if(cert != null) {
+                    KeyStore keyStore = KeyStore.getInstance("PKCS12");
+                    InputStream inputStream = new ByteArrayInputStream(cert);
+                    keyStore.load(inputStream, certPassword.toCharArray());
+                    sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore, certPassword.toCharArray()).build();
+                } else {
+                    sslcontext = SSLContexts.createSystemDefault();
+                }
+            } catch (Exception e) {
+                logger.error("load cert error", e);
+                throw new CubeRuntimeException("load cert error", e);
+            }
+        }
 
         // Create a registry of custom connection socket factories for supported
         // protocol schemes.

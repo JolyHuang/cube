@@ -12,7 +12,14 @@ package com.sharingif.cube.security.key;
  *
  */
 public interface ISecretKeyRepertory {
-	
+
+	/**
+	 * 添加密钥
+	 * @param code : 密钥代码
+	 * @param secretKeyPath : 密钥
+	 */
+	void addSecretKey(String code, String secretKeyPath);
+
 	/**
 	 * 添加密钥
 	 * @param code : 密钥代码

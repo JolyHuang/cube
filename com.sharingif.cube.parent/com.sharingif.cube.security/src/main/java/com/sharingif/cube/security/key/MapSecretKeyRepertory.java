@@ -1,5 +1,10 @@
 package com.sharingif.cube.security.key;
 
+import com.sharingif.cube.core.exception.CubeRuntimeException;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +25,21 @@ public class MapSecretKeyRepertory implements ISecretKeyRepertory{
 	
 	public void setSecretKeyRepertory(Map<String, Object> secretKeyRepertory) {
 		this.secretKeyRepertory = secretKeyRepertory;
+	}
+
+	@Override
+	public void addSecretKey(String code, String secretKeyPath) {
+		byte[] secretKey;
+		try {
+			File file = new File(secretKeyPath);
+			FileInputStream fileInputStream = new FileInputStream(file);
+			int length = (int) file.length();
+			secretKey = new byte[length];
+			fileInputStream.read(secretKey);
+		} catch (Exception e) {
+			throw new CubeRuntimeException("file not found", e);
+		}
+		secretKeyRepertory.put(code, secretKey);
 	}
 
 	@Override
