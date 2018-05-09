@@ -1,6 +1,7 @@
 package com.sharingif.cube.communication.http.apache.transport;
 
 import com.sharingif.cube.core.request.RequestContext;
+import org.apache.http.Consts;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.protocol.HTTP;
@@ -17,17 +18,17 @@ public class HttpXMLConnection extends AbstractHttpConnection<RequestContext<Str
 
     public HttpXMLConnection(String address, String contextPath) {
         super(address,contextPath);
-        setContentType(ContentType.APPLICATION_XML);
+        setContentType(ContentType.create("application/xml", Consts.UTF_8));
     }
 
     public HttpXMLConnection(String host, int port, String contextPath) {
         super(host,port,contextPath);
-        setContentType(ContentType.APPLICATION_XML);
+        setContentType(ContentType.create("application/xml", Consts.UTF_8));
     }
 
     @Override
     protected void addHeader(HttpRequestBase httpRequest) {
-        httpRequest.addHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_XML.toString());
+        httpRequest.addHeader(HTTP.CONTENT_TYPE, getContentType().toString());
         super.addHeader(httpRequest);
     }
 

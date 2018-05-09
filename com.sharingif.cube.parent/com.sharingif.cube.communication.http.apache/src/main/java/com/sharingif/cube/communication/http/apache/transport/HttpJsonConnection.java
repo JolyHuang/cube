@@ -44,7 +44,7 @@ public class HttpJsonConnection extends AbstractHttpConnection<RequestContext<St
 
 	@Override
 	protected void addHeader(HttpRequestBase httpRequest) {
-		httpRequest.addHeader(HTTP.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
+		httpRequest.addHeader(HTTP.CONTENT_TYPE, getContentType().toString());
 		super.addHeader(httpRequest);
 	}
 
