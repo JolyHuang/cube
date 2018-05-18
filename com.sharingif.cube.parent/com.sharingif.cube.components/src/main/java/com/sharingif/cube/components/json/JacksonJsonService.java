@@ -61,18 +61,18 @@ public class JacksonJsonService implements IJsonService {
 	}
 
 	@Override
-	public <T> T jsonToObject(String jsonString, JavaType javaType) {
+	public <T> T jsonToObject(String jsonString, Class<T> collectionClass, Class<T>... elementClasses) {
 		try {
-			return objectMapper.readValue(jsonString, javaType);
+			return objectMapper.readValue(jsonString, objectMapper.getTypeFactory().constructParametricType(collectionClass, elementClasses));
 		} catch (IOException e) {
 			throw new CubeRuntimeException("convert json to object error", e);
 		}
 	}
 
 	@Override
-	public <T> T jsonToObject(InputStream jsonInputStream, JavaType javaType) {
+	public <T> T jsonToObject(InputStream jsonInputStream, Class<T> collectionClass, Class<T>... elementClasses) {
 		try {
-			return objectMapper.readValue(jsonInputStream, javaType);
+			return objectMapper.readValue(jsonInputStream, objectMapper.getTypeFactory().constructParametricType(collectionClass, elementClasses));
 		} catch (IOException e) {
 			throw new CubeRuntimeException("convert json to object error", e);
 		}

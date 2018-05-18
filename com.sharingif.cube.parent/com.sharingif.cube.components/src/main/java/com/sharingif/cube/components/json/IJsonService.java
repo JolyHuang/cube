@@ -46,19 +46,21 @@ public interface IJsonService {
 	/**
 	 * json字符串转对象
 	 * @param jsonString
-	 * @param javaType
+	 * @param collectionClass
+	 * @param elementClasses
 	 * @param <T>
 	 * @return
 	 */
-	<T> T jsonToObject(String jsonString, JavaType javaType);
+	<T> T jsonToObject(String jsonString, Class<T> collectionClass, Class<T>... elementClasses);
 
 	/**
 	 * json数据流转对象
 	 * @param jsonInputStream
-	 * @param javaType
+	 * @param collectionClass
+	 * @param elementClasses
 	 * @param <T>
 	 * @return
 	 */
-	<T> T jsonToObject(InputStream jsonInputStream, JavaType javaType);
+	<T> T jsonToObject(InputStream jsonInputStream, Class<T> collectionClass, Class<T>... elementClasses);
 
 }
