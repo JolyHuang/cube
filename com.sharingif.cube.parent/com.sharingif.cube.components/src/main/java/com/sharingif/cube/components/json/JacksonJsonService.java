@@ -1,5 +1,6 @@
 package com.sharingif.cube.components.json;
 
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.exception.CubeRuntimeException;
@@ -54,6 +55,24 @@ public class JacksonJsonService implements IJsonService {
 	public <T> T jsonToObject(InputStream jsonInputStream, Class<T> cla) {
 		try {
 			return objectMapper.readValue(jsonInputStream, cla);
+		} catch (IOException e) {
+			throw new CubeRuntimeException("convert json to object error", e);
+		}
+	}
+
+	@Override
+	public <T> T jsonToObject(String jsonString, JavaType javaType) {
+		try {
+			return objectMapper.readValue(jsonString, javaType);
+		} catch (IOException e) {
+			throw new CubeRuntimeException("convert json to object error", e);
+		}
+	}
+
+	@Override
+	public <T> T jsonToObject(InputStream jsonInputStream, JavaType javaType) {
+		try {
+			return objectMapper.readValue(jsonInputStream, javaType);
 		} catch (IOException e) {
 			throw new CubeRuntimeException("convert json to object error", e);
 		}

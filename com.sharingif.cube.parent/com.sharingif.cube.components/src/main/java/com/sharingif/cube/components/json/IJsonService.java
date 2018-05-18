@@ -1,6 +1,8 @@
 package com.sharingif.cube.components.json;
 
 
+import com.fasterxml.jackson.databind.JavaType;
+
 import java.io.InputStream;
 
 /**
@@ -40,5 +42,23 @@ public interface IJsonService {
 	 * @return
 	 */
 	<T> T jsonToObject(InputStream jsonInputStream, Class<T> cla);
+
+	/**
+	 * json字符串转对象
+	 * @param jsonString
+	 * @param javaType
+	 * @param <T>
+	 * @return
+	 */
+	<T> T jsonToObject(String jsonString, JavaType javaType);
+
+	/**
+	 * json数据流转对象
+	 * @param jsonInputStream
+	 * @param javaType
+	 * @param <T>
+	 * @return
+	 */
+	<T> T jsonToObject(InputStream jsonInputStream, JavaType javaType);
 
 }
