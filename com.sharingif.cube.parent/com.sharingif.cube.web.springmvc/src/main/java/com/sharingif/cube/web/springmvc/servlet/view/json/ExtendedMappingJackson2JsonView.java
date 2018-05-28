@@ -15,10 +15,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
 /**   
  *  
@@ -111,41 +108,43 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 		boolean tranStatusFlag = true;
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		Map<String, Object> _data = new HashMap<String, Object>();
-		for (Map.Entry<String, Object> entry : model.entrySet()) {
-			String key = entry.getKey();
-			Object value = entry.getValue();
-			
-			if(value instanceof Exception){
-				tranStatusFlag=false;
-				
-				if (!(value instanceof ICubeException)) {
-					value = new UnknownCubeException((Exception)value);
-				}
+		if(model.size() ==1 && model instanceof LinkedHashMap){
+			resultMap.put(getDataName(), model);
+		} else {
+			for (Map.Entry<String, Object> entry : model.entrySet()) {
+				String key = entry.getKey();
+				Object value = entry.getValue();
 
-				ICubeException exception = (ICubeException)value;
+				if(value instanceof Exception){
+					tranStatusFlag=false;
 
-				String message = exception.getMessage();
+					if (!(value instanceof ICubeException)) {
+						value = new UnknownCubeException((Exception)value);
+					}
 
-				resultMap.put(getExceptionMessageName(), message);
+					ICubeException exception = (ICubeException)value;
 
-				if(value instanceof BindValidationCubeException) {
-					List<FieldError> localeFieldErrors = ((BindValidationCubeException)exception).getLocaleFieldErrors();
+					String message = exception.getMessage();
 
-					resultMap.put(getFieldErrorsName(), localeFieldErrors);
-				}
-				resultMap.put(getExceptionLocalizedMessageName(), exception.getLocalizedMessage());
-			} else {
-				
-				if(!(value instanceof BindingResult)) {
-					_data.put(key, value);
+					resultMap.put(getExceptionMessageName(), message);
+
+					if(value instanceof BindValidationCubeException) {
+						List<FieldError> localeFieldErrors = ((BindValidationCubeException)exception).getLocaleFieldErrors();
+
+						resultMap.put(getFieldErrorsName(), localeFieldErrors);
+					}
+					resultMap.put(getExceptionLocalizedMessageName(), exception.getLocalizedMessage());
+				} else {
+
+					if(!(value instanceof BindingResult)) {
+						resultMap.put(getDataName(), value);
+					}
 				}
 			}
 		}
-		
+
 		resultMap.put(getTranStatusName(), tranStatusFlag);
-		resultMap.put(getDataName(), _data);
-		
+
 		return resultMap;
 	}
 	
