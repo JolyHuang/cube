@@ -108,11 +108,15 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 		boolean tranStatusFlag = true;
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		if(model.size() ==1 && model instanceof LinkedHashMap){
-			resultMap.put(getDataName(), model);
+		if((model.size() ==1) && (model instanceof LinkedHashMap)){
+			for (Map.Entry<String, Object> entry : model.entrySet()) {
+				Object value = entry.getValue();
+				if(!(value instanceof BindValidationCubeException)) {
+					resultMap.put(getDataName(), model);
+				}
+			}
 		} else {
 			for (Map.Entry<String, Object> entry : model.entrySet()) {
-				String key = entry.getKey();
 				Object value = entry.getValue();
 
 				if(value instanceof Exception){
