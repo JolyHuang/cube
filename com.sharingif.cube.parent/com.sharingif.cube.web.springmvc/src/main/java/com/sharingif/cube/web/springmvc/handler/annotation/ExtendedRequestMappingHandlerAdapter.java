@@ -74,7 +74,7 @@ public class ExtendedRequestMappingHandlerAdapter extends RequestMappingHandlerA
 			}
 			newArgumentResolvers.add(handlerMethodArgumentResolver);
 		}
-
+		this.setArgumentResolvers(newArgumentResolvers);
 
 
 		List<HandlerMethodReturnValueHandler> returnValueHandlers = this.getReturnValueHandlers();
