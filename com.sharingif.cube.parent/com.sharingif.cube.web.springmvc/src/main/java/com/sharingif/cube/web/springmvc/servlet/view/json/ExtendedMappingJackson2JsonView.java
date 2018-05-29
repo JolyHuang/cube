@@ -116,6 +116,8 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 			model.remove(ExtendedMapMethodProcessor.RETURN_VALUE_TYPE_MAP);
 			resultMap.put(getTranStatusName(), tranStatusFlag);
 			resultMap.put(getDataName(), model);
+
+			return resultMap;
 		}
 
 		for (Map.Entry<String, Object> entry : model.entrySet()) {
