@@ -3,8 +3,11 @@ package com.sharingif.cube.web.springmvc.handler.annotation;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.ExtendedMapMethodProcessor;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.method.annotation.MapMethodProcessor;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor;
 import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod;
@@ -60,12 +63,32 @@ public class ExtendedRequestMappingHandlerAdapter extends RequestMappingHandlerA
 		super.afterPropertiesSet();
 
 		List<HandlerMethodArgumentResolver> argumentResolvers = this.getArgumentResolvers();
-		List<HandlerMethodArgumentResolver> newArgumentResolvers = new ArrayList<HandlerMethodArgumentResolver>(argumentResolvers.size()+1);
+		List<HandlerMethodArgumentResolver> newArgumentResolvers = new ArrayList<HandlerMethodArgumentResolver>();
 		newArgumentResolvers.add(new ExtendedRequestParamMethodArgumentResolver(getBeanFactory(),false));
 		newArgumentResolvers.add(new DataContainerMethodProcessor());
-		newArgumentResolvers.addAll(argumentResolvers);
 
-		this.setArgumentResolvers(newArgumentResolvers);
+		for(HandlerMethodArgumentResolver handlerMethodArgumentResolver : argumentResolvers) {
+			if(handlerMethodArgumentResolver instanceof MapMethodProcessor) {
+				newArgumentResolvers.add(new ExtendedMapMethodProcessor());
+				continue;
+			}
+			newArgumentResolvers.add(handlerMethodArgumentResolver);
+		}
+
+
+
+		List<HandlerMethodReturnValueHandler> returnValueHandlers = this.getReturnValueHandlers();
+		List<HandlerMethodReturnValueHandler> newReturnValueHandlers = new ArrayList<HandlerMethodReturnValueHandler>();
+
+		for(HandlerMethodReturnValueHandler handlerMethodReturnValueHandler : returnValueHandlers) {
+			if(handlerMethodReturnValueHandler instanceof MapMethodProcessor) {
+				newReturnValueHandlers.add(new ExtendedMapMethodProcessor());
+				continue;
+			}
+			newReturnValueHandlers.add(handlerMethodReturnValueHandler);
+		}
+
+		this.setReturnValueHandlers(newReturnValueHandlers);
 	}
 	
 	

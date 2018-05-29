@@ -9,6 +9,8 @@ import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
 import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.handler.bind.annotation.SettingConstants;
 import com.sharingif.cube.web.springmvc.handler.annotation.ExtendedServletInvocableHandlerMethod;
+import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.ExtendedMapMethodProcessor;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -106,43 +108,42 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 	
 	protected Map<String, Object> renderMergedOutputModelException(Map<String, Object> model,HttpServletRequest request, HttpServletResponse response){
 		boolean tranStatusFlag = true;
-		
+
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		if((model.size() ==1) && (model instanceof LinkedHashMap)){
-			for (Map.Entry<String, Object> entry : model.entrySet()) {
-				Object value = entry.getValue();
-				if(!(value instanceof BindValidationCubeException)) {
-					resultMap.put(getDataName(), model);
+
+
+		if(model.containsKey(ExtendedMapMethodProcessor.RETURN_VALUE_TYPE_MAP)) {
+			model.remove(ExtendedMapMethodProcessor.RETURN_VALUE_TYPE_MAP);
+			resultMap.put(getTranStatusName(), tranStatusFlag);
+			resultMap.put(getDataName(), model);
+		}
+
+		for (Map.Entry<String, Object> entry : model.entrySet()) {
+			Object value = entry.getValue();
+
+			if(value instanceof Exception){
+				tranStatusFlag=false;
+
+				if (!(value instanceof ICubeException)) {
+					value = new UnknownCubeException((Exception)value);
 				}
-			}
-		} else {
-			for (Map.Entry<String, Object> entry : model.entrySet()) {
-				Object value = entry.getValue();
 
-				if(value instanceof Exception){
-					tranStatusFlag=false;
+				ICubeException exception = (ICubeException)value;
 
-					if (!(value instanceof ICubeException)) {
-						value = new UnknownCubeException((Exception)value);
-					}
+				String message = exception.getMessage();
 
-					ICubeException exception = (ICubeException)value;
+				resultMap.put(getExceptionMessageName(), message);
 
-					String message = exception.getMessage();
+				if(value instanceof BindValidationCubeException) {
+					List<FieldError> localeFieldErrors = ((BindValidationCubeException)exception).getLocaleFieldErrors();
 
-					resultMap.put(getExceptionMessageName(), message);
+					resultMap.put(getFieldErrorsName(), localeFieldErrors);
+				}
+				resultMap.put(getExceptionLocalizedMessageName(), exception.getLocalizedMessage());
+			} else {
 
-					if(value instanceof BindValidationCubeException) {
-						List<FieldError> localeFieldErrors = ((BindValidationCubeException)exception).getLocaleFieldErrors();
-
-						resultMap.put(getFieldErrorsName(), localeFieldErrors);
-					}
-					resultMap.put(getExceptionLocalizedMessageName(), exception.getLocalizedMessage());
-				} else {
-
-					if(!(value instanceof BindingResult)) {
-						resultMap.put(getDataName(), value);
-					}
+				if(!(value instanceof BindingResult)) {
+					resultMap.put(getDataName(), value);
 				}
 			}
 		}
