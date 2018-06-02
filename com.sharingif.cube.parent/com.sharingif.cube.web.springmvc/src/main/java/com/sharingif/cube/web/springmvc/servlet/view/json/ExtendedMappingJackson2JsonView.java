@@ -9,15 +9,16 @@ import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
 import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.handler.bind.annotation.SettingConstants;
 import com.sharingif.cube.web.springmvc.handler.annotation.ExtendedServletInvocableHandlerMethod;
-import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.ExtendedMapMethodProcessor;
-import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 /**   
  *  
@@ -107,18 +108,9 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 	}
 	
 	protected Map<String, Object> renderMergedOutputModelException(Map<String, Object> model,HttpServletRequest request, HttpServletResponse response){
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		boolean tranStatusFlag = true;
 
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-
-
-		if(model.containsKey(ExtendedMapMethodProcessor.RETURN_VALUE_TYPE_MAP)) {
-			model.remove(ExtendedMapMethodProcessor.RETURN_VALUE_TYPE_MAP);
-			resultMap.put(getTranStatusName(), tranStatusFlag);
-			resultMap.put(getDataName(), model);
-
-			return resultMap;
-		}
 
 		for (Map.Entry<String, Object> entry : model.entrySet()) {
 			Object value = entry.getValue();

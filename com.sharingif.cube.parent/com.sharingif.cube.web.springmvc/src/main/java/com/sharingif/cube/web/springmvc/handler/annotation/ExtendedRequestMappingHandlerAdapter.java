@@ -1,11 +1,10 @@
 package com.sharingif.cube.web.springmvc.handler.annotation;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.ExtendedMapMethodProcessor;
+import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
+import com.sharingif.cube.web.springmvc.method.annotation.ExtendedRequestParamMethodArgumentResolver;
+import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.MediaTypeMethodProcessor;
+import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.container.DataContainerMethodProcessor;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.method.annotation.MapMethodProcessor;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
@@ -13,10 +12,8 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBody
 import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod;
 import org.springframework.web.servlet.mvc.method.annotation.ServletModelAttributeMethodProcessor;
 
-import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
-import com.sharingif.cube.web.springmvc.method.annotation.ExtendedRequestParamMethodArgumentResolver;
-import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.MediaTypeMethodProcessor;
-import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.container.DataContainerMethodProcessor;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 扩展RequestMappingHandlerAdapter，添加HandlerMethodChain、MediaTypeMethodProcessor、DataContainerMethodProcessor功能
@@ -68,10 +65,6 @@ public class ExtendedRequestMappingHandlerAdapter extends RequestMappingHandlerA
 		newArgumentResolvers.add(new DataContainerMethodProcessor());
 
 		for(HandlerMethodArgumentResolver handlerMethodArgumentResolver : argumentResolvers) {
-			if(handlerMethodArgumentResolver instanceof MapMethodProcessor) {
-				newArgumentResolvers.add(new ExtendedMapMethodProcessor());
-				continue;
-			}
 			newArgumentResolvers.add(handlerMethodArgumentResolver);
 		}
 		this.setArgumentResolvers(newArgumentResolvers);
@@ -81,10 +74,6 @@ public class ExtendedRequestMappingHandlerAdapter extends RequestMappingHandlerA
 		List<HandlerMethodReturnValueHandler> newReturnValueHandlers = new ArrayList<HandlerMethodReturnValueHandler>();
 
 		for(HandlerMethodReturnValueHandler handlerMethodReturnValueHandler : returnValueHandlers) {
-			if(handlerMethodReturnValueHandler instanceof MapMethodProcessor) {
-				newReturnValueHandlers.add(new ExtendedMapMethodProcessor());
-				continue;
-			}
 			newReturnValueHandlers.add(handlerMethodReturnValueHandler);
 		}
 
