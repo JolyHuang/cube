@@ -1,10 +1,13 @@
 package com.sharingif.cube.security.confidentiality.encrypt;
 
+import com.sharingif.cube.core.exception.CubeRuntimeException;
+import com.sharingif.cube.core.util.Charset;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.io.UnsupportedEncodingException;
 
 
-/**   
+/**
  *  
  * @Description:  [BCrypt加密]   
  * @Author:       [Joly_Huang]   
@@ -16,7 +19,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  *    
  */
 public class BCryptTextEncryptor implements TextEncryptor {
-	
+
+	private String charset = Charset.UTF8.toString();			// 字符编码
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
 	
 	public BCryptPasswordEncoder getBcryptPasswordEncoder() {
@@ -25,6 +29,19 @@ public class BCryptTextEncryptor implements TextEncryptor {
 
 	public void setBcryptPasswordEncoder(BCryptPasswordEncoder bcryptPasswordEncoder) {
 		this.bcryptPasswordEncoder = bcryptPasswordEncoder;
+	}
+
+	public void setCharset(String charset) {
+		this.charset = charset;
+	}
+
+	@Override
+	public byte[] encrypt(byte[] bytes) {
+		try {
+			return encrypt(new String(bytes, charset)).getBytes(charset);
+		} catch (UnsupportedEncodingException e) {
+			throw new CubeRuntimeException("BCrypt decrypt unsupported encoding error", e);
+		}
 	}
 
 	public String encrypt(String text) {

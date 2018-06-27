@@ -11,14 +11,21 @@ package com.sharingif.cube.security.confidentiality.encrypt;
  *    
  */
 public interface TextEncryptor {
-	
+
+    /**
+     * 加密
+     * @param bytes
+     * @return
+     */
+    byte[] encrypt(byte[] bytes);
+
 	/**
 	 * 加密
 	 * @param text
 	 * @return
 	 */
     String encrypt(String text);
-    
+
     /**
      * 是否支持解密
      * @return

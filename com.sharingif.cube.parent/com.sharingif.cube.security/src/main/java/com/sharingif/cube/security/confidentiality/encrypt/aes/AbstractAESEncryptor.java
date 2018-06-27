@@ -95,8 +95,18 @@ public abstract class AbstractAESEncryptor {
 		}
 		
 	}
-	
-	public byte[] encryptAES(String text) {
+
+	protected byte[] encryptAES(byte[] bytes) {
+		try {
+			return encryptCipher.doFinal(bytes);
+		} catch (CubeRuntimeException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new CubeRuntimeException("aes encrypt error", e);
+		}
+	}
+
+	protected byte[] encryptAES(String text) {
 		try {
 			return encryptCipher.doFinal(text.getBytes(getCharset()));
 		} catch (CubeRuntimeException e) {
@@ -106,7 +116,7 @@ public abstract class AbstractAESEncryptor {
 		}
 	}
 
-	public byte[] decryptAES(String encryptedText) {
+	protected byte[] decryptAES(String encryptedText) {
 		try {
 			return decryptCipher.doFinal(binaryCoder.decode(encryptedText));
 		} catch (CubeRuntimeException e) {

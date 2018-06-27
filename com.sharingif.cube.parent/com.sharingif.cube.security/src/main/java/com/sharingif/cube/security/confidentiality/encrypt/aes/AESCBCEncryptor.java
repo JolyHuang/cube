@@ -27,6 +27,11 @@ public class AESCBCEncryptor extends AbstractAESEncryptor implements TextEncrypt
 	}
 
 	@Override
+	public byte[] encrypt(byte[] bytes) {
+		return encryptAES(bytes);
+	}
+
+	@Override
 	public String encrypt(String text) {
 		return getBinaryCoder().encode(encryptAES(text));
 	}

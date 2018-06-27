@@ -32,7 +32,12 @@ public class AESECBEncryptor extends AbstractAESEncryptor implements TextEncrypt
 	protected IvParameterSpec createIvParameterSpec(byte[] key) {
 		return null;
 	}
-	
+
+	@Override
+	public byte[] encrypt(byte[] bytes) {
+		return encryptAES(bytes);
+	}
+
 	@Override
 	public String encrypt(String text) {
 		return getBinaryCoder().encode(encryptAES(text));

@@ -39,13 +39,17 @@ public abstract class AbstractDigestEncryptor implements TextEncryptor {
 		this.binaryCoder = binaryCoder;
 		this.binaryCoder.setCharset(charset);
 	}
-	
+
+	@Override
+	public byte[] encrypt(byte[] bytes) {
+		return messageDigest.digest(bytes);
+	}
 
 	@Override
 	public String encrypt(String text) {
-		byte[] bytes = null;
+		byte[] bytes;
 		try {
-			bytes = messageDigest.digest(text.getBytes(charset));
+			bytes = encrypt(text.getBytes(charset));
 		} catch (UnsupportedEncodingException e) {
 			throw new CubeRuntimeException("digest error", e);
 		}
