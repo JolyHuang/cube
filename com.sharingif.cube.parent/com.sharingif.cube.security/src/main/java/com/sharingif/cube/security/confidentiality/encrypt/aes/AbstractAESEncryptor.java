@@ -37,11 +37,11 @@ public abstract class AbstractAESEncryptor {
 	private BinaryCoder binaryCoder;
 	
 	
-	public AbstractAESEncryptor(String cipherAlgorithm, byte[] secretKey) throws UnsupportedEncodingException {
+	public AbstractAESEncryptor(String cipherAlgorithm, byte[] secretKey) {
 		this(cipherAlgorithm, secretKey, new HexCoder());
 	}
 	
-	public AbstractAESEncryptor(String cipherAlgorithm, byte[] secretKey, BinaryCoder binaryCoder) throws UnsupportedEncodingException {
+	public AbstractAESEncryptor(String cipherAlgorithm, byte[] secretKey, BinaryCoder binaryCoder) {
 		this.cipherAlgorithm = cipherAlgorithm;
 
 		Key key = createKey(secretKey);
@@ -66,7 +66,7 @@ public abstract class AbstractAESEncryptor {
 		return binaryCoder;
 	}
 
-	protected Key createKey(byte[] secretKey) throws UnsupportedEncodingException {
+	protected Key createKey(byte[] secretKey) {
         return new SecretKeySpec(secretKey, KEY_ALGORITHM);								// 转换密钥
 	}
 
