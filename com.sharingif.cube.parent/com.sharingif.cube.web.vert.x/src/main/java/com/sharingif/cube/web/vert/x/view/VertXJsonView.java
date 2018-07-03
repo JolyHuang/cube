@@ -5,10 +5,12 @@ import com.sharingif.cube.communication.MediaType;
 import com.sharingif.cube.communication.view.AbstractJsonView;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
 import com.sharingif.cube.core.request.RequestContext;
+import com.sharingif.cube.core.util.StringUtils;
 import com.sharingif.cube.web.vert.x.request.VertXRequestContext;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpHeaders;
+import io.vertx.core.http.HttpServerResponse;
 
 /**
  * VertXJsonView
@@ -26,8 +28,14 @@ public class VertXJsonView extends AbstractJsonView {
 		
 		Buffer buffer = Buffer.buffer(getResponseData(returnValue, exceptionContent == null ? null: exceptionContent.getCubeException()));
 
-		vertXRequestContext.getResponse().getHttpServerResponse()
-				.putHeader(HttpHeaderNames.ACCESS_CONTROL_ALLOW_ORIGIN, vertXRequestContext.getRequest().getHttpServerRequest().headers().get(HttpHeaders.ORIGIN))
+		HttpServerResponse httpServerResponse = vertXRequestContext.getResponse().getHttpServerResponse();
+		String accessControlAllowOrigin = vertXRequestContext.getRequest().getHttpServerRequest().headers().get(HttpHeaders.ORIGIN);
+		if(!StringUtils.isTrimEmpty(accessControlAllowOrigin)) {
+			httpServerResponse.putHeader(HttpHeaderNames.ACCESS_CONTROL_ALLOW_ORIGIN,accessControlAllowOrigin);
+		}
+
+
+		httpServerResponse
 				.putHeader(HttpHeaderNames.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
 				.putHeader(HttpHeaderNames.CACHE_CONTROL, "no-store")
 				.putHeader(HttpHeaderNames.PRAGMA, "no-cache")
