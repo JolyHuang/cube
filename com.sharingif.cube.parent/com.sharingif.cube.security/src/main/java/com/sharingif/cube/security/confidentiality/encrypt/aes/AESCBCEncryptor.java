@@ -23,7 +23,7 @@ public class AESCBCEncryptor extends AbstractAESEncryptor implements TextEncrypt
 	}
 	
 	public AESCBCEncryptor(byte[] secretKey, BinaryCoder binaryCoder) {
-		super(CIPHER_ALGORITHM, secretKey, binaryCoder);
+		super(CIPHER_ALGORITHM, secretKey, secretKey, binaryCoder);
 	}
 
 	@Override
