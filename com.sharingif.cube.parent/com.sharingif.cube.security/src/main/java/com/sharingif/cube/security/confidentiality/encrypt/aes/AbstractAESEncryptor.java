@@ -38,15 +38,15 @@ public abstract class AbstractAESEncryptor {
 	
 	
 	public AbstractAESEncryptor(String cipherAlgorithm, byte[] secretKey) {
-		this(cipherAlgorithm, secretKey, new HexCoder());
+		this(cipherAlgorithm, secretKey, secretKey, new HexCoder());
 	}
 	
-	public AbstractAESEncryptor(String cipherAlgorithm, byte[] secretKey, BinaryCoder binaryCoder) {
+	public AbstractAESEncryptor(String cipherAlgorithm, byte[] secretKey, byte[]  ivParameterKey, BinaryCoder binaryCoder) {
 		this.cipherAlgorithm = cipherAlgorithm;
 
 		Key key = createKey(secretKey);
 
-		IvParameterSpec ivParameterSpec = createIvParameterSpec(secretKey);
+		IvParameterSpec ivParameterSpec = createIvParameterSpec(ivParameterKey);
 		encryptCipher = createEncryptCipher(key, ivParameterSpec);
 		decryptCipher = createDecryptCipher(key, ivParameterSpec);
 
