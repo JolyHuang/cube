@@ -29,8 +29,8 @@
             <version>1.10.6.RELEASE</version>
             <exclusions>
             		<exclusion>
-            			<artifactId>org.springframework</artifactId>
-            			<groupId>spring-context</groupId>
+            			<groupId>org.springframework</groupId>
+            			<artifactId>spring-context</artifactId>
             		</exclusion>
             </exclusions>
         </dependency>
