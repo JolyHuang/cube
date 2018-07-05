@@ -1,12 +1,11 @@
 package com.sharingif.cube.security.key;
 
-import com.sharingif.cube.core.exception.CubeRuntimeException;
-
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.sharingif.cube.core.exception.CubeRuntimeException;
 
 /**
  *

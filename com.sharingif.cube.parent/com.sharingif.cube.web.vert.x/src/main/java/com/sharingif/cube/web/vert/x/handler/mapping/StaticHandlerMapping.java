@@ -3,14 +3,15 @@ package com.sharingif.cube.web.vert.x.handler.mapping;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.mapping.AbstractHandlerMapping;
 import com.sharingif.cube.core.request.RequestContext;
 
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.StaticHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 处理静态页面

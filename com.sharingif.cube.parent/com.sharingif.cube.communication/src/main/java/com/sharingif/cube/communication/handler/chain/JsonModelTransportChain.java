@@ -2,8 +2,8 @@ package com.sharingif.cube.communication.handler.chain;
 
 import com.sharingif.cube.communication.JsonModel;
 import com.sharingif.cube.core.exception.CubeException;
-import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.core.handler.chain.AbstractHandlerMethodChain;
+import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 
 /**
  * 处理JsonModel对象，直接返回JsonModel中的_data

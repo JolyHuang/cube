@@ -1,20 +1,31 @@
 package com.sharingif.cube.communication.http.apache.transport;
 
-import com.sharingif.cube.communication.exception.CommunicationException;
-import com.sharingif.cube.communication.http.HttpMethod;
-import com.sharingif.cube.communication.transport.Connection;
-import com.sharingif.cube.core.config.CubeConfigure;
-import com.sharingif.cube.core.exception.CubeRuntimeException;
-import com.sharingif.cube.core.request.RequestContext;
-import com.sharingif.cube.core.util.StringUtils;
-import org.apache.http.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.nio.charset.CodingErrorAction;
+import java.security.KeyStore;
+import java.util.Map;
+
+import javax.net.ssl.SSLContext;
+
+import org.apache.http.Header;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.config.*;
+import org.apache.http.config.ConnectionConfig;
+import org.apache.http.config.MessageConstraints;
+import org.apache.http.config.Registry;
+import org.apache.http.config.RegistryBuilder;
+import org.apache.http.config.SocketConfig;
 import org.apache.http.conn.ManagedHttpClientConnection;
 import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -44,16 +55,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
-import javax.net.ssl.SSLContext;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.nio.charset.CodingErrorAction;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.util.Map;
+import com.sharingif.cube.communication.exception.CommunicationException;
+import com.sharingif.cube.communication.http.HttpMethod;
+import com.sharingif.cube.communication.transport.Connection;
+import com.sharingif.cube.core.config.CubeConfigure;
+import com.sharingif.cube.core.exception.CubeRuntimeException;
+import com.sharingif.cube.core.request.RequestContext;
+import com.sharingif.cube.core.util.StringUtils;
 
 /**
  * apache http 提供基础的公共方法参数

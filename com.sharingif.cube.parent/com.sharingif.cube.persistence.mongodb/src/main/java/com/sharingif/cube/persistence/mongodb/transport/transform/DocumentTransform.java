@@ -1,9 +1,10 @@
 package com.sharingif.cube.persistence.mongodb.transport.transform;
 
+import org.bson.Document;
+
 import com.sharingif.cube.core.transport.exception.MarshallerException;
 import com.sharingif.cube.core.transport.transform.Marshaller;
 import com.sharingif.cube.core.transport.transform.Transform;
-import org.bson.Document;
 
 /**
  * 提供mongodb Document与java bean之间的转换

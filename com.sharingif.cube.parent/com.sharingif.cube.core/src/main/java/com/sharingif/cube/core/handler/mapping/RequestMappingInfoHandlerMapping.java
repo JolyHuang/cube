@@ -1,10 +1,10 @@
 package com.sharingif.cube.core.handler.mapping;
 
-import com.sharingif.cube.core.handler.request.RequestMappingInfo;
-import com.sharingif.cube.core.request.RequestContext;
-
 import java.util.Comparator;
 import java.util.Set;
+
+import com.sharingif.cube.core.handler.request.RequestMappingInfo;
+import com.sharingif.cube.core.request.RequestContext;
 
 /**
  * Abstract base class for classes for which {@link RequestMappingInfo} defines

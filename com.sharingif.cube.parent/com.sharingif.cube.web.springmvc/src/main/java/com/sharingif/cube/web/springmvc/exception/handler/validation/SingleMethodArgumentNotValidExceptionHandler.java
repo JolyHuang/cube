@@ -1,9 +1,10 @@
 package com.sharingif.cube.web.springmvc.exception.handler.validation;
 
+import org.springframework.web.bind.MethodArgumentNotValidException;
+
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
 import com.sharingif.cube.web.exception.handler.validation.SingleBindValidationCubeExceptionHandler;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 /**
  * 只返回一个错误信息

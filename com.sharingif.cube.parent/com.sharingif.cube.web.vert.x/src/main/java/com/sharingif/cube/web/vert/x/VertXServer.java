@@ -1,7 +1,10 @@
 package com.sharingif.cube.web.vert.x;
 
+import org.springframework.beans.factory.InitializingBean;
+
 import com.sharingif.cube.communication.handler.DispatcherHandler;
 import com.sharingif.cube.web.vert.x.request.ExtendedRoutingContext;
+
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
@@ -12,7 +15,6 @@ import io.vertx.ext.web.handler.CookieHandler;
 import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.sstore.LocalSessionStore;
 import io.vertx.ext.web.sstore.SessionStore;
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * Vert.x服务 2016年12月7日 下午8:45:29

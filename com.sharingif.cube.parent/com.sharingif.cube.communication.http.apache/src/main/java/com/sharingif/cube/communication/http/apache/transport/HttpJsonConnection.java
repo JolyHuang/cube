@@ -1,23 +1,11 @@
 package com.sharingif.cube.communication.http.apache.transport;
 
-import com.sharingif.cube.communication.exception.CommunicationException;
-import com.sharingif.cube.communication.http.HttpMethod;
-import com.sharingif.cube.core.request.RequestContext;
-import com.sharingif.cube.core.util.StringUtils;
-import org.apache.http.HttpHost;
-import org.apache.http.ParseException;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.InitializingBean;
 
-import java.io.IOException;
+import com.sharingif.cube.core.request.RequestContext;
 
 /**   
  *  

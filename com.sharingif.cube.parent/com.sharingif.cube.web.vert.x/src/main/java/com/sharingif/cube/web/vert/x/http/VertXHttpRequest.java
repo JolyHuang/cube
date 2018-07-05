@@ -1,11 +1,12 @@
 package com.sharingif.cube.web.vert.x.http;
 
-import com.sharingif.cube.communication.http.HttpRequest;
-import com.sharingif.cube.communication.http.HttpSession;
-import io.vertx.core.http.HttpServerRequest;
-
 import java.util.Enumeration;
 import java.util.Map;
+
+import com.sharingif.cube.communication.http.HttpRequest;
+import com.sharingif.cube.communication.http.HttpSession;
+
+import io.vertx.core.http.HttpServerRequest;
 
 /**
  * VertXHttpRequest

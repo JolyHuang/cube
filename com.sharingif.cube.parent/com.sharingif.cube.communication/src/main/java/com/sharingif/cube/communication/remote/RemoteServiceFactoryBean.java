@@ -7,7 +7,6 @@ import org.springframework.beans.factory.FactoryBean;
  * 2017年1月16日 下午4:58:37
  * @author Joly
  * @version v1.0
- * @param <T>
  * @since v1.0
  */
 public class RemoteServiceFactoryBean implements FactoryBean<Object> {

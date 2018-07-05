@@ -1,9 +1,8 @@
 package com.sharingif.cube.web.springmvc.handler.annotation;
 
-import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
-import com.sharingif.cube.web.springmvc.method.annotation.ExtendedRequestParamMethodArgumentResolver;
-import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.MediaTypeMethodProcessor;
-import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.container.DataContainerMethodProcessor;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
@@ -12,8 +11,10 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBody
 import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod;
 import org.springframework.web.servlet.mvc.method.annotation.ServletModelAttributeMethodProcessor;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.sharingif.cube.core.handler.chain.HandlerMethodChain;
+import com.sharingif.cube.web.springmvc.method.annotation.ExtendedRequestParamMethodArgumentResolver;
+import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.MediaTypeMethodProcessor;
+import com.sharingif.cube.web.springmvc.servlet.mvc.method.annotation.container.DataContainerMethodProcessor;
 
 /**
  * 扩展RequestMappingHandlerAdapter，添加HandlerMethodChain、MediaTypeMethodProcessor、DataContainerMethodProcessor功能

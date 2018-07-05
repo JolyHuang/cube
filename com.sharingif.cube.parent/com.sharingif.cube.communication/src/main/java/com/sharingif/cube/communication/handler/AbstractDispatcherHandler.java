@@ -1,5 +1,8 @@
 package com.sharingif.cube.communication.handler;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.sharingif.cube.communication.view.MultiViewResolver;
 import com.sharingif.cube.communication.view.View;
 import com.sharingif.cube.communication.view.exception.NoViewFoundException;
@@ -12,8 +15,6 @@ import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.core.handler.mapping.MultiHandlerMapping;
 import com.sharingif.cube.core.request.RequestContext;
 import com.sharingif.cube.core.request.RequestContextResolver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 请求调度处理器

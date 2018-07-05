@@ -27,6 +27,12 @@
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-mongodb</artifactId>
             <version>1.10.6.RELEASE</version>
+            <exclusions>
+            		<exclusion>
+            			<artifactId>org.springframework</artifactId>
+            			<groupId>spring-context</groupId>
+            		</exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

@@ -1,9 +1,9 @@
 package com.sharingif.cube.persistence.mongodb.dao;
 
-import com.sharingif.cube.persistence.database.dao.IBaseDAO;
-
 import java.io.Serializable;
 import java.util.List;
+
+import com.sharingif.cube.persistence.database.dao.IBaseDAO;
 
 /**
  * MongoDB 基础接口类，提供基本的、增、删、改、查

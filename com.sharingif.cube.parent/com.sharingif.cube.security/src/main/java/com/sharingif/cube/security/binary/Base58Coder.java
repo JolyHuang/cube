@@ -1,9 +1,9 @@
 package com.sharingif.cube.security.binary;
 
-import com.sharingif.cube.security.confidentiality.encrypt.digest.SHA256Encryptor;
-
 import java.math.BigInteger;
 import java.util.Arrays;
+
+import com.sharingif.cube.security.confidentiality.encrypt.digest.SHA256Encryptor;
 
 /**
  * Base58Coder

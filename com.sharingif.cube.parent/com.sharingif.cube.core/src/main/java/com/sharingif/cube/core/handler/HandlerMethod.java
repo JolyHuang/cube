@@ -1,7 +1,10 @@
 package com.sharingif.cube.core.handler;
 
-import com.sharingif.cube.core.handler.bind.annotation.Setting;
-import com.sharingif.cube.core.handler.bind.annotation.Settings;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.BeanFactory;
@@ -11,10 +14,8 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
+import com.sharingif.cube.core.handler.bind.annotation.Setting;
+import com.sharingif.cube.core.handler.bind.annotation.Settings;
 
 /**
  * Encapsulates information about a handler method consisting of a

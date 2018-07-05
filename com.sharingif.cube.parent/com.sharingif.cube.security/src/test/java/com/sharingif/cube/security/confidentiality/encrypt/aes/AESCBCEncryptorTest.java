@@ -1,11 +1,11 @@
 package com.sharingif.cube.security.confidentiality.encrypt.aes;
 
+import java.io.UnsupportedEncodingException;
+
 import org.junit.Test;
 
 import com.sharingif.cube.security.binary.Base64Coder;
 import com.sharingif.cube.security.binary.HexCoder;
-
-import java.io.UnsupportedEncodingException;
 
 /**
  * AESCBCEncryptorTest

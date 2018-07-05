@@ -1,9 +1,9 @@
 package com.sharingif.cube.core.handler.chain;
 
+import java.util.List;
+
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.util.CubeExceptionUtil;
-
-import java.util.List;
 
 /**
  * 多种组合HandlerMethodChain

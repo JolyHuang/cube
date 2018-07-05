@@ -1,10 +1,11 @@
 package com.sharingif.cube.communication.http.apache.transport;
 
-import com.sharingif.cube.core.request.RequestContext;
 import org.apache.http.Consts;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.protocol.HTTP;
+
+import com.sharingif.cube.core.request.RequestContext;
 
 /**
  * HttpXMLConnection

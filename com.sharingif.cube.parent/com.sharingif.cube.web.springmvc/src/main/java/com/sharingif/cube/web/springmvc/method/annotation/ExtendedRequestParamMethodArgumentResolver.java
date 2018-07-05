@@ -1,13 +1,14 @@
 package com.sharingif.cube.web.springmvc.method.annotation;
 
-import com.sharingif.cube.components.file.IValidateUploadFile;
-import com.sharingif.cube.components.file.SimpleValidateUploadFile;
-import com.sharingif.cube.core.handler.bind.annotation.FileSettings;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.annotation.RequestParamMethodArgumentResolver;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.sharingif.cube.components.file.IValidateUploadFile;
+import com.sharingif.cube.components.file.SimpleValidateUploadFile;
+import com.sharingif.cube.core.handler.bind.annotation.FileSettings;
 
 /**
  * 扩展RequestParamMethodArgumentResolver，添加文件验证功能

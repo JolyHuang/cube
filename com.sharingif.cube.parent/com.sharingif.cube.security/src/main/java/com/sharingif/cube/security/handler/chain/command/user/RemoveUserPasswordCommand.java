@@ -4,7 +4,6 @@ import com.sharingif.cube.components.password.IPassword;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.core.handler.chain.command.AbstractHandlerMethodCommand;
-import com.sharingif.cube.core.user.ICoreUser;
 
 /**
  *

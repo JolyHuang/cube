@@ -1,11 +1,11 @@
 package com.sharingif.cube.web.springmvc.servlet.view;
 
+import java.util.Locale;
+
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
-
-import java.util.Locale;
 
 /**
  * 解析404视图
