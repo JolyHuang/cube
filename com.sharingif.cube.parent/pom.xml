@@ -36,7 +36,6 @@
 
 		<module>com.sharingif.cube.persistence</module>
 		<module>com.sharingif.cube.persistence.mybatis</module>
-		<module>com.sharingif.cube.persistence.mongodb</module>
 
 		<module>com.sharingif.cube.security</module>
 		<module>com.sharingif.cube.security.web</module>
