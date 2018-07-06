@@ -1,6 +1,7 @@
 package com.sharingif.cube.core.handler.mapping;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,6 +110,11 @@ public class RequestMappingHandlerMapping extends RequestMappingInfoHandlerMappi
 	@Override
 	protected RequestMappingInfo getMappingForMethod(Method method, Class<?> handlerType) {
 		RequestMappingInfo info = null;
+
+		if(handlerType.getName().startsWith("com.sun.proxy")) {
+			return info;
+		}
+
 		RequestMapping methodAnnotation = AnnotationUtils.findAnnotation(method, RequestMapping.class);
 		if (methodAnnotation != null) {
 			RequestCondition<?> methodCondition = getCustomMethodCondition(method);

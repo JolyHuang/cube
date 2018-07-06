@@ -8,8 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.sharingif.cube.core.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import org.springframework.util.ClassUtils;
 
 import com.sharingif.cube.communication.transport.AbstractHandlerMethodCommunicationTransport;
@@ -70,11 +72,18 @@ public class RemoteServices {
 			} catch (ClassNotFoundException e) {
 				throw new RuntimeException(e);
 			}
+
+			String proxyClassName;
+			Service serviceAnnotation = cls.getAnnotation(Service.class);
+			if(serviceAnnotation == null || StringUtils.isTrimEmpty(serviceAnnotation.value())) {
+				String shortClassName = ClassUtils.getShortName(cls.getName());
+
+				proxyClassName = Introspector.decapitalize(shortClassName);
+			} else {
+				proxyClassName = serviceAnnotation.value();
+			}
 			
-			String shortClassName = ClassUtils.getShortName(cls.getName());
-			
-			String proxyClassName = Introspector.decapitalize(shortClassName);
-			
+
 			Object proxyClass = Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[]{cls}, new InvocationHandler() {
 				
 				@SuppressWarnings({ "unchecked", "rawtypes" })
