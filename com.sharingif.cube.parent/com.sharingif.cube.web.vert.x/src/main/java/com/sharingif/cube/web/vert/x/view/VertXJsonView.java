@@ -26,7 +26,8 @@ public class VertXJsonView extends AbstractJsonView {
 	public void view(RequestContext<?> requestContext, Object returnValue,ExceptionContent exceptionContent) {
 
 		VertXRequestContext vertXRequestContext = (VertXRequestContext)requestContext;
-		
+
+
 		Buffer buffer = Buffer.buffer(getResponseData(returnValue, exceptionContent == null ? null: exceptionContent.getCubeException()));
 
 		HttpServerResponse httpServerResponse = vertXRequestContext.getResponse().getHttpServerResponse();
