@@ -24,8 +24,6 @@ import com.sharingif.cube.support.service.base.IBaseService;
  */
 public class BaseServiceImpl<T, ID extends Serializable> implements IBaseService<T, ID> {
 	
-	protected final Logger logger = LoggerFactory.getLogger(getClass());
-	
 	private IBaseDAO<T, ID> baseDAO;
 
 	protected IBaseDAO<T, ID> getBaseDAO() {
