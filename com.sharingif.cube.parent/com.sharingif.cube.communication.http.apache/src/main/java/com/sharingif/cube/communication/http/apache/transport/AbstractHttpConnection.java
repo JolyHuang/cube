@@ -99,6 +99,10 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
 
     private Map<String,String> headers;
 
+    public AbstractHttpConnection() {
+
+    }
+
     public AbstractHttpConnection(String address, String contextPath) {
         this.address = address;
         this.contextPath = contextPath;
@@ -216,6 +220,11 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
     }
 
     protected HttpHost getHttpHost() {
+
+        if(address == null && host == null && port == -1) {
+            return null;
+        }
+
         HttpHost httpHost = null;
         if(!StringUtils.isEmpty(address)) {
             if(useHttps) {
@@ -242,6 +251,11 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
     }
 
     protected String getUrl(HttpHost httpHost, String path) {
+
+        if(httpHost == null) {
+            return path;
+        }
+
         StringBuilder url = new StringBuilder();
         url.append(httpHost.getSchemeName());
         url.append("://");
@@ -469,6 +483,9 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
             addHeader(httpPost);
             if(!StringUtils.isEmpty(httpContext.getRequest())) {
                 httpPost.setEntity(new StringEntity(httpContext.getRequest(), getContentType()));
+            }
+            if(httpHost == null) {
+                return getHttpclient().execute(httpPost);
             }
             return getHttpclient().execute(httpHost, httpPost);
         }

@@ -20,6 +20,11 @@ import com.sharingif.cube.core.request.RequestContext;
  */
 public class HttpJsonConnection extends AbstractHttpConnection<RequestContext<String>, String> implements InitializingBean {
 
+	public HttpJsonConnection() {
+		super();
+		setContentType(ContentType.APPLICATION_JSON);
+	}
+
 	public HttpJsonConnection(String address, String contextPath) {
 		super(address,contextPath);
 		setContentType(ContentType.APPLICATION_JSON);
