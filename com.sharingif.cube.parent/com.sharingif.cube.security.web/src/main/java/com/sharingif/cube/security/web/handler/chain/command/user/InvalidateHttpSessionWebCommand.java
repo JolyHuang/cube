@@ -35,16 +35,16 @@ public class InvalidateHttpSessionWebCommand extends AbstractHandlerMethodComman
 	}
 	public void setCopyAttributeNames(List<String> copyAttributeNames) {
 		this.copyAttributeNames = copyAttributeNames;
-		addDefaultAttributeNames(copyAttributeNames);
+		addDefaultAttributeNames();
 	}
 
 	public InvalidateHttpSessionWebCommand(){
 		copyAttributeNames = new ArrayList<String>();
-		addDefaultAttributeNames(copyAttributeNames);
+		addDefaultAttributeNames();
 	}
 	
-	protected void addDefaultAttributeNames(List<String> copyAttributeNames){
-		copyAttributeNames.add(NoUserHandlerImpl.REFERER);
+	protected void addDefaultAttributeNames(){
+		this.copyAttributeNames.add(NoUserHandlerImpl.REFERER);
 	}
 
 	@Override
