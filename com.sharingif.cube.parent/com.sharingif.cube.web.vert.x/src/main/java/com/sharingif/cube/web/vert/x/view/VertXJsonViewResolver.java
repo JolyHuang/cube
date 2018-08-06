@@ -6,6 +6,9 @@ import com.sharingif.cube.communication.view.View;
 import com.sharingif.cube.communication.view.ViewResolver;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
 import com.sharingif.cube.core.request.RequestContext;
+import com.sharingif.cube.core.util.StringUtils;
+import com.sharingif.cube.web.vert.x.http.VertXHttpRequest;
+import io.vertx.core.http.HttpHeaders;
 
 /**
  * ContentNegotiatingViewResolver
@@ -20,11 +23,15 @@ public class VertXJsonViewResolver implements ViewResolver {
 	
 	@Override
 	public View resolveView(RequestContext<?> requestContext, Object returnValue, ExceptionContent exceptionContent) {
-		if(requestContext.getMediaType() == null) {
+		VertXHttpRequest vertXHttpRequest = (VertXHttpRequest) requestContext.getRequest();
+
+		String mediaType = vertXHttpRequest.getHttpServerRequest().headers().get(HttpHeaders.ACCEPT);
+
+		if(StringUtils.isTrimEmpty(mediaType)) {
 			return null;
 		}
 
-		MediaType candidateContentType = MediaType.parseMediaType(requestContext.getMediaType());
+		MediaType candidateContentType = MediaType.parseMediaType(mediaType);
 		if(MediaType.APPLICATION_JSON.isCompatibleWith(candidateContentType)) {
 			return view;
 		} else {
