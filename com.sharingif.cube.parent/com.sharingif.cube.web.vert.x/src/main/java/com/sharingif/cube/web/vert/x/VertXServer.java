@@ -25,7 +25,6 @@ import io.vertx.ext.web.sstore.SessionStore;
  */
 public class VertXServer extends AbstractVerticle implements InitializingBean {
 	
-	private String host;
 	private int port;
 	private String contextPath;
 	private String staticPath;
@@ -41,12 +40,6 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 
 	}
 	
-	public String getHost() {
-		return host;
-	}
-	public void setHost(String host) {
-		this.host = host;
-	}
 	public int getPort() {
 		return port;
 	}
@@ -106,7 +99,7 @@ public class VertXServer extends AbstractVerticle implements InitializingBean {
 			getDispatcherHandler().doDispatch(new ExtendedRoutingContext(getContextPath(), routingContext));
 		},false);
 		
-		server.requestHandler(router::accept).listen(getPort(),getHost());
+		server.requestHandler(router::accept).listen(getPort(), "0.0.0.0");
 	}
 	
 	@Override
