@@ -6,6 +6,8 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.CodingErrorAction;
 import java.security.KeyStore;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.net.ssl.SSLContext;
@@ -96,8 +98,8 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
     private String encoding = CubeConfigure.DEFAULT_ENCODING;
 
     private boolean debug = true;
-
     private Map<String,String> headers;
+    private Map<String, String> excludeLogTrans = new HashMap<String, String>(1);
 
     public AbstractHttpConnection() {
 
@@ -217,6 +219,13 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
     }
     public void setHeaders(Map<String, String> headers) {
         this.headers = headers;
+    }
+
+    public void setExcludeLogTransList(List<String> excludeLogTransList) {
+        excludeLogTrans = new HashMap<String,String>(excludeLogTransList.size());
+        for(String trans : excludeLogTransList) {
+            excludeLogTrans.put(trans, trans);
+        }
     }
 
     protected HttpHost getHttpHost() {
@@ -443,7 +452,9 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
             String receiveMessage = EntityUtils.toString(response.getEntity(), getEncoding());
 
             if(getDebug()) {
-                this.logger.info("receive message:{}", receiveMessage);
+                if(excludeLogTrans.get(httpContext.getLookupPath()) == null) {
+                    this.logger.info("receive message:{}", receiveMessage);
+                }
             }
 
             if(StringUtils.isEmpty(receiveMessage) || "".equals(receiveMessage.trim())) {
@@ -470,7 +481,9 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
     protected CloseableHttpResponse connect(HttpHost httpHost, String path, RequestContext<String> httpContext) throws IOException {
 
         if(getDebug()) {
-            this.logger.info("send message:{}", httpContext.getRequest());
+            if(excludeLogTrans.get(httpContext.getLookupPath()) == null) {
+                this.logger.info("send message:{}", httpContext.getRequest());
+            }
         }
 
         if(httpContext.getMethod().equals(HttpMethod.GET.name())) {
