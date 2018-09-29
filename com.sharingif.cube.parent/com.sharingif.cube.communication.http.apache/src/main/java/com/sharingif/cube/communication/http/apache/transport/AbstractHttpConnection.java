@@ -426,19 +426,13 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
         CloseableHttpResponse response = null;
         try {
             response = connect(httpHost, path, httpContext);
-        } catch (ClientProtocolException e) {
-            throw new CommunicationException("client protocol exception", e);
-        } catch (IOException e) {
-            throw new CommunicationException("client io exception", e);
-        }
 
-        int statusCode = response.getStatusLine().getStatusCode();
-        if(statusCode != 200) {
-            connectErrorLog(httpContext, httpHost, path, statusCode);
-            throw new CommunicationException("client protocol exception");
-        }
+            int statusCode = response.getStatusLine().getStatusCode();
+            if(statusCode != 200) {
+                connectErrorLog(httpContext, httpHost, path, statusCode);
+                throw new CommunicationException("client protocol exception");
+            }
 
-        try {
             String receiveMessage = EntityUtils.toString(response.getEntity(), getEncoding());
 
             if(getDebug()) {
@@ -452,10 +446,12 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
             }
 
             return receiveMessage;
+        } catch (ClientProtocolException e) {
+            throw new CommunicationException("client protocol exception", e);
         } catch (ParseException e) {
             throw new CommunicationException("EntityUtils parse exception", e);
         } catch (IOException e) {
-            throw new CommunicationException("EntityUtils io exception", e);
+            throw new CommunicationException("client io exception", e);
         } finally {
             if(null != response) {
                 try {
