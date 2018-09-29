@@ -275,8 +275,10 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
 
     protected void connectErrorLog(RequestContext<String> httpContext, HttpHost httpHost, String path,Integer statusCode) {
         StringBuilder url = new StringBuilder();
-        url.append(httpHost.getSchemeName());
-        url.append("://");
+        if(httpHost != null) {
+            url.append(httpHost.getSchemeName());
+            url.append("://");
+        }
         if(!StringUtils.isEmpty(address)) {
             url.append(address);
         } else {
