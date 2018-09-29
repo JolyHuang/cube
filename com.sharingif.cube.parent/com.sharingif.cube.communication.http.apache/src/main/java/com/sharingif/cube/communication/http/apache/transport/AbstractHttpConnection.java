@@ -1,33 +1,20 @@
 package com.sharingif.cube.communication.http.apache.transport;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-import java.nio.charset.CodingErrorAction;
-import java.security.KeyStore;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.net.ssl.SSLContext;
-
-import org.apache.http.Header;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpResponse;
-import org.apache.http.ParseException;
+import com.sharingif.cube.communication.exception.CommunicationException;
+import com.sharingif.cube.communication.http.HttpMethod;
+import com.sharingif.cube.communication.transport.Connection;
+import com.sharingif.cube.core.config.CubeConfigure;
+import com.sharingif.cube.core.exception.CubeRuntimeException;
+import com.sharingif.cube.core.request.RequestContext;
+import com.sharingif.cube.core.util.StringUtils;
+import org.apache.http.*;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.config.ConnectionConfig;
-import org.apache.http.config.MessageConstraints;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.config.SocketConfig;
+import org.apache.http.config.*;
 import org.apache.http.conn.ManagedHttpClientConnection;
 import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
@@ -57,13 +44,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
-import com.sharingif.cube.communication.exception.CommunicationException;
-import com.sharingif.cube.communication.http.HttpMethod;
-import com.sharingif.cube.communication.transport.Connection;
-import com.sharingif.cube.core.config.CubeConfigure;
-import com.sharingif.cube.core.exception.CubeRuntimeException;
-import com.sharingif.cube.core.request.RequestContext;
-import com.sharingif.cube.core.util.StringUtils;
+import javax.net.ssl.SSLContext;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.nio.charset.CodingErrorAction;
+import java.security.KeyStore;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * apache http 提供基础的公共方法参数
@@ -489,7 +479,13 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
         if(httpContext.getMethod().equals(HttpMethod.GET.name())) {
             HttpGet httpGet = new HttpGet(getUrl(httpHost, path));
             addHeader(httpGet);
-            return getHttpclient().execute(httpGet);
+            try {
+                return getHttpclient().execute(httpGet);
+            }catch (Exception e) {
+                httpGet.abort();
+                throw e;
+            }
+
         }
         if(httpContext.getMethod().equals(HttpMethod.POST.name())) {
             HttpPost httpPost = new HttpPost(path);
@@ -500,7 +496,13 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
             if(httpHost == null) {
                 return getHttpclient().execute(httpPost);
             }
-            return getHttpclient().execute(httpHost, httpPost);
+            try {
+                return getHttpclient().execute(httpHost, httpPost);
+            }catch (Exception e) {
+                httpPost.abort();
+                throw e;
+            }
+
         }
 
         this.logger.error("method type error, method value:{}", httpContext.getMethod());
