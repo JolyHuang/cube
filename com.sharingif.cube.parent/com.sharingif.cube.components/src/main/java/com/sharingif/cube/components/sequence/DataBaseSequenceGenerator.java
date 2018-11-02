@@ -69,7 +69,6 @@ public class DataBaseSequenceGenerator extends AbstractSequenceGenerator<String>
         return strbuf.toString();
     }
 
-    @SuppressWarnings("resource")
 	protected void getNextIdFromDb() {
         Connection conn = null;
         PreparedStatement preparedstatement = null;
@@ -107,13 +106,14 @@ public class DataBaseSequenceGenerator extends AbstractSequenceGenerator<String>
             conn.commit();
 
         } catch (Exception e) {
+            logger.error("generate unique id error [type={}]",type, e);
+
             try {
                 conn.rollback();
             } catch (Exception ee) {
                 logger.error("connection rollback error",ee);
             }
 
-            logger.error("generate unique id error [type={}]",type, e);
             throw new CubeRuntimeException("generate unique id error",e);
         } finally {
             if (preparedstatement != null)
