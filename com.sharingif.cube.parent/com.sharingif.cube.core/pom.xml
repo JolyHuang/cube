@@ -101,6 +101,11 @@
 			<artifactId>spring-tx</artifactId>
 			<version>${maven.project.springframework.release.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>${maven.project.springframework.groupId}</groupId>
+			<artifactId>spring-aspects</artifactId>
+			<version>${maven.project.springframework.release.version}</version>
+		</dependency>
 		
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
