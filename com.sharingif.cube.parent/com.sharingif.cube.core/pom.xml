@@ -62,7 +62,7 @@
 		    <artifactId>aspectjweaver</artifactId>
 		    <version>1.8.7</version>
 		</dependency>
-		
+
 		<dependency>
 		    <groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
@@ -104,6 +104,11 @@
 		<dependency>
 			<groupId>${maven.project.springframework.groupId}</groupId>
 			<artifactId>spring-aspects</artifactId>
+			<version>${maven.project.springframework.release.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-instrument</artifactId>
 			<version>${maven.project.springframework.release.version}</version>
 		</dependency>
 		
