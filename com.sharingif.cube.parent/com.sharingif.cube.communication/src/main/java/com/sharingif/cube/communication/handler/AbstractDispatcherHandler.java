@@ -147,13 +147,6 @@ public abstract class AbstractDispatcherHandler<I> implements DispatcherHandler<
 		}
 	}
 	
-	protected HandlerMethodContent getHandlerMethodContent(I request) {
-		return new HandlerMethodContent(
-				null,
-				null,
-				null,
-				null,
-				new RequestContext<I>(null,null,null,null,request));
-	}
+	abstract protected HandlerMethodContent getHandlerMethodContent(I request);
 	
 }
