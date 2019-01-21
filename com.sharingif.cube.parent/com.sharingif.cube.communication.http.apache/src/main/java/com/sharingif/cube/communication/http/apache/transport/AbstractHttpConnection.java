@@ -8,7 +8,10 @@ import com.sharingif.cube.core.exception.CubeRuntimeException;
 import com.sharingif.cube.core.request.RequestContext;
 import com.sharingif.cube.core.util.StringUtils;
 import org.apache.http.*;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -23,7 +26,9 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.DefaultHttpResponseFactory;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.DefaultHttpResponseParser;
 import org.apache.http.impl.conn.DefaultHttpResponseParserFactory;
@@ -66,6 +71,9 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
 
+    private String user;
+    private String password;
+
     private String host;
     private int port = -1;
     private String address;
@@ -104,6 +112,19 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
         this.host = host;
         this.port = port;
         this.contextPath = contextPath;
+    }
+
+    public String getUser() {
+        return user;
+    }
+    public void setUser(String user) {
+        this.user = user;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getHost() {
@@ -411,12 +432,21 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
                 .setConnectTimeout(connectTimeout)
                 .build();
 
-
         // Create an HttpClient with the given custom dependencies and configuration.
-        httpclient = HttpClients.custom()
-                .setConnectionManager(connManager)
-                .setDefaultRequestConfig(requestConfig)
-                .build();
+        HttpClientBuilder httpClientBuilder = HttpClients.custom();
+        httpClientBuilder.setConnectionManager(connManager);
+        httpClientBuilder.setDefaultRequestConfig(requestConfig);
+
+        if(!StringUtils.isTrimEmpty(getUser())) {
+            UsernamePasswordCredentials usernamePasswordCredentials = new UsernamePasswordCredentials(getUser(), getPassword());
+            CredentialsProvider credsProvider = new BasicCredentialsProvider();
+            credsProvider.setCredentials(AuthScope.ANY, usernamePasswordCredentials);
+
+            httpClientBuilder.setDefaultCredentialsProvider(credsProvider);
+        }
+
+        httpclient = httpClientBuilder.build();
+
     }
 
     public String connect(RequestContext<String> httpContext) throws CommunicationException {
