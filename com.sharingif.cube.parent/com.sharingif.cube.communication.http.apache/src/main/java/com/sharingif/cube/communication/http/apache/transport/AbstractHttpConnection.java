@@ -95,7 +95,8 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
 
     private String encoding = CubeConfigure.DEFAULT_ENCODING;
 
-    private boolean debug = true;
+    private boolean sendLogger = true;
+    private boolean receiveLogger = true;
     private Map<String,String> headers;
     private Map<String, String> excludeLogTrans = new HashMap<String, String>(1);
 
@@ -211,13 +212,18 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
         this.sslcontext = sslcontext;
     }
 
-    public boolean getDebug() {
-        return debug;
+    public boolean isSendLogger() {
+        return sendLogger;
     }
-    public void setDebug(boolean debug) {
-        this.debug = debug;
+    public void setSendLogger(boolean sendLogger) {
+        this.sendLogger = sendLogger;
     }
-
+    public boolean isReceiveLogger() {
+        return receiveLogger;
+    }
+    public void setReceiveLogger(boolean receiveLogger) {
+        this.receiveLogger = receiveLogger;
+    }
     public String getEncoding() {
         return encoding;
     }
@@ -467,7 +473,7 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
 
             String receiveMessage = EntityUtils.toString(response.getEntity(), getEncoding());
 
-            if(getDebug()) {
+            if(isReceiveLogger()) {
                 if(excludeLogTrans.get(httpContext.getLookupPath()) == null) {
                     this.logger.info("receive message:{}", receiveMessage);
                 }
@@ -498,7 +504,7 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
 
     protected CloseableHttpResponse connect(HttpHost httpHost, String path, RequestContext<String> httpContext) throws IOException {
 
-        if(getDebug()) {
+        if(isSendLogger()) {
             if(excludeLogTrans.get(httpContext.getLookupPath()) == null) {
                 this.logger.info("send message:{}", httpContext.getRequest());
             }
