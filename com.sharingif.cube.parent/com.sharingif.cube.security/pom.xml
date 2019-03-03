@@ -13,7 +13,7 @@
 	
 	
 	<properties>
-		<maven.project.springframework.security.release.version>4.0.2.RELEASE</maven.project.springframework.security.release.version>
+		<maven.project.springframework.security.release.version>4.2.10.RELEASE</maven.project.springframework.security.release.version>
 	</properties>
 
 	<dependencies>
