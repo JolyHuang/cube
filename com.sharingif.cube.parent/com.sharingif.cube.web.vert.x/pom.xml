@@ -12,7 +12,7 @@
 	
 	<properties>
 		<maven.project.io.vertx.groupId>io.vertx</maven.project.io.vertx.groupId>
-		<maven.project.io.vertx.release.version>3.4.2</maven.project.io.vertx.release.version>
+		<maven.project.io.vertx.release.version>3.6.3</maven.project.io.vertx.release.version>
 	</properties>
 
 	<dependencies>
