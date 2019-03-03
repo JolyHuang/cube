@@ -8,16 +8,16 @@
 	<name>com.sharingif.cube.parent</name>
 	<url>http://maven.apache.org</url>
 
-	<distributionManagement>
-		<snapshotRepository>
-			<id>snapshots</id>
-			<url>${snapshotsUrl}</url>
-		</snapshotRepository>
-		<repository>
-			<id>releases</id>
-			<url>${releasesUrl}</url>
-		</repository>
-	</distributionManagement>
+	<!--<distributionManagement>-->
+		<!--<snapshotRepository>-->
+			<!--<id>snapshots</id>-->
+			<!--<url>${snapshotsUrl}</url>-->
+		<!--</snapshotRepository>-->
+		<!--<repository>-->
+			<!--<id>releases</id>-->
+			<!--<url>${releasesUrl}</url>-->
+		<!--</repository>-->
+	<!--</distributionManagement>-->
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
