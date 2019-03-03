@@ -1,48 +1,51 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by Fernflower decompiler)
-//
+/*
+ * Copyright 2014 Red Hat, Inc.
+ *
+ *  All rights reserved. This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License v1.0
+ *  and Apache License v2.0 which accompanies this distribution.
+ *
+ *  The Eclipse Public License is available at
+ *  http://www.eclipse.org/legal/epl-v10.html
+ *
+ *  The Apache License v2.0 is available at
+ *  http://www.opensource.org/licenses/apache2.0.php
+ *
+ *  You may elect to redistribute this code under either of these licenses.
+ */
 
 package com.sharingif.cube.web.vert.x.view;
 
-import static io.netty.handler.codec.http.HttpResponseStatus.FORBIDDEN;
-import static io.netty.handler.codec.http.HttpResponseStatus.NOT_FOUND;
-import static io.netty.handler.codec.http.HttpResponseStatus.NOT_MODIFIED;
-import static io.netty.handler.codec.http.HttpResponseStatus.PARTIAL_CONTENT;
-import static io.netty.handler.codec.http.HttpResponseStatus.REQUESTED_RANGE_NOT_SATISFIABLE;
-
-import java.io.File;
-import java.nio.charset.Charset;
-import java.nio.file.NoSuchFileException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.Callable;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Future;
-import io.vertx.core.Handler;
-import io.vertx.core.MultiMap;
-import io.vertx.core.Vertx;
-import io.vertx.core.VertxException;
+import io.vertx.core.*;
 import io.vertx.core.file.FileProps;
 import io.vertx.core.file.FileSystem;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerRequest;
+import io.vertx.core.http.HttpServerResponse;
+import io.vertx.core.http.HttpVersion;
+import io.vertx.core.http.HttpHeaders;
+import io.vertx.core.http.impl.HttpUtils;
 import io.vertx.core.http.impl.MimeMapping;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+import io.vertx.core.net.impl.URIDecoder;
+import io.vertx.ext.web.Http2PushMapping;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.impl.LRUCache;
 import io.vertx.ext.web.impl.Utils;
+
+import java.io.File;
+import java.nio.charset.Charset;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static io.netty.handler.codec.http.HttpResponseStatus.*;
 
 /**
  * Static web server
@@ -53,7 +56,7 @@ import io.vertx.ext.web.impl.Utils;
  */
 public class StaticHandlerImpl implements StaticHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(io.vertx.ext.web.handler.impl.StaticHandlerImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(StaticHandlerImpl.class);
 
     private final DateFormat dateTimeFormatter = Utils.createRFC1123DateTimeFormatter();
     private Map<String, CacheEntry> propsCache;
@@ -67,6 +70,7 @@ public class StaticHandlerImpl implements StaticHandler {
     private boolean cachingEnabled = DEFAULT_CACHING_ENABLED;
     private long cacheEntryTimeout = DEFAULT_CACHE_ENTRY_TIMEOUT;
     private String indexPage = DEFAULT_INDEX_PAGE;
+    private List<Http2PushMapping> http2PushMappings;
     private int maxCacheSize = DEFAULT_MAX_CACHE_SIZE;
     private boolean rangeSupport = DEFAULT_RANGE_SUPPORT;
     private boolean allowRootFileSystemAccess = DEFAULT_ROOT_FILESYSTEM_ACCESS;
@@ -82,6 +86,8 @@ public class StaticHandlerImpl implements StaticHandler {
     private long numServesBlocking;
     private boolean useAsyncFS;
     private long nextAvgCheck = NUM_SERVES_TUNING_FS_ACCESS;
+    private Set<String> compressedMediaTypes = Collections.emptySet();
+    private Set<String> compressedFileSuffixes = Collections.emptySet();
 
     private final ClassLoader classLoader;
 
@@ -114,12 +120,12 @@ public class StaticHandlerImpl implements StaticHandler {
         if (cachingEnabled) {
             // We use cache-control and last-modified
             // We *do not use* etags and expires (since they do the same thing - redundant)
-            headers.set("cache-control", "public, max-age=" + maxAgeSeconds);
-            headers.set("last-modified", dateTimeFormatter.format(props.lastModifiedTime()));
+            Utils.addToMapIfAbsent(headers, "cache-control", "public, max-age=" + maxAgeSeconds);
+            Utils.addToMapIfAbsent(headers, "last-modified", dateTimeFormatter.format(props.lastModifiedTime()));
             // We send the vary header (for intermediate caches)
             // (assumes that most will turn on compression when using static handler)
             if (sendVaryHeader && request.headers().contains("accept-encoding")) {
-                headers.set("vary", "accept-encoding");
+                Utils.addToMapIfAbsent(headers, "vary", "accept-encoding");
             }
         }
 
@@ -134,11 +140,11 @@ public class StaticHandlerImpl implements StaticHandler {
             if (log.isTraceEnabled()) log.trace("Not GET or HEAD so ignoring request");
             context.next();
         } else {
-            String path = Utils.removeDots(Utils.urlDecode(context.normalisedPath(), false));
+            String path = HttpUtils.removeDots(URIDecoder.decodeURIComponent(context.normalisedPath(), false));
             // if the normalized path is null it cannot be resolved
             if (path == null) {
-                log.warn("Invalid path: " + context.request().path() + " so returning 404");
-                context.fail(NOT_FOUND.code());
+                log.warn("Invalid path: " + context.request().path());
+                context.next();
                 return;
             }
 
@@ -162,50 +168,68 @@ public class StaticHandlerImpl implements StaticHandler {
             int idx = file.lastIndexOf('/');
             String name = file.substring(idx + 1);
             if (name.length() > 0 && name.charAt(0) == '.') {
-                context.fail(NOT_FOUND.code());
+                // skip
+                context.next();
                 return;
             }
         }
 
         // Look in cache
-        CacheEntry entry;
-        if (cachingEnabled) {
-            entry = propsCache().get(path);
-            if (entry != null) {
-                HttpServerRequest request = context.request();
-                if ((filesReadOnly || !entry.isOutOfDate()) && entry.shouldUseCached(request)) {
-                    context.response().setStatusCode(NOT_MODIFIED.code()).end();
-                    return;
-                }
+        CacheEntry entry = cachingEnabled ? propsCache().get(path) : null;
+        if (entry != null && (filesReadOnly || !entry.isOutOfDate()) && entry.shouldUseCached(context.request())) {
+            context.response().setStatusCode(NOT_MODIFIED.code()).end();
+            return;
+        }
+
+        final boolean dirty = cachingEnabled && entry != null;
+        final String sfile = file == null ? getFile(path, context) : file;
+
+        // verify if the file exists
+        isFileExisting(context, sfile, exists -> {
+            if (exists.failed()) {
+                context.fail(exists.cause());
+                return;
             }
-        }
 
-        if (file == null) {
-            file = getFile(path, context);
-        }
-
-        String sfile = file;
-
-        // Need to read the props from the filesystem
-        getFileProps(context, file, res -> {
-            if (res.succeeded()) {
-                FileProps fprops = res.result();
-                if (fprops == null) {
-                    // File does not exist
-                    context.fail(NOT_FOUND.code());
-                } else if (fprops.isDirectory()) {
-                    sendDirectory(context, path, sfile);
-                } else {
-                    propsCache().put(path, new CacheEntry(fprops, System.currentTimeMillis()));
-                    sendFile(context, sfile, fprops);
+            // file does not exist, continue...
+            if (!exists.result()) {
+                if (dirty) {
+                    removeCache(path);
                 }
-            } else {
-                if (res.cause() instanceof NoSuchFileException || (res.cause().getCause() != null && res.cause().getCause() instanceof NoSuchFileException)) {
-                    context.fail(NOT_FOUND.code());
+                context.next();
+                return;
+            }
+
+            // Need to read the props from the filesystem
+            getFileProps(context, sfile, res -> {
+                if (res.succeeded()) {
+                    FileProps fprops = res.result();
+                    if (fprops == null) {
+                        // File does not exist
+                        if (dirty) {
+                            removeCache(path);
+                        }
+                        context.next();
+                    } else if (fprops.isDirectory()) {
+                        if (dirty) {
+                            removeCache(path);
+                        }
+                        sendDirectory(context, path, sfile);
+                    } else {
+                        if (cachingEnabled) {
+                            CacheEntry now = new CacheEntry(fprops, System.currentTimeMillis());
+                            propsCache().put(path, now);
+                            if (now.shouldUseCached(context.request())) {
+                                context.response().setStatusCode(NOT_MODIFIED.code()).end();
+                                return;
+                            }
+                        }
+                        sendFile(context, sfile, fprops);
+                    }
                 } else {
                     context.fail(res.cause());
                 }
-            }
+            });
         });
     }
 
@@ -247,6 +271,11 @@ public class StaticHandlerImpl implements StaticHandler {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private synchronized void isFileExisting(RoutingContext context, String file, Handler<AsyncResult<Boolean>> resultHandler) {
+        FileSystem fs = context.vertx().fileSystem();
+        wrapInTCCLSwitch(() -> fs.exists(file, resultHandler));
     }
 
     private synchronized void getFileProps(RoutingContext context, String file, Handler<AsyncResult<FileProps>> resultHandler) {
@@ -358,8 +387,8 @@ public class StaticHandlerImpl implements StaticHandler {
 
                 // Wrap the sendFile operation into a TCCL switch, so the file resolver would find the file from the set
                 // classloader (if any).
-                final Long finalOffset = offset;
-                final Long finalEnd = end;
+                final long finalOffset = offset;
+                final long finalLength = end + 1 - offset;
                 wrapInTCCLSwitch(() -> {
                     // guess content type
                     String contentType = MimeMapping.getMimeTypeForFilename(file);
@@ -371,7 +400,7 @@ public class StaticHandlerImpl implements StaticHandler {
                         }
                     }
 
-                    return request.response().sendFile(file, finalOffset, finalEnd + 1, res2 -> {
+                    return request.response().sendFile(file, finalOffset, finalLength, res2 -> {
                         if (res2.failed()) {
                             context.fail(res2.cause());
                         }
@@ -382,13 +411,67 @@ public class StaticHandlerImpl implements StaticHandler {
                 // classloader (if any).
                 wrapInTCCLSwitch(() -> {
                     // guess content type
-                    String contentType = MimeMapping.getMimeTypeForFilename(file);
+                    String extension = getFileExtension(file);
+                    String contentType = MimeMapping.getMimeTypeForExtension(extension);
+                    if (compressedMediaTypes.contains(contentType) || compressedFileSuffixes.contains(extension)) {
+                        request.response().putHeader(HttpHeaders.CONTENT_ENCODING, HttpHeaders.IDENTITY);
+                    }
                     if (contentType != null) {
                         if (contentType.startsWith("text")) {
                             request.response().putHeader("Content-Type", contentType + ";charset=" + defaultContentEncoding);
                         } else {
                             request.response().putHeader("Content-Type", contentType);
                         }
+                    }
+
+                    // http2 pushing support
+                    if (request.version() == HttpVersion.HTTP_2 && http2PushMappings != null) {
+                        for (Http2PushMapping dependency : http2PushMappings) {
+                            if (!dependency.isNoPush()) {
+                                final String dep = webRoot + "/" + dependency.getFilePath();
+                                HttpServerResponse response = request.response();
+
+                                // get the file props
+                                getFileProps(context, dep, filePropsAsyncResult -> {
+                                    if (filePropsAsyncResult.succeeded()) {
+                                        // push
+                                        writeCacheHeaders(request, filePropsAsyncResult.result());
+                                        response.push(HttpMethod.GET, "/" + dependency.getFilePath(), pushAsyncResult -> {
+                                            if (pushAsyncResult.succeeded()) {
+                                                HttpServerResponse res = pushAsyncResult.result();
+                                                final String depContentType = MimeMapping.getMimeTypeForExtension(file);
+                                                if (depContentType != null) {
+                                                    if (depContentType.startsWith("text")) {
+                                                        res.putHeader("Content-Type", contentType + ";charset=" + defaultContentEncoding);
+                                                    } else {
+                                                        res.putHeader("Content-Type", contentType);
+                                                    }
+                                                }
+                                                res.sendFile(webRoot + "/" + dependency.getFilePath());
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        }
+
+                    } else if (http2PushMappings != null) {
+                        //Link preload when file push is not supported
+                        HttpServerResponse response = request.response();
+                        List<String> links = new ArrayList<>();
+                        for (Http2PushMapping dependency : http2PushMappings) {
+                            final String dep = webRoot + "/" + dependency.getFilePath();
+                            // get the file props
+                            getFileProps(context, dep, filePropsAsyncResult -> {
+                                if (filePropsAsyncResult.succeeded()) {
+                                    // push
+                                    writeCacheHeaders(request, filePropsAsyncResult.result());
+                                    links.add("<" + dependency.getFilePath() + ">; rel=preload; as="
+                                            + dependency.getExtensionTarget() + (dependency.isNoPush() ? "; nopush" : ""));
+                                }
+                            });
+                        }
+                        response.putHeader("Link", links);
                     }
 
                     return request.response().sendFile(file, res2 -> {
@@ -494,6 +577,30 @@ public class StaticHandlerImpl implements StaticHandler {
     }
 
     @Override
+    public StaticHandler setHttp2PushMapping(List<Http2PushMapping> http2PushMap) {
+        if (http2PushMap != null) {
+            this.http2PushMappings = new ArrayList<>(http2PushMap);
+        }
+        return this;
+    }
+
+    @Override
+    public StaticHandler skipCompressionForMediaTypes(Set<String> mediaTypes) {
+        if (mediaTypes != null) {
+            this.compressedMediaTypes = new HashSet<>(mediaTypes);
+        }
+        return this;
+    }
+
+    @Override
+    public StaticHandler skipCompressionForSuffixes(Set<String> fileSuffixes) {
+        if (fileSuffixes != null) {
+            this.compressedFileSuffixes = new HashSet<>(fileSuffixes);
+        }
+        return this;
+    }
+
+    @Override
     public synchronized StaticHandler setEnableFSTuning(boolean enableFSTuning) {
         this.tuning = enableFSTuning;
         if (!tuning) {
@@ -527,6 +634,12 @@ public class StaticHandlerImpl implements StaticHandler {
         return propsCache;
     }
 
+    private void removeCache(String path) {
+        if (propsCache != null) {
+            propsCache.remove(path);
+        }
+    }
+
     private Date parseDate(String header) {
         try {
             return dateTimeFormatter.parse(header);
@@ -538,7 +651,7 @@ public class StaticHandlerImpl implements StaticHandler {
     private String getFile(String path, RoutingContext context) {
         String file = webRoot + Utils.pathOffset(path, context);
         if (log.isTraceEnabled()) log.trace("File to serve is " + file);
-        return file.substring(1,file.length());
+        return file.substring(1);
     }
 
     private void setRoot(String webRoot) {
@@ -648,6 +761,15 @@ public class StaticHandlerImpl implements StaticHandler {
         });
     }
 
+    private String getFileExtension(String file) {
+        int li = file.lastIndexOf(46);
+        if (li != -1 && li != file.length() - 1) {
+            return file.substring(li + 1);
+        } else {
+            return null;
+        }
+    }
+
     // TODO make this static and use Java8 DateTimeFormatter
     private final class CacheEntry {
         final FileProps props;
@@ -675,6 +797,4 @@ public class StaticHandlerImpl implements StaticHandler {
         }
 
     }
-
-
 }
