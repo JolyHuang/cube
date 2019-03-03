@@ -12,7 +12,7 @@
 	<url>http://maven.apache.org</url>
 	
 	<properties>
-		<maven.project.fasterxml.jackson.release.version>2.8.8</maven.project.fasterxml.jackson.release.version>
+		<maven.project.fasterxml.jackson.release.version>2.9.8</maven.project.fasterxml.jackson.release.version>
 	</properties>
 
 	<dependencies>
