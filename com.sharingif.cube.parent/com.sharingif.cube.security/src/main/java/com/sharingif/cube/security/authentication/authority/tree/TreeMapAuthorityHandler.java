@@ -1,10 +1,10 @@
 package com.sharingif.cube.security.authentication.authority.tree;
 
-import java.util.Set;
-import java.util.TreeMap;
-
 import com.sharingif.cube.security.authentication.authority.IAuthorityHandler;
 import com.sharingif.cube.security.authentication.authority.ICoreAuthority;
+
+import java.util.List;
+import java.util.TreeMap;
 
 /**   
  *  
@@ -17,13 +17,13 @@ import com.sharingif.cube.security.authentication.authority.ICoreAuthority;
  * @Version:      [v1.0] 
  *    
  */
-public class TreeMapAuthorityHandler implements IAuthorityHandler<Set<? extends ICoreAuthority>, TreeMap<String, String>> {
+public class TreeMapAuthorityHandler implements IAuthorityHandler<List<? extends ICoreAuthority>, TreeMap<String, String>> {
 
 	@Override
-	public TreeMap<String, String> handleAuthority(Set<? extends ICoreAuthority> authorities) {
-		TreeMap<String, String> authoritieTreeMap = new TreeMap<String, String>();
+	public TreeMap<String, String> handleAuthority(List<? extends ICoreAuthority> authorities) {
+		TreeMap<String, String> authoritieTreeMap = new TreeMap<>();
 		for(ICoreAuthority coreAuthority : authorities){
-			authoritieTreeMap.put(coreAuthority.getAuthorityCode(),coreAuthority.getAuthorityCode());
+			authoritieTreeMap.put(coreAuthority.getAuthorityCode(), null);
 		}
 		return authoritieTreeMap;
 	}
