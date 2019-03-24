@@ -38,7 +38,7 @@ public class SessionRegistryCommand extends AbstractHandlerMethodCommand {
 
         HttpSession httpSession = httpRequestContext.getRequest().getSession(false);
 
-        ICoreUser coreUser = (ICoreUser)content.getReturnValue();
+        ICoreUser coreUser = content.getObject(ICoreUser.class);
 
         sessionRegistry.registerNewSession(httpSession.getId(), coreUser);
     }
