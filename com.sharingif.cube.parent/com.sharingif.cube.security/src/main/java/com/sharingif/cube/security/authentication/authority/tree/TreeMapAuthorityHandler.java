@@ -33,7 +33,7 @@ public class TreeMapAuthorityHandler implements IAuthorityHandler<List<? extends
 		if(authorities == null)
 			return false;
 		
-		return null == authorities.get(authorityCode) ? false : true;
+		return authorities.containsKey(authorityCode);
 	}
 
 }
