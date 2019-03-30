@@ -1,12 +1,12 @@
 package com.sharingif.cube.security.handler.chain.command.authentication;
 
-import java.util.List;
-
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.core.handler.chain.command.AbstractHandlerMethodCommand;
 import com.sharingif.cube.core.user.ICoreUser;
 import com.sharingif.cube.security.authentication.role.IRoleAuthenticationHandler;
+
+import java.util.List;
 
 /**   
  *  
@@ -21,18 +21,18 @@ import com.sharingif.cube.security.authentication.role.IRoleAuthenticationHandle
  */
 public class RoleAuthenticationCommand extends AbstractHandlerMethodCommand {
 	
-	private List<IRoleAuthenticationHandler<? super ICoreUser>> roleAuthenticationHandlers;
+	private List<IRoleAuthenticationHandler> roleAuthenticationHandlers;
 
-	public List<IRoleAuthenticationHandler<? super ICoreUser>> getRoleAuthenticationHandlers() {
+	public List<IRoleAuthenticationHandler> getRoleAuthenticationHandlers() {
 		return roleAuthenticationHandlers;
 	}
-	public void setRoleAuthenticationHandlers(List<IRoleAuthenticationHandler<? super ICoreUser>> roleAuthenticationHandlers) {
+	public void setRoleAuthenticationHandlers(List<IRoleAuthenticationHandler> roleAuthenticationHandlers) {
 		this.roleAuthenticationHandlers = roleAuthenticationHandlers;
 	}
 	
 	@Override
 	public void execute(HandlerMethodContent content) throws CubeException {
-		for(IRoleAuthenticationHandler<? super ICoreUser> roleAuthenticationHandler : roleAuthenticationHandlers){
+		for(IRoleAuthenticationHandler roleAuthenticationHandler : roleAuthenticationHandlers){
 			roleAuthenticationHandler.handleRole(content.getObject(ICoreUser.class));
 		}
 	}
