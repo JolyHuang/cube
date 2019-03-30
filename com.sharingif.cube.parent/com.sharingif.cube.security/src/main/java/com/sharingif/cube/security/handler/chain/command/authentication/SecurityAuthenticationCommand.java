@@ -1,13 +1,13 @@
 package com.sharingif.cube.security.handler.chain.command.authentication;
 
-import java.util.List;
-
 import com.sharingif.cube.components.channel.IChannelContext;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.chain.HandlerMethodContent;
 import com.sharingif.cube.core.handler.chain.command.AbstractHandlerMethodCommand;
 import com.sharingif.cube.core.user.ICoreUser;
 import com.sharingif.cube.security.authentication.AuthenticationHander;
+
+import java.util.List;
 
 /**
  *
@@ -22,20 +22,20 @@ import com.sharingif.cube.security.authentication.AuthenticationHander;
  */
 public class SecurityAuthenticationCommand extends AbstractHandlerMethodCommand {
 	
-	private List<AuthenticationHander<? super ICoreUser, ? super IChannelContext>> authenticationHanders;
+	private List<AuthenticationHander> authenticationHanders;
 
-	public List<AuthenticationHander<? super ICoreUser, ? super IChannelContext>> getAuthenticationHanders() {
+	public List<AuthenticationHander> getAuthenticationHanders() {
 		return authenticationHanders;
 	}
 	public void setAuthenticationHanders(
-			List<AuthenticationHander<? super ICoreUser, ? super IChannelContext>> authenticationHanders) {
+			List<AuthenticationHander> authenticationHanders) {
 		this.authenticationHanders = authenticationHanders;
 	}
 
 	
 	@Override
 	public void execute(HandlerMethodContent content) throws CubeException {
-		for(AuthenticationHander<? super ICoreUser, ? super IChannelContext> authenticationHander : authenticationHanders){
+		for(AuthenticationHander authenticationHander : authenticationHanders){
 			
 			authenticationHander.handerAuthentication(content.findObject(ICoreUser.class), content.findObject(IChannelContext.class));
 			
