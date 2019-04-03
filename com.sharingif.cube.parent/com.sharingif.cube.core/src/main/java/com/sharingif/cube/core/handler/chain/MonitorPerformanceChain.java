@@ -25,6 +25,11 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain {
 
 	@Override
 	public void before(HandlerMethodContent content) throws CubeException {
+		String lookupPath = content.getRequestContext().getLookupPath();
+		if(lookupPath.startsWith("/static")) {
+			return;
+		}
+
 		Long beginCurrentTime = System.currentTimeMillis();
 		content.addacheData(BEGIN_CURRENT_TIME, beginCurrentTime);
 
@@ -39,6 +44,11 @@ public class MonitorPerformanceChain extends AbstractHandlerMethodChain {
 
 	@Override
 	public void after(HandlerMethodContent content) throws CubeException {
+		String lookupPath = content.getRequestContext().getLookupPath();
+		if(lookupPath.startsWith("/static")) {
+			return;
+		}
+
 		Long beginCurrentTime = content.getCacheData(BEGIN_CURRENT_TIME);
 		
 		Long endCurrentTime = System.currentTimeMillis();
