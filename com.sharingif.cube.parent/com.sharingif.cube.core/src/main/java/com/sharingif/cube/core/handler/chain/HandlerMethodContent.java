@@ -67,6 +67,11 @@ public class HandlerMethodContent {
 				return (T)obj;
 			}
 		}
+
+		if(target.isInstance(returnValue)) {
+			return (T)returnValue;
+		}
+
 		return null;
 	}
 
