@@ -42,7 +42,8 @@ public class SessionConcurrentHandlerImpl implements ISessionConcurrentHandler {
 		sessionAuthenticationStrategy.onAuthentication(
 				new UsernamePasswordAuthenticationToken(
 						coreUser
-						,((IPassword)coreUser).getPassword())
+						,null
+				)
 						,((SpringMVCHttpRequest)request).getHttpServletRequest()
 						,((SpringMVCHttpResponse)response).getHttpServletResponse()
 		);
