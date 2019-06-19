@@ -30,12 +30,16 @@
 
 	<modules>
 		<module>com.sharingif.cube.core</module>
+
+		<module>com.sharingif.cube.batch.core</module>
+
 		<module>com.sharingif.cube.components</module>
 
 		<module>com.sharingif.cube.web</module>
 
 		<module>com.sharingif.cube.persistence</module>
 		<module>com.sharingif.cube.persistence.mybatis</module>
+		<module>com.sharingif.cube.persistence.mongodb</module>
 
 		<module>com.sharingif.cube.security</module>
 		<module>com.sharingif.cube.security.web</module>
