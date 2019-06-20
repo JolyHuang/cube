@@ -75,7 +75,13 @@ public class JobView implements View {
 
         String lookupPath = requestContext.getLookupPath();
         JobConfig jobConfig = allJobConfig.get(lookupPath);
+        if(jobConfig == null) {
+            return;
+        }
         jobConfig = allJobConfig.get(jobConfig.getNextLookupPath());
+        if(jobConfig == null) {
+            return;
+        }
 
         if(returnValue instanceof IDataId) {
             JobModel jobModel = handlerObject(returnValue, jobConfig);
