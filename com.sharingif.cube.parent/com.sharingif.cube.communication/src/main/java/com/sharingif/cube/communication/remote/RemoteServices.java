@@ -35,8 +35,9 @@ public class RemoteServices {
 	
 	private RequestContextResolver<Object[], ?> requestContextResolver;
 	private AbstractHandlerMethodCommunicationTransportFactory<?,?,?,?,?,?> handlerMethodCommunicationTransportFactory;
+	private Map<String, Class> serviceMap;
 	private List<String> services;
-	
+
 	private Map<String, AbstractHandlerMethodCommunicationTransport<?,?,?,?,?,?>> cacheHandlerMethodCommunicationTransportMap = new HashMap<String,AbstractHandlerMethodCommunicationTransport<?,?,?,?,?,?>>(128);
 	
 	
@@ -56,63 +57,95 @@ public class RemoteServices {
 	public List<String> getServices() {
 		return services;
 	}
+
+	protected Class<?> getClass(String service) {
+		Class<?> cls = null;
+		try {
+			cls = Class.forName(service);
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+
+		return cls;
+	}
+
+	protected String getProxyClassName(Class<?> cls) {
+		String proxyClassName;
+		Service serviceAnnotation = cls.getAnnotation(Service.class);
+		if(serviceAnnotation == null || StringUtils.isTrimEmpty(serviceAnnotation.value())) {
+			String shortClassName = ClassUtils.getShortName(cls.getName());
+
+			proxyClassName = Introspector.decapitalize(shortClassName);
+		} else {
+			proxyClassName = serviceAnnotation.value();
+		}
+
+		return proxyClassName;
+	}
+
+	public void addService(String service) {
+		Class<?> cls = getClass(service);
+		String proxyClassName = getProxyClassName(cls);
+
+		addService(proxyClassName, cls);
+	}
+
+	public void addService(String proxyClassName, String service) {
+		Class<?> cls = getClass(service);
+		addService(proxyClassName, cls);
+	}
+
 	public void setServices(List<String> services) {
 		this.services = services;
+
+		for(String service : services) {
+			addService(service);
+		}
+	}
+
+	public void addService(String proxyClassName, Class<?> cls) {
+		cls = serviceMap.put(proxyClassName, cls);
+		if(null != cls) {
+			this.logger.error("roxy class name repeat,name:{}",proxyClassName);
+			throw new ValidationCubeException("proxy class name repeat");
+		}
+	}
+
+	protected Object getProxyClass(DataBinderFactory dataBinderFactory, Class<?> cls) {
+		Object proxyClass = Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[]{cls}, new InvocationHandler() {
+
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			@Override
+			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+				String key = new StringBuilder(method.getDeclaringClass().getTypeName()).append('.').append(method.getName()).toString();
+				AbstractHandlerMethodCommunicationTransport handlerMethodCommunicationTransport = (ProxyInterfaceHandlerMethodCommunicationTransport) cacheHandlerMethodCommunicationTransportMap.get(key);
+				if(handlerMethodCommunicationTransport == null) {
+					handlerMethodCommunicationTransport = handlerMethodCommunicationTransportFactory.createHandlerMethodCommunicationTransport(proxy, method);
+					if(null == handlerMethodCommunicationTransport.getDataBinderFactory()){
+						handlerMethodCommunicationTransport.setDataBinderFactory(dataBinderFactory);
+					}
+					cacheHandlerMethodCommunicationTransportMap.put(key, handlerMethodCommunicationTransport);
+				}
+
+				RequestContext<?> requestContext = requestContextResolver.resolveRequest(new Object[]{handlerMethodCommunicationTransport, args});
+
+				return handlerMethodCommunicationTransport.doTransport(requestContext);
+			}
+
+		});
+
+		return proxyClass;
 	}
 	
 	public Map<String,Object> initServices(DataBinderFactory dataBinderFactory) throws ClassNotFoundException {
 		
-		Map<String, Object> proxyClassMap = new HashMap<String, Object>(services.size());
-		
-		for(String service : services) {
-			
-			Class<?> cls = null;
-			try {
-				cls = Class.forName(service);
-			} catch (ClassNotFoundException e) {
-				throw new RuntimeException(e);
-			}
+		Map<String, Object> proxyClassMap = new HashMap<String, Object>(serviceMap.size());
 
-			String proxyClassName;
-			Service serviceAnnotation = cls.getAnnotation(Service.class);
-			if(serviceAnnotation == null || StringUtils.isTrimEmpty(serviceAnnotation.value())) {
-				String shortClassName = ClassUtils.getShortName(cls.getName());
+		serviceMap.forEach((proxyClassName, serviceClass)-> {
+			Object proxyClass = getProxyClass(dataBinderFactory, serviceClass);
 
-				proxyClassName = Introspector.decapitalize(shortClassName);
-			} else {
-				proxyClassName = serviceAnnotation.value();
-			}
-			
-
-			Object proxyClass = Proxy.newProxyInstance(this.getClass().getClassLoader(), new Class[]{cls}, new InvocationHandler() {
-				
-				@SuppressWarnings({ "unchecked", "rawtypes" })
-				@Override
-				public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-					String key = new StringBuilder(method.getDeclaringClass().getTypeName()).append('.').append(method.getName()).toString();
-					AbstractHandlerMethodCommunicationTransport handlerMethodCommunicationTransport = (ProxyInterfaceHandlerMethodCommunicationTransport) cacheHandlerMethodCommunicationTransportMap.get(key);
-					if(handlerMethodCommunicationTransport == null) {
-						handlerMethodCommunicationTransport = handlerMethodCommunicationTransportFactory.createHandlerMethodCommunicationTransport(proxy, method);
-						if(null == handlerMethodCommunicationTransport.getDataBinderFactory()){
-							handlerMethodCommunicationTransport.setDataBinderFactory(dataBinderFactory);
-						}
-						cacheHandlerMethodCommunicationTransportMap.put(key, handlerMethodCommunicationTransport);
-					}
-					
-					RequestContext<?> requestContext = requestContextResolver.resolveRequest(new Object[]{handlerMethodCommunicationTransport, args});
-					
-					return handlerMethodCommunicationTransport.doTransport(requestContext);
-				}
-				
-			});
-			
-			Object oldproxyClass = proxyClassMap.put(proxyClassName, proxyClass);
-			if(null != oldproxyClass) {
-				this.logger.error("roxy class name repeat,name:{}",proxyClassName);
-				throw new ValidationCubeException("proxy class name repeat");
-			}
-			
-		}
+			proxyClassMap.put(proxyClassName, proxyClass);
+		});
 		
 		return proxyClassMap;
 	}
