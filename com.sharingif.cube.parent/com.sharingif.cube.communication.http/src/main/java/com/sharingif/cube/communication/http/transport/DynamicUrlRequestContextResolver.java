@@ -1,7 +1,7 @@
 package com.sharingif.cube.communication.http.transport;
 
 import com.sharingif.cube.communication.MediaType;
-import com.sharingif.cube.communication.http.request.DynamicUrlRequest;
+import com.sharingif.cube.core.transport.DynamicUrlRequest;
 import com.sharingif.cube.core.handler.bind.annotation.RequestMethod;
 import com.sharingif.cube.core.request.RequestContext;
 import com.sharingif.cube.core.request.RequestContextResolver;

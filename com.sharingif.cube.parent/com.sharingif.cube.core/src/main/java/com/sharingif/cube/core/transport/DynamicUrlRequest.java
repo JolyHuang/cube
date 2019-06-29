@@ -1,4 +1,4 @@
-package com.sharingif.cube.communication.http.request;
+package com.sharingif.cube.core.transport;
 
 public class DynamicUrlRequest<T> {
 
