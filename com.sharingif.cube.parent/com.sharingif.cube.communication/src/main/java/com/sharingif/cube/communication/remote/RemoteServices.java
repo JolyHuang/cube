@@ -39,8 +39,11 @@ public class RemoteServices {
 	private List<String> services;
 
 	private Map<String, AbstractHandlerMethodCommunicationTransport<?,?,?,?,?,?>> cacheHandlerMethodCommunicationTransportMap = new HashMap<String,AbstractHandlerMethodCommunicationTransport<?,?,?,?,?,?>>(128);
-	
-	
+
+	public RemoteServices() {
+		this.serviceMap = new HashMap<>();
+	}
+
 	public RequestContextResolver<Object[], ?> getRequestContextResolver() {
 		return requestContextResolver;
 	}
