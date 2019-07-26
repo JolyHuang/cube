@@ -113,6 +113,10 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		boolean tranStatusFlag = true;
 
+		resultMap.put(getExceptionMessageName(), null);
+		resultMap.put(getExceptionLocalizedMessageName(), null);
+		resultMap.put(getFieldErrorsName(), null);
+		resultMap.put(getDataName(), null);
 
 		for (Map.Entry<String, Object> entry : model.entrySet()) {
 			Object value = entry.getValue();
