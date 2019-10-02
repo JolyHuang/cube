@@ -52,11 +52,14 @@ public class BindValidationCubeExceptionHandler extends ValidationCubeExceptionH
 		
 		BindValidationCubeException bindValidationCubeException = (BindValidationCubeException)cubeException;
 		List<FieldError> fieldErrors = bindValidationCubeException.getBindingResult().getFieldErrors();
-		List<FieldError> localeFieldErrors = new ArrayList<FieldError>(fieldErrors.size());
+		List<com.sharingif.cube.core.exception.FieldError> localeFieldErrors = new ArrayList<com.sharingif.cube.core.exception.FieldError>(fieldErrors.size());
 		for (FieldError fieldError : fieldErrors) {
 			
 			String localizedMessage=super.getApplicationContext().getMessage(fieldError, locale);
-			FieldError localeFieldError = new FieldError(fieldError.getObjectName(), fieldError.getField(), fieldError.getRejectedValue(), fieldError.isBindingFailure(), fieldError.getCodes(), fieldError.getArguments(), localizedMessage);
+			com.sharingif.cube.core.exception.FieldError localeFieldError = new com.sharingif.cube.core.exception.FieldError();
+			localeFieldError.setField(fieldError.getField());
+			localeFieldError.setCode(fieldError.getCode());
+			localeFieldError.setDefaultMessage(localizedMessage);
 			localeFieldErrors.add(localeFieldError);
 		}
 		bindValidationCubeException.setLocaleFieldErrors(localeFieldErrors);

@@ -21,6 +21,7 @@ public class JsonModelBusinessCommunicationExceptionHandler implements IBusiness
 
         BusinessCommunicationException businessCommunicationException = new BusinessCommunicationException(jsonModel.get_exceptionMessage());
         businessCommunicationException.setLocalizedMessage(jsonModel.get_exceptionLocalizedMessage());
+        businessCommunicationException.setFieldErrors(jsonModel.get_fieldErrors());
 
         throw businessCommunicationException;
     }

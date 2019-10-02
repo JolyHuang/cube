@@ -3,8 +3,8 @@ package com.sharingif.cube.web.exception.handler.validation;
 import java.util.List;
 import java.util.Locale;
 
-import org.springframework.validation.FieldError;
 
+import com.sharingif.cube.core.exception.FieldError;
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
 

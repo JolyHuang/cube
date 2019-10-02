@@ -1,6 +1,9 @@
 package com.sharingif.cube.communication.exception;
 
 import com.sharingif.cube.core.exception.CubeRuntimeException;
+import com.sharingif.cube.core.exception.FieldError;
+
+import java.util.List;
 
 /**
  * 通讯异常
@@ -12,6 +15,8 @@ import com.sharingif.cube.core.exception.CubeRuntimeException;
 public class CommunicationException extends CubeRuntimeException {
 
 	private static final long serialVersionUID = 3291265901781247507L;
+
+	private List<FieldError> fieldErrors;
 	
 	public CommunicationException(String message){
 		super(message);
@@ -26,4 +31,11 @@ public class CommunicationException extends CubeRuntimeException {
 		super(message,args,cause);
 	}
 
+	public List<FieldError> getFieldErrors() {
+		return fieldErrors;
+	}
+
+	public void setFieldErrors(List<FieldError> fieldErrors) {
+		this.fieldErrors = fieldErrors;
+	}
 }

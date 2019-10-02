@@ -3,12 +3,12 @@ package com.sharingif.cube.communication.view;
 import java.util.List;
 import java.util.TimeZone;
 
-import org.springframework.validation.FieldError;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sharingif.cube.communication.JsonModel;
 import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.exception.CubeRuntimeException;
+import com.sharingif.cube.core.exception.FieldError;
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
 

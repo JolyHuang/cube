@@ -1,9 +1,10 @@
 package com.sharingif.cube.communication;
 
+import com.sharingif.cube.core.exception.FieldError;
+
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.validation.FieldError;
 
 /**
  * JsonModel

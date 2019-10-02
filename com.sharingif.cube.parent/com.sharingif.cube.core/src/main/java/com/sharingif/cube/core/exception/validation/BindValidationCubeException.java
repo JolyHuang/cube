@@ -28,7 +28,7 @@ public class BindValidationCubeException extends ValidationCubeException impleme
 
 	private final BindingResult bindingResult;
 	
-	private List<FieldError> localeFieldErrors;
+	private List<com.sharingif.cube.core.exception.FieldError> localeFieldErrors;
 
 
 	public BindValidationCubeException(BindingResult bindingResult) {
@@ -263,11 +263,11 @@ public class BindValidationCubeException extends ValidationCubeException impleme
 		return this.bindingResult.hashCode();
 	}
 
-	public List<FieldError> getLocaleFieldErrors() {
+	public List<com.sharingif.cube.core.exception.FieldError> getLocaleFieldErrors() {
 		return localeFieldErrors;
 	}
 
-	public void setLocaleFieldErrors(List<FieldError> localeFieldErrors) {
+	public void setLocaleFieldErrors(List<com.sharingif.cube.core.exception.FieldError> localeFieldErrors) {
 		this.localeFieldErrors = localeFieldErrors;
 	}
 
