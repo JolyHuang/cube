@@ -10,6 +10,7 @@ import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.exception.CubeRuntimeException;
 import com.sharingif.cube.core.exception.FieldError;
 import com.sharingif.cube.core.exception.ICubeException;
+import com.sharingif.cube.core.exception.IFieldErrorCubeException;
 import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
 
 /**
@@ -73,7 +74,7 @@ public abstract class AbstractJsonView implements View {
 		} else {
 			jsonModel = new JsonModel<Object>(false, exception.getMessage(), exception.getLocalizedMessage(), null);
 
-			if(exception instanceof BindValidationCubeException) {
+			if(exception instanceof IFieldErrorCubeException) {
 				List<FieldError> localeFieldErrors = ((BindValidationCubeException)exception).getLocaleFieldErrors();
 				jsonModel.set_fieldErrors(localeFieldErrors);
 			}

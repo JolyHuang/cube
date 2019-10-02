@@ -4,6 +4,7 @@ import java.beans.PropertyEditor;
 import java.util.List;
 import java.util.Map;
 
+import com.sharingif.cube.core.exception.IFieldErrorCubeException;
 import org.springframework.beans.PropertyEditorRegistry;
 import org.springframework.util.Assert;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -20,7 +21,7 @@ import org.springframework.validation.ObjectError;
  * @version v1.0
  * @since v1.0
  */
-public class BindValidationCubeException extends ValidationCubeException implements BindingResult {
+public class BindValidationCubeException extends ValidationCubeException implements BindingResult, IFieldErrorCubeException {
 	
 	private static final String MESSAGE = "bind exception";
 	
