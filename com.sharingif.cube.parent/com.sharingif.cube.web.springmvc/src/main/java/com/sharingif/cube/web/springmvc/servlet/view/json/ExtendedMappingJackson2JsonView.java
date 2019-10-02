@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.sharingif.cube.core.exception.FieldError;
+import com.sharingif.cube.core.exception.IFieldErrorCubeException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -17,7 +18,6 @@ import com.sharingif.cube.communication.JsonModel;
 import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.UnknownCubeException;
-import com.sharingif.cube.core.exception.validation.BindValidationCubeException;
 import com.sharingif.cube.core.handler.HandlerMethod;
 import com.sharingif.cube.core.handler.bind.annotation.SettingConstants;
 import com.sharingif.cube.web.springmvc.handler.annotation.ExtendedServletInvocableHandlerMethod;
@@ -134,8 +134,8 @@ public class ExtendedMappingJackson2JsonView extends MappingJackson2JsonView{
 
 				resultMap.put(getExceptionMessageName(), message);
 
-				if(value instanceof BindValidationCubeException) {
-					List<FieldError> localeFieldErrors = ((BindValidationCubeException)exception).getLocaleFieldErrors();
+				if(value instanceof IFieldErrorCubeException) {
+					List<FieldError> localeFieldErrors = ((IFieldErrorCubeException)exception).getLocaleFieldErrors();
 
 					resultMap.put(getFieldErrorsName(), localeFieldErrors);
 				}
