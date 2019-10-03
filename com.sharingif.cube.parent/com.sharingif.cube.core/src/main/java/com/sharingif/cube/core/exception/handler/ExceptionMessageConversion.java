@@ -19,23 +19,17 @@ import com.sharingif.cube.core.exception.CubeRuntimeException;
  */
 public class ExceptionMessageConversion {
 
-    protected final Logger logger = LoggerFactory.getLogger(getClass());
+    protected static final Logger logger = LoggerFactory.getLogger(ExceptionMessageConversion.class);
 
-    private Properties properties = null;
+    private static final Properties PROPERTIES = new Properties();;
 
-    public ExceptionMessageConversion() {
-        this("config/app/ErrorMessageConfigure.properties");
-    }
-
-    public ExceptionMessageConversion(String errorMessageConfigurePath) {
+    static {
         InputStream in = null;
         try {
-            in = CubeConfigure.class.getClassLoader().getResourceAsStream(errorMessageConfigurePath);
-            properties = new Properties();
-            properties.load(in);
+            in = CubeConfigure.class.getClassLoader().getResourceAsStream("config/app/ErrorMessageConfigure.properties");
+            PROPERTIES.load(in);
         } catch (Exception e) {
-            logger.error("config.app.CubeConfigure file not found");
-            throw new CubeRuntimeException(e);
+            logger.warn("config.app.CubeConfigure file not found");
         } finally {
             if(in != null) {
                 try {
@@ -47,8 +41,8 @@ public class ExceptionMessageConversion {
         }
     }
 
-    public String convert(String message){
-        return properties.getProperty(message);
+    public static String convert(String message){
+        return PROPERTIES.getProperty(message);
     }
 
 }

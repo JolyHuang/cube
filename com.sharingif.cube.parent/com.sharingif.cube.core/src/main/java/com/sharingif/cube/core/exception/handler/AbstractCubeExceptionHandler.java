@@ -34,15 +34,6 @@ public abstract class AbstractCubeExceptionHandler<RI extends RequestContext<?>,
 
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
-	private ExceptionMessageConversion exceptionMessageConversion;
-
-	public ExceptionMessageConversion getExceptionMessageConversion() {
-		return exceptionMessageConversion;
-	}
-	public void setExceptionMessageConversion(ExceptionMessageConversion exceptionMessageConversion) {
-		this.exceptionMessageConversion = exceptionMessageConversion;
-	}
-
 	@Override
 	public ICubeException convertException(Exception exception) {
 		ICubeException cubeException = convertExceptionInternal(exception);
@@ -55,11 +46,8 @@ public abstract class AbstractCubeExceptionHandler<RI extends RequestContext<?>,
 	}
 
 	protected void convertExceptionMessage(ICubeException exception) {
-		if(exceptionMessageConversion == null) {
-			return;
-		}
 
-		String message = exceptionMessageConversion.convert(exception.getMessage());
+		String message = ExceptionMessageConversion.convert(exception.getMessage());
 		if(StringUtils.isTrimEmpty(message)) {
 			return;
 		}

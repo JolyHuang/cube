@@ -1,13 +1,11 @@
 package com.sharingif.cube.core.exception.handler;
 
+import com.sharingif.cube.core.exception.ICubeException;
+import com.sharingif.cube.core.request.RequestContext;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.beans.factory.InitializingBean;
-
-import com.sharingif.cube.core.exception.ICubeException;
-import com.sharingif.cube.core.request.RequestContext;
 
 /**
  * 组合多种异常处理器当有异常需要处理时按照顺序选择合适的处理器处理,
@@ -17,25 +15,18 @@ import com.sharingif.cube.core.request.RequestContext;
  * @version v1.0
  * @since v1.0
  */
-public class MultiCubeExceptionHandler<RI extends RequestContext<?>, H extends Object> extends AbstractCubeExceptionHandler<RI,H> implements InitializingBean {
+public class MultiCubeExceptionHandler<RI extends RequestContext<?>, H extends Object> extends AbstractCubeExceptionHandler<RI,H> {
 	
 	private Map<String,AbstractCubeExceptionHandler<RI,H>> cacheExceptionHandlers = new HashMap<String,AbstractCubeExceptionHandler<RI,H>>(20);
 	
 	private List<AbstractCubeExceptionHandler<RI,H>> cubeExceptionHandlers;
-	private ExceptionMessageConversion exceptionMessageConversion;
-	
+
 	public List<AbstractCubeExceptionHandler<RI,H>> getCubeExceptionHandlers() {
 		return cubeExceptionHandlers;
 	}
 
 	public void setCubeExceptionHandlers(List<AbstractCubeExceptionHandler<RI,H>> cubeExceptionHandlers) {
 		this.cubeExceptionHandlers = cubeExceptionHandlers;
-	}
-	public ExceptionMessageConversion getExceptionMessageConversion() {
-		return exceptionMessageConversion;
-	}
-	public void setExceptionMessageConversion(ExceptionMessageConversion exceptionMessageConversion) {
-		this.exceptionMessageConversion = exceptionMessageConversion;
 	}
 
 	@Override
@@ -85,15 +76,5 @@ public class MultiCubeExceptionHandler<RI extends RequestContext<?>, H extends O
 		}
 		
 		return null;
-	}
-
-
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		if((getCubeExceptionHandlers() != null) && (getExceptionMessageConversion() != null)) {
-			for(AbstractCubeExceptionHandler<RI,H> abstractCubeExceptionHandler : getCubeExceptionHandlers()) {
-				abstractCubeExceptionHandler.setExceptionMessageConversion(getExceptionMessageConversion());
-			}
-		}
 	}
 }
