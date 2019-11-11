@@ -56,6 +56,8 @@
 		<module>com.sharingif.cube.web.springmvc</module>
 
 		<module>com.sharingif.cube.zookeeper</module>
+
+		<module>com.sharingif.cube.netty</module>
 	</modules>
 
 	<dependencies>
