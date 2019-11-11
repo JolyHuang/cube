@@ -111,11 +111,11 @@
 			<artifactId>aspectjweaver</artifactId>
 			<version>1.9.3</version>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.aspectj</groupId>-->
-<!--			<artifactId>aspectjrt</artifactId>-->
-<!--			<version>1.9.3</version>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.9.3</version>
+		</dependency>
 		<dependency>
 			<groupId>${maven.project.springframework.groupId}</groupId>
 			<artifactId>spring-instrument</artifactId>
