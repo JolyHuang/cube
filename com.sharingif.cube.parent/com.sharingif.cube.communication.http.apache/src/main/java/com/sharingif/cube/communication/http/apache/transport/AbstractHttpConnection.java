@@ -76,7 +76,6 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
 
     private String host;
     private int port = -1;
-    private String address;
     private String contextPath;
     private boolean useHttps;
     private ContentType contentType;
@@ -102,11 +101,6 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
 
     public AbstractHttpConnection() {
 
-    }
-
-    public AbstractHttpConnection(String address, String contextPath) {
-        this.address = address;
-        this.contextPath = contextPath;
     }
 
     public AbstractHttpConnection(String host, int port, String contextPath) {
@@ -247,23 +241,15 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
 
     protected HttpHost getHttpHost() {
 
-        if(address == null && host == null && port == -1) {
+        if(host == null && port == -1) {
             return null;
         }
 
         HttpHost httpHost = null;
-        if(!StringUtils.isEmpty(address)) {
-            if(useHttps) {
-                httpHost = new HttpHost(address, port, "https");
-            } else {
-                httpHost = new HttpHost(address, port);
-            }
+        if(useHttps) {
+            httpHost = new HttpHost(host, port, "https");
         } else {
-            if(useHttps) {
-                httpHost = new HttpHost(host, port, "https");
-            } else {
-                httpHost = new HttpHost(host, port);
-            }
+            httpHost = new HttpHost(host, port);
         }
         return httpHost;
     }
@@ -285,15 +271,9 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
         StringBuilder url = new StringBuilder();
         url.append(httpHost.getSchemeName());
         url.append("://");
-        if(!StringUtils.isEmpty(address)) {
-            url.append(address);
-            if(port != -1) {
-                url.append(":").append(port);
-            }
-        } else {
-            url.append(host);
-            url.append(":");
-            url.append(port);
+        url.append(host);
+        if(port != -1) {
+            url.append(":").append(port);
         }
         url.append(path);
 
@@ -306,12 +286,9 @@ public abstract class AbstractHttpConnection<I,O> implements Connection<I,O>, In
             url.append(httpHost.getSchemeName());
             url.append("://");
         }
-        if(!StringUtils.isEmpty(address)) {
-            url.append(address);
-        } else {
-            url.append(host);
-            url.append(":");
-            url.append(port);
+        url.append(host);
+        if(port != -1) {
+            url.append(":").append(port);
         }
         url.append(path);
 
