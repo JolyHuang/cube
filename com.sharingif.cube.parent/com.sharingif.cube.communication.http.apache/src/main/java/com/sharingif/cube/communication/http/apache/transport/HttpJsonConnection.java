@@ -1,11 +1,10 @@
 package com.sharingif.cube.communication.http.apache.transport;
 
+import com.sharingif.cube.core.request.RequestContext;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.protocol.HTTP;
 import org.springframework.beans.factory.InitializingBean;
-
-import com.sharingif.cube.core.request.RequestContext;
 
 /**   
  *  
@@ -22,11 +21,6 @@ public class HttpJsonConnection extends AbstractHttpConnection<RequestContext<St
 
 	public HttpJsonConnection() {
 		super();
-		setContentType(ContentType.APPLICATION_JSON);
-	}
-
-	public HttpJsonConnection(String address, String contextPath) {
-		super(address,contextPath);
 		setContentType(ContentType.APPLICATION_JSON);
 	}
 

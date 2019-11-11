@@ -1,11 +1,10 @@
 package com.sharingif.cube.communication.http.apache.transport;
 
+import com.sharingif.cube.core.request.RequestContext;
 import org.apache.http.Consts;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ContentType;
 import org.apache.http.protocol.HTTP;
-
-import com.sharingif.cube.core.request.RequestContext;
 
 /**
  * HttpXMLConnection
@@ -16,11 +15,6 @@ import com.sharingif.cube.core.request.RequestContext;
  * 2018/4/26 下午6:32
  */
 public class HttpXMLConnection extends AbstractHttpConnection<RequestContext<String>, String> {
-
-    public HttpXMLConnection(String address, String contextPath) {
-        super(address,contextPath);
-        setContentType(ContentType.create("application/xml", Consts.UTF_8));
-    }
 
     public HttpXMLConnection(String host, int port, String contextPath) {
         super(host,port,contextPath);
