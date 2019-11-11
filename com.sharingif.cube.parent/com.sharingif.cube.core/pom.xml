@@ -58,12 +58,6 @@
 			</exclusions>
 		</dependency>
 		<dependency>
-		    <groupId>org.aspectj</groupId>
-		    <artifactId>aspectjweaver</artifactId>
-		    <version>1.8.7</version>
-		</dependency>
-
-		<dependency>
 		    <groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>1.1.0.Final</version>
@@ -105,12 +99,23 @@
 			<groupId>${maven.project.springframework.groupId}</groupId>
 			<artifactId>spring-aspects</artifactId>
 			<version>${maven.project.springframework.release.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.aspectj</groupId>
+					<artifactId>aspectjweaver</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
+			<artifactId>aspectjweaver</artifactId>
 			<version>1.9.3</version>
 		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.aspectj</groupId>-->
+<!--			<artifactId>aspectjrt</artifactId>-->
+<!--			<version>1.9.3</version>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>${maven.project.springframework.groupId}</groupId>
 			<artifactId>spring-instrument</artifactId>
