@@ -2,6 +2,7 @@ package com.sharingif.cube.netty.websocket.handler;
 
 import com.sharingif.cube.netty.websocket.WebSocketChannelGroup;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
@@ -9,6 +10,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@ChannelHandler.Sharable
 public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
