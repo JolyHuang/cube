@@ -1,6 +1,5 @@
 package com.sharingif.cube.netty.websocket.handler;
 
-import com.sharingif.cube.netty.websocket.handler.TextWebSocketFrameHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -10,9 +9,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
-import org.springframework.beans.factory.annotation.Value;
 
-import javax.annotation.Resource;
 import javax.net.ssl.SSLEngine;
 
 public class WebSocketChannelInitializer extends ChannelInitializer<SocketChannel> {
@@ -20,20 +17,24 @@ public class WebSocketChannelInitializer extends ChannelInitializer<SocketChanne
     private String path;
     private boolean useSSL;
     private SslContext sslContext;
+    private HttpRequestHandler httpRequestHandler;
+    private TextWebSocketFrameHandler textWebSocketFrameHandler;
 
-    @Value("${websocket.path}")
     public void setPath(String path) {
         this.path = path;
     }
-    @Value("${websocket.use.ssl}")
     public void setUseSSL(boolean useSSL) {
         this.useSSL = useSSL;
     }
-    @Resource
     public void setSslContext(SslContext sslContext) {
         this.sslContext = sslContext;
     }
-
+    public void setHttpRequestHandler(HttpRequestHandler httpRequestHandler) {
+        this.httpRequestHandler = httpRequestHandler;
+    }
+    public void setTextWebSocketFrameHandler(TextWebSocketFrameHandler textWebSocketFrameHandler) {
+        this.textWebSocketFrameHandler = textWebSocketFrameHandler;
+    }
 
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
@@ -45,9 +46,9 @@ public class WebSocketChannelInitializer extends ChannelInitializer<SocketChanne
         pipeline.addLast(new HttpServerCodec());
         pipeline.addLast(new ChunkedWriteHandler());
         pipeline.addLast(new HttpObjectAggregator(65536));
-        pipeline.addLast(new HttpRequestHandler());
+        pipeline.addLast(httpRequestHandler);
         pipeline.addLast(new WebSocketServerProtocolHandler(path));
-        pipeline.addLast(new TextWebSocketFrameHandler());
+        pipeline.addLast(textWebSocketFrameHandler);
     }
 
 }

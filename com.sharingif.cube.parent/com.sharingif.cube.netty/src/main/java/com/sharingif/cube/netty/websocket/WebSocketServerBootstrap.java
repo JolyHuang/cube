@@ -12,7 +12,6 @@ import io.netty.handler.logging.LoggingHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.Resource;
 
@@ -27,12 +26,10 @@ public class WebSocketServerBootstrap implements InitializingBean {
     public WebSocketServerBootstrap() {
         this.workerGroupThreadNumber = 200;
     }
-
-    @Value("${websocket.port}")
     public void setPort(int port) {
         this.port = port;
     }
-    @Value("${websocket.worker.group.thread.number}")
+
     public void setWorkerGroupThreadNumber(int workerGroupThreadNumber) {
         this.workerGroupThreadNumber = workerGroupThreadNumber;
     }
