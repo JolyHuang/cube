@@ -8,14 +8,26 @@ import io.netty.handler.codec.http.*;
 
 public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
+    /**
+     * 判断是否是http握手请求
+     * @param fullHttpRequest
+     * @return
+     */
+    protected boolean isUpgradeWebsocket(FullHttpRequest fullHttpRequest) {
+        return "websocket".equals(fullHttpRequest.headers().get("Upgrade"));
+    }
+
+    protected void badRequest(ChannelHandlerContext channelHandlerContext, FullHttpRequest fullHttpRequest) {
+        FullHttpResponse fullHttpResponse = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST);
+        channelHandlerContext.write(fullHttpResponse);
+        ChannelFuture future = channelHandlerContext.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
+        future.addListener(ChannelFutureListener.CLOSE);
+    }
+
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, FullHttpRequest fullHttpRequest) throws Exception {
-        // 如果HTTP解码失败，返回HHTP异常
-        if (!fullHttpRequest.decoderResult().isSuccess() || (!"websocket".equals(fullHttpRequest.headers().get("Upgrade")))) {
-            FullHttpResponse fullHttpResponse = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST);
-            channelHandlerContext.write(fullHttpResponse);
-            ChannelFuture future = channelHandlerContext.writeAndFlush(LastHttpContent.EMPTY_LAST_CONTENT);
-            future.addListener(ChannelFutureListener.CLOSE);
+        if(!isUpgradeWebsocket(fullHttpRequest)) {
+            badRequest(channelHandlerContext, fullHttpRequest);
             return;
         }
 
