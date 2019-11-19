@@ -50,7 +50,6 @@
 		<module>com.sharingif.cube.communication</module>
 		<module>com.sharingif.cube.communication.http</module>
 		<module>com.sharingif.cube.communication.http.apache</module>
-		<module>com.sharingif.cube.communication.tcp.netty</module>
 
 		<module>com.sharingif.cube.web.vert.x</module>
 		<module>com.sharingif.cube.web.springmvc</module>
