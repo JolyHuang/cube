@@ -1,14 +1,10 @@
 package com.sharingif.cube.netty.websocket;
 
 import com.sharingif.cube.netty.websocket.handler.WebSocketClientChannelInitializer;
-import com.sharingif.cube.netty.websocket.handler.WebSocketClientHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.http.EmptyHttpHeaders;
-import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
-import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import org.slf4j.Logger;
@@ -67,13 +63,6 @@ public class WebSocketClientBootstrap implements InitializingBean {
             return;
         }
 
-        // Connect with V13 (RFC 6455 aka HyBi-17). You can change it to V08 or V00.
-        // If you change it to V00, ping is not supported and remember to change
-        // HttpResponseDecoder to WebSocketHttpResponseDecoder in the pipeline.
-        final WebSocketClientHandler handler = new WebSocketClientHandler(
-                WebSocketClientHandshakerFactory.newHandshaker(
-                        uri, WebSocketVersion.V13, null, false, EmptyHttpHeaders.INSTANCE, 65536));
-
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(bossGroup)
@@ -82,7 +71,6 @@ public class WebSocketClientBootstrap implements InitializingBean {
                 .handler(webSocketClientChannelInitializer);
 
         bootstrap.connect(host, port).sync();
-        handler.handshakeFuture().sync();
         logger.info("Started client Websocket");
     }
 
