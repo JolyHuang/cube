@@ -1,5 +1,6 @@
 package com.sharingif.cube.netty.websocket.handler;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -45,6 +46,10 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
         }
     }
 
+    protected String objectToJsonString(Object obj) throws JsonProcessingException {
+        return objectMapper.writeValueAsString(obj);
+    }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame msg) throws Exception {
 
@@ -66,7 +71,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
             jsonResponse.set_exceptionMessage("bad data");
             jsonResponse.set_exceptionLocalizedMessage("bad data");
 
-            String badData = objectMapper.writeValueAsString(jsonResponse);
+            String badData = objectToJsonString(jsonResponse);
 
             ctx.channel().writeAndFlush(new TextWebSocketFrame(badData));
 

@@ -12,7 +12,7 @@ import io.netty.handler.stream.ChunkedWriteHandler;
 
 import javax.net.ssl.SSLEngine;
 
-public class WebSocketChannelInitializer extends ChannelInitializer<SocketChannel> {
+public class WebSocketServerChannelInitializer extends ChannelInitializer<SocketChannel> {
 
     private String path;
     private boolean useSSL;

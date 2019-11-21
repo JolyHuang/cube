@@ -45,7 +45,7 @@ public class WebSocketServerBootstrap implements InitializingBean {
         try{
             ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
-                    .handler(new LoggingHandler(LogLevel.DEBUG))
+                    .handler(new LoggingHandler(LogLevel.INFO))
                     .childHandler(webSocketChannelInitializer);
 
             ChannelFuture channelFuture = serverBootstrap.bind(port).sync();

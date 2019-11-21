@@ -1,10 +1,10 @@
 import com.sharingif.cube.netty.websocket.WebSocketServerBootstrap;
-import com.sharingif.cube.netty.websocket.handler.WebSocketChannelInitializer;
+import com.sharingif.cube.netty.websocket.handler.WebSocketServerChannelInitializer;
 
 public class WebSocketServer {
 
     public static void main(String[] args) throws Exception {
-        WebSocketChannelInitializer webSocketChannelInitializer = new WebSocketChannelInitializer();
+        WebSocketServerChannelInitializer webSocketChannelInitializer = new WebSocketServerChannelInitializer();
         webSocketChannelInitializer.setPath("/ws");
 
         WebSocketServerBootstrap webSocketServerBootstrap = new WebSocketServerBootstrap();
