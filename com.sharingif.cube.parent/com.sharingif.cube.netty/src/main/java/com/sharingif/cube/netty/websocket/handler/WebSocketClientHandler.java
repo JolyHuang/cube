@@ -40,8 +40,12 @@ public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> 
 
         if (msg instanceof WebSocketFrame) {
             final TextWebSocketFrame textFrame = (TextWebSocketFrame) msg;
-            System.out.println(textFrame.text());
+            channelRead1(ctx, textFrame);
         }
+
+    }
+
+    protected void channelRead1(ChannelHandlerContext channelHandlerContext, TextWebSocketFrame textWebSocketFrame) {
 
     }
 
