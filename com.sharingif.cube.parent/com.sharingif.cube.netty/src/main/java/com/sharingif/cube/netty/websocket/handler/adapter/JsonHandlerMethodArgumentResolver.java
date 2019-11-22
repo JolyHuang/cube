@@ -57,7 +57,7 @@ public class JsonHandlerMethodArgumentResolver implements HandlerMethodArgumentR
 	@Override
 	public Object resolveArgument(MethodParameter parameter, RequestContext<?> requestContext, DataBinderFactory dataBinderFactory) throws CubeException {
 		WebSocketRequestContext vertXRequestContext = (WebSocketRequestContext)requestContext;
-		String data = vertXRequestContext.getRequest().getData();
+		String data = vertXRequestContext.getRequest().get_data();
 		if(data == null) {
 			return null;
 		}
