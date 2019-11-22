@@ -20,7 +20,7 @@ public class WebSocketChannelGroup {
 
     public static ChannelGroupFuture sendMessage(Object obj) {
 
-        return channelGroup.write(obj);
+        return channelGroup.writeAndFlush(obj);
     }
 
 }

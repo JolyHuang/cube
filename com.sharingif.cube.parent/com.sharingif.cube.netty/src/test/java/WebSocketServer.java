@@ -9,7 +9,7 @@ public class WebSocketServer {
 
         WebSocketServerBootstrap webSocketServerBootstrap = new WebSocketServerBootstrap();
         webSocketServerBootstrap.setPort(8888);
-        webSocketServerBootstrap.setWebSocketChannelInitializer(webSocketChannelInitializer);
+        webSocketServerBootstrap.setWebSocketServerChannelInitializer(webSocketChannelInitializer);
 
         webSocketServerBootstrap.start();
     }

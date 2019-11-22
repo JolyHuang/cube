@@ -58,7 +58,7 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
         try {
             JsonNode jsonNode = objectMapper.readTree(jsonData);
             jsonRequest.setLookupPath(jsonNode.get("lookupPath").asText());
-            jsonRequest.set_data(jsonNode.get("_data").asText());
+            jsonRequest.set_data(jsonNode.get("_data").toString());
         } catch (Exception e) {
             logger.error("error parsing websocket request,request data:{}", jsonData);
 

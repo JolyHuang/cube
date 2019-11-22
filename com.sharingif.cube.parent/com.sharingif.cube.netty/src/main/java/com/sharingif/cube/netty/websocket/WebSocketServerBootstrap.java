@@ -1,5 +1,6 @@
 package com.sharingif.cube.netty.websocket;
 
+import com.sharingif.cube.netty.websocket.handler.WebSocketServerChannelInitializer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -21,7 +22,7 @@ public class WebSocketServerBootstrap implements InitializingBean {
 
     private int port;
     private int workerGroupThreadNumber;
-    private ChannelInitializer<SocketChannel> webSocketChannelInitializer;
+    private WebSocketServerChannelInitializer webSocketServerChannelInitializer;
 
     public WebSocketServerBootstrap() {
         this.workerGroupThreadNumber = 200;
@@ -33,9 +34,8 @@ public class WebSocketServerBootstrap implements InitializingBean {
     public void setWorkerGroupThreadNumber(int workerGroupThreadNumber) {
         this.workerGroupThreadNumber = workerGroupThreadNumber;
     }
-    @Resource
-    public void setWebSocketChannelInitializer(ChannelInitializer<SocketChannel> webSocketChannelInitializer) {
-        this.webSocketChannelInitializer = webSocketChannelInitializer;
+    public void setWebSocketServerChannelInitializer(WebSocketServerChannelInitializer webSocketServerChannelInitializer) {
+        this.webSocketServerChannelInitializer = webSocketServerChannelInitializer;
     }
 
     public void start() throws InterruptedException {
@@ -46,7 +46,7 @@ public class WebSocketServerBootstrap implements InitializingBean {
             ServerBootstrap serverBootstrap = new ServerBootstrap();
             serverBootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class)
                     .handler(new LoggingHandler(LogLevel.INFO))
-                    .childHandler(webSocketChannelInitializer);
+                    .childHandler(webSocketServerChannelInitializer);
 
             ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
             logger.info("Started server Websocket");

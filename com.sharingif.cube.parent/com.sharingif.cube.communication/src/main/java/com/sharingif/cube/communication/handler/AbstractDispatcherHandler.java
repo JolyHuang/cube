@@ -93,6 +93,7 @@ public abstract class AbstractDispatcherHandler<I> implements DispatcherHandler<
 
 			doDispatchInternal(request);
 		} catch (Exception exception) {
+			logger.error("handle method chain error", exception);
 			try {
 				getHandlerMethodChain().exception(handlerMethodContent, exception);
 			} catch (Exception e) {

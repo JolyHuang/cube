@@ -1,28 +1,27 @@
 package com.sharingif.cube.netty.websocket.handler;
 
 import io.netty.channel.*;
-import io.netty.handler.codec.http.EmptyHttpHeaders;
 import io.netty.handler.codec.http.FullHttpResponse;
-import io.netty.handler.codec.http.websocketx.*;
-
-import java.net.URI;
+import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
+import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 
 public class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
     private final WebSocketClientHandshaker handshaker;
     private ChannelPromise handshakeFuture;
 
-    public WebSocketClientHandler(String uri) {
-        // Connect with V13 (RFC 6455 aka HyBi-17). You can change it to V08 or V00.
-        // If you change it to V00, ping is not supported and remember to change
-        // HttpResponseDecoder to WebSocketHttpResponseDecoder in the pipeline.
-        this.handshaker = WebSocketClientHandshakerFactory.newHandshaker(URI.create(uri), WebSocketVersion.V13, null, false, EmptyHttpHeaders.INSTANCE, 65536);
+    public WebSocketClientHandler(final WebSocketClientHandshaker handshaker) {
+        this.handshaker = handshaker;
+    }
+
+    public ChannelFuture handshakeFuture() {
+        return handshakeFuture;
     }
 
     @Override
     public void handlerAdded(final ChannelHandlerContext ctx) throws Exception {
         handshakeFuture = ctx.newPromise();
-        handshakeFuture.sync();
     }
 
     @Override

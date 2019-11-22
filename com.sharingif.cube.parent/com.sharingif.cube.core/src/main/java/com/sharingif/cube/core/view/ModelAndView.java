@@ -3,7 +3,7 @@ package com.sharingif.cube.core.view;
 public class ModelAndView<T> {
 
     private T model;
-    private View view;
+    private String viewName;
 
     public T getModel() {
         return model;
@@ -13,11 +13,11 @@ public class ModelAndView<T> {
         this.model = model;
     }
 
-    public View getView() {
-        return view;
+    public String getViewName() {
+        return viewName;
     }
 
-    public void setView(View view) {
-        this.view = view;
+    public void setViewName(String viewName) {
+        this.viewName = viewName;
     }
 }
