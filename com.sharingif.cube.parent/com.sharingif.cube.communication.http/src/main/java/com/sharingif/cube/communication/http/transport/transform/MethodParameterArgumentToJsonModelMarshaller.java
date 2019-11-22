@@ -20,7 +20,7 @@ import org.springframework.validation.annotation.Validated;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sharingif.cube.communication.JsonModel;
+import com.sharingif.cube.core.view.JsonModel;
 import com.sharingif.cube.core.config.CubeConfigure;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.exception.CubeRuntimeException;

@@ -1,6 +1,6 @@
 package com.sharingif.cube.communication.exception;
 
-import com.sharingif.cube.communication.JsonModel;
+import com.sharingif.cube.core.view.JsonModel;
 
 /**
  * JsonModel 业务通讯异常处理器

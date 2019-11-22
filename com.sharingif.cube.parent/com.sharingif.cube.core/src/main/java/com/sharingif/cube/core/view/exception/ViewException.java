@@ -1,4 +1,4 @@
-package com.sharingif.cube.communication.view.exception;
+package com.sharingif.cube.core.view.exception;
 
 import com.sharingif.cube.core.exception.CubeRuntimeException;
 

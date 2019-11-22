@@ -1,6 +1,6 @@
 package com.sharingif.cube.communication.transport;
 
-import com.sharingif.cube.communication.JsonModel;
+import com.sharingif.cube.core.view.JsonModel;
 import com.sharingif.cube.communication.exception.BusinessCommunicationException;
 import com.sharingif.cube.core.exception.CubeException;
 import com.sharingif.cube.core.handler.HandlerMethod;

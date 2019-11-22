@@ -1,4 +1,4 @@
-package com.sharingif.cube.communication;
+package com.sharingif.cube.core.view;
 
 import com.sharingif.cube.core.exception.FieldError;
 

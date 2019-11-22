@@ -1,7 +1,8 @@
-package com.sharingif.cube.communication.view;
+package com.sharingif.cube.core.view;
 
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
 import com.sharingif.cube.core.request.RequestContext;
+import com.sharingif.cube.core.view.View;
 
 /**
  * ViewResolver

@@ -1,6 +1,6 @@
 package com.sharingif.cube.communication.http.transport.transform;
 
-import com.sharingif.cube.communication.JsonModel;
+import com.sharingif.cube.core.view.JsonModel;
 import com.sharingif.cube.core.request.RequestContext;
 import com.sharingif.cube.core.transport.exception.MarshallerException;
 import com.sharingif.cube.core.transport.transform.Marshaller;

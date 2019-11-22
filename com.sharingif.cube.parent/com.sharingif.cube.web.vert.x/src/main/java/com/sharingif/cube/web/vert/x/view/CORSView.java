@@ -1,6 +1,6 @@
 package com.sharingif.cube.web.vert.x.view;
 
-import com.sharingif.cube.communication.view.View;
+import com.sharingif.cube.core.view.View;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
 import com.sharingif.cube.core.request.RequestContext;
 import com.sharingif.cube.web.vert.x.request.VertXRequestContext;

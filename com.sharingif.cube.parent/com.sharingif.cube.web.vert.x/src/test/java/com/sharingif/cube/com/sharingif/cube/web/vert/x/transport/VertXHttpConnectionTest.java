@@ -7,7 +7,7 @@ import java.util.Locale;
 
 import org.junit.Test;
 
-import com.sharingif.cube.communication.JsonModel;
+import com.sharingif.cube.core.view.JsonModel;
 import com.sharingif.cube.communication.MediaType;
 import com.sharingif.cube.communication.http.HttpMethod;
 import com.sharingif.cube.communication.http.transport.transform.HttpJsonTransform;

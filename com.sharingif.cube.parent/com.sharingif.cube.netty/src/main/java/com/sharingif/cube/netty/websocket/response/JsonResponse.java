@@ -1,6 +1,6 @@
 package com.sharingif.cube.netty.websocket.response;
 
-import com.sharingif.cube.communication.JsonModel;
+import com.sharingif.cube.core.view.JsonModel;
 
 public class JsonResponse<T> extends JsonModel<T> {
 

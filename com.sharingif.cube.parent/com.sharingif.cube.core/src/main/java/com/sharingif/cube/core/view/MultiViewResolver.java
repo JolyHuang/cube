@@ -1,13 +1,12 @@
-package com.sharingif.cube.communication.view;
+package com.sharingif.cube.core.view;
 
-import java.util.List;
-
+import com.sharingif.cube.core.exception.handler.ExceptionContent;
+import com.sharingif.cube.core.request.RequestContext;
+import com.sharingif.cube.core.view.exception.NoViewFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sharingif.cube.communication.view.exception.NoViewFoundException;
-import com.sharingif.cube.core.exception.handler.ExceptionContent;
-import com.sharingif.cube.core.request.RequestContext;
+import java.util.List;
 
 /**
  * ViewResolver 集合

@@ -3,10 +3,10 @@ package com.sharingif.cube.communication.handler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.sharingif.cube.communication.view.MultiViewResolver;
-import com.sharingif.cube.communication.view.View;
-import com.sharingif.cube.communication.view.exception.NoViewFoundException;
-import com.sharingif.cube.communication.view.exception.ViewException;
+import com.sharingif.cube.core.view.MultiViewResolver;
+import com.sharingif.cube.core.view.View;
+import com.sharingif.cube.core.view.exception.NoViewFoundException;
+import com.sharingif.cube.core.view.exception.ViewException;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
 import com.sharingif.cube.core.exception.handler.MultiCubeExceptionHandler;
 import com.sharingif.cube.core.handler.adapter.MultiHandlerMethodAdapter;
