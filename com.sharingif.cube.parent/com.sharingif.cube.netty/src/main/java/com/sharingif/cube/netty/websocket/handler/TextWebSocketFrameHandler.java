@@ -1,11 +1,10 @@
 package com.sharingif.cube.netty.websocket.handler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.sharingif.cube.core.config.CubeConfigure;
-import com.sharingif.cube.netty.websocket.*;
+import com.sharingif.cube.netty.websocket.WebSocketChannelGroup;
 import com.sharingif.cube.netty.websocket.request.JsonRequest;
 import com.sharingif.cube.netty.websocket.request.WebSocketRequest;
 import com.sharingif.cube.netty.websocket.response.JsonResponse;
@@ -55,13 +54,11 @@ public class TextWebSocketFrameHandler extends SimpleChannelInboundHandler<TextW
 
         String jsonData =  msg.text();
 
-        JsonRequest<String> jsonRequest;
+        JsonRequest<String> jsonRequest = new JsonRequest<>();
         try {
-            TypeFactory typeFactory = this.objectMapper.getTypeFactory();
-
-            JavaType jsonDataJavaType = typeFactory.constructParametricType(JsonRequest.class, String.class);
-
-            jsonRequest = objectMapper.readValue(jsonData, jsonDataJavaType);
+            JsonNode jsonNode = objectMapper.readTree(jsonData);
+            jsonRequest.setLookupPath(jsonNode.get("lookupPath").asText());
+            jsonRequest.set_data(jsonNode.get("_data").asText());
         } catch (Exception e) {
             logger.error("error parsing websocket request,request data:{}", jsonData);
 
