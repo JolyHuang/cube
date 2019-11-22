@@ -61,11 +61,10 @@ public abstract class AbstractJsonView implements View {
 			throw new CubeRuntimeException("convert object to json error", e);
 		}
 	}
-	
-	protected String getResponseData(Object value, ICubeException exception) {
-		
+
+	protected JsonModel getJsonModel(Object value, ICubeException exception) {
 		JsonModel<Object> jsonModel = null;
-		
+
 		if(exception == null) {
 			jsonModel = new JsonModel<Object>(true, null, null, value);
 		} else {
@@ -76,6 +75,13 @@ public abstract class AbstractJsonView implements View {
 				jsonModel.set_fieldErrors(localeFieldErrors);
 			}
 		}
+
+		return jsonModel;
+	}
+	
+	protected String getResponseData(Object value, ICubeException exception) {
+		
+		JsonModel<Object> jsonModel = getJsonModel(value, exception);
 		
 		return objectoJson(jsonModel);
 	}
