@@ -1,6 +1,5 @@
 package com.sharingif.cube.netty.websocket.request;
 
-import com.sharingif.cube.netty.websocket.request.JsonRequest;
 import io.netty.channel.ChannelHandlerContext;
 
 public class WebSocketRequest {
