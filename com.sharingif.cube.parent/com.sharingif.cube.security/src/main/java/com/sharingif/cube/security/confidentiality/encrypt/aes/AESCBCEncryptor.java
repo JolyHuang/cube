@@ -26,6 +26,10 @@ public class AESCBCEncryptor extends AbstractAESEncryptor implements TextEncrypt
 		super(CIPHER_ALGORITHM, secretKey, secretKey, binaryCoder);
 	}
 
+	public AESCBCEncryptor(byte[] secretKey, byte[]  ivParameterKey, BinaryCoder binaryCoder) {
+		super(CIPHER_ALGORITHM, secretKey, ivParameterKey, binaryCoder);
+	}
+
 	@Override
 	public byte[] encrypt(byte[] bytes) {
 		return encryptAES(bytes);
