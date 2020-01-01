@@ -12,6 +12,18 @@ import java.util.Date;
  */
 public class JobModel {
 
+    public JobModel(String lookupPath, String dataId) {
+        this.lookupPath = lookupPath;
+        this.planExecuteTime = new Date();
+        this.dataId = dataId;
+    }
+
+    public JobModel(String lookupPath, Date planExecuteTime, String dataId) {
+        this.lookupPath = lookupPath;
+        this.planExecuteTime = planExecuteTime;
+        this.dataId = dataId;
+    }
+
     /**
      * 交易名
      */

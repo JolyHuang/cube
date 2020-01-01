@@ -1,7 +1,5 @@
 package com.sharingif.cube.batch.core;
 
-import com.sharingif.cube.batch.core.request.JobRequest;
-
 import java.util.List;
 
 /**
@@ -16,35 +14,37 @@ public interface JobService {
 
     /**
      * 添加job
+     * @param jobModel
+     * @return
      */
-    void add(JobRequest jobRequest);
+    int add(JobModel jobModel);
 
     /**
      * job处理成功
-     * @param jobId : 处理的job id
-     * @param jobModel : 成功处理信息
-     */
-    void add(String jobId, JobModel jobModel);
-
-    /**
-     * job处理成功
-     * @param jobId : 处理的job id
-     * @param jobModelList : 成功处理信息
-     */
-    void add(String jobId, List<JobModel> jobModelList);
-
-    /**
-     * job处理成功
-     * @param jobId : 处理的job id
+     * @param jobId
      */
     void success(String jobId);
 
     /**
+     * job处理成功
+     * @param jobId
+     * @param jobModel
+     */
+    void success(String jobId, JobModel jobModel);
+
+    /**
+     * job处理成功
+     * @param jobId
+     * @param jobModelList
+     */
+    void success(String jobId, List<JobModel> jobModelList);
+
+    /**
      * job处理失败
-     * @param jobId : 处理的job id
-     * @param message : 错误码
-     * @param localizedMessage : 本地错误消息
-     * @param cause : 错误原因
+     * @param jobId
+     * @param message
+     * @param localizedMessage
+     * @param cause
      */
     void failure(String jobId, String message, String localizedMessage, String cause);
 
