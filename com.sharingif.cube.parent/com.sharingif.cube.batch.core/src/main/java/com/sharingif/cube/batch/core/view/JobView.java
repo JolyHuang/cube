@@ -7,6 +7,7 @@ import com.sharingif.cube.batch.core.request.JobRequest;
 import com.sharingif.cube.core.exception.ICubeException;
 import com.sharingif.cube.core.exception.handler.ExceptionContent;
 import com.sharingif.cube.core.request.RequestContext;
+import com.sharingif.cube.core.util.StringUtils;
 import com.sharingif.cube.core.view.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,11 @@ public class JobView implements View {
     public void view(RequestContext<?> requestContext, Object returnValue, ExceptionContent exceptionContent) {
 
         JobRequest jobRequest = (JobRequest)requestContext.getRequest();
+
+        if(StringUtils.isTrimEmpty(jobRequest.getId())) {
+            return;
+        }
+
         if(exceptionContent != null) {
             ICubeException cubeException =  exceptionContent.getCubeException();
 
