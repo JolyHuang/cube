@@ -36,7 +36,6 @@ public class RemoteServices {
 	private RequestContextResolver<Object[], ?> requestContextResolver;
 	private AbstractHandlerMethodCommunicationTransportFactory<?,?,?,?,?,?> handlerMethodCommunicationTransportFactory;
 	private Map<String, Class> serviceMap;
-	private List<String> services;
 
 	private Map<String, AbstractHandlerMethodCommunicationTransport<?,?,?,?,?,?>> cacheHandlerMethodCommunicationTransportMap = new HashMap<String,AbstractHandlerMethodCommunicationTransport<?,?,?,?,?,?>>(128);
 
@@ -56,9 +55,6 @@ public class RemoteServices {
 	public void setHandlerMethodCommunicationTransportFactory(
 			AbstractHandlerMethodCommunicationTransportFactory<?,?,?,?,?,?> handlerMethodCommunicationTransportFactory) {
 		this.handlerMethodCommunicationTransportFactory = handlerMethodCommunicationTransportFactory;
-	}
-	public List<String> getServices() {
-		return services;
 	}
 
 	protected Class<?> getClass(String service) {
@@ -86,24 +82,10 @@ public class RemoteServices {
 		return proxyClassName;
 	}
 
-	public void addService(String service) {
-		Class<?> cls = getClass(service);
+	public void addService(Class<?> cls) {
 		String proxyClassName = getProxyClassName(cls);
 
 		addService(proxyClassName, cls);
-	}
-
-	public void addService(String proxyClassName, String service) {
-		Class<?> cls = getClass(service);
-		addService(proxyClassName, cls);
-	}
-
-	public void setServices(List<String> services) {
-		this.services = services;
-
-		for(String service : services) {
-			addService(service);
-		}
 	}
 
 	public void addService(String proxyClassName, Class<?> cls) {
