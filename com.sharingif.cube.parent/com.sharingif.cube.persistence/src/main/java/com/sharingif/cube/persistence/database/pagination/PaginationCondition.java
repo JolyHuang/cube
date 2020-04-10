@@ -32,6 +32,7 @@ public class PaginationCondition<T extends Object> implements Serializable {
 	private List<String> sort;
 	private RowBounds rowBounds;
 	private boolean isQueryCount = DEFAULT_ISQUERY_COUNT;
+	private boolean closeMaxDefaultPageSize = false;
 	
 	public PaginationCondition(){
 		
@@ -80,5 +81,12 @@ public class PaginationCondition<T extends Object> implements Serializable {
 	public void setQueryCount(boolean isQueryCount) {
 		this.isQueryCount = isQueryCount;
 	}
-	
+
+	public boolean isCloseMaxDefaultPageSize() {
+		return closeMaxDefaultPageSize;
+	}
+
+	public void setCloseMaxDefaultPageSize(boolean closeMaxDefaultPageSize) {
+		this.closeMaxDefaultPageSize = closeMaxDefaultPageSize;
+	}
 }

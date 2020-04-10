@@ -191,10 +191,13 @@ public abstract class CubeMyBatisDAOImpl<T, ID extends Serializable> extends Abs
 		
 		if(null == paginationCondition)
 			paginationCondition = new PaginationCondition<Object>();
-		
-		if(PaginationCondition.DEFAULT_PAGE_SIZE < paginationCondition.getPageSize())
-			paginationCondition.setPageSize(PaginationCondition.DEFAULT_PAGE_SIZE);
-		
+
+		if(!paginationCondition.isCloseMaxDefaultPageSize()) {
+			if(PaginationCondition.DEFAULT_PAGE_SIZE < paginationCondition.getPageSize()) {
+				paginationCondition.setPageSize(PaginationCondition.DEFAULT_PAGE_SIZE);
+			}
+		}
+
 		int count = 0;
 		if(paginationCondition.isQueryCount()){
 			count = queryPaginationCount(countStatement, paginationCondition);
