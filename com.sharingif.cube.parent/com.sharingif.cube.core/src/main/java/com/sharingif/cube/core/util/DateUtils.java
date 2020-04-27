@@ -1,5 +1,6 @@
 package com.sharingif.cube.core.util;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -138,6 +139,62 @@ public class DateUtils {
 		long intervalDay = (startDate.getTime() - endDate.getTime())/(24*60*60*1000L);
 
 		return Math.abs((int) intervalDay);
+	}
+
+	public static StartEndDate getStartEndDate(int month) {
+		StartEndDate startEndDate = new StartEndDate();
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.MONTH, month);
+		calendar.set(Calendar.DAY_OF_MONTH,1);
+		calendar.set(Calendar.HOUR_OF_DAY, 00);
+		calendar.set(Calendar.MINUTE, 00);
+		calendar.set(Calendar.SECOND, 00);
+
+		startEndDate.setStartDate(calendar.getTime());
+
+		calendar = Calendar.getInstance();
+		calendar.set(Calendar.MONTH, month);
+		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+
+		startEndDate.setEndDate(calendar.getTime());
+
+		return startEndDate;
+	}
+
+	public static class StartEndDate implements Serializable {
+
+		private Date startDate;
+		private Date endDate;
+
+		public Date getStartDate() {
+			return startDate;
+		}
+
+		public void setStartDate(Date startDate) {
+			this.startDate = startDate;
+		}
+
+		public Date getEndDate() {
+			return endDate;
+		}
+
+		public void setEndDate(Date endDate) {
+			this.endDate = endDate;
+		}
+
+		@Override
+		public String toString() {
+			final StringBuilder sb = new StringBuilder("DateUtils{");
+			sb.append("startDate=").append(startDate);
+			sb.append(", endDate=").append(endDate);
+			sb.append('}');
+			return sb.toString();
+		}
+
 	}
 
 }
