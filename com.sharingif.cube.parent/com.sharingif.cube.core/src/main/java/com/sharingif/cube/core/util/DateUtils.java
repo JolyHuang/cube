@@ -141,6 +141,11 @@ public class DateUtils {
 		return Math.abs((int) intervalDay);
 	}
 
+	/**
+	 * 获取指定月份开始、结束日期
+	 * @param month
+	 * @return
+	 */
 	public static StartEndDate getStartEndDate(int month) {
 		StartEndDate startEndDate = new StartEndDate();
 
