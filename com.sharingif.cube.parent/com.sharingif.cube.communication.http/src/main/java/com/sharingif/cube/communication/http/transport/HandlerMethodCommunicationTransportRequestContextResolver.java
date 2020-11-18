@@ -54,7 +54,7 @@ public class HandlerMethodCommunicationTransportRequestContextResolver implement
 			MethodParameter[] parameters = remoteHttpJsonHandlerMethod.getMethodParameters();
 			for(int i=0; i<parameters.length; i++) {
 				MethodParameter parameter = parameters[i];
-				if(!parameter.getClass().isPrimitive() && !(parameter.getParameterType().isAssignableFrom(String.class))){
+				if(!parameter.getClass().isPrimitive()){
 					continue;
 				}
 				PathVariable pathVariable = parameter.getParameterAnnotation(PathVariable.class);
