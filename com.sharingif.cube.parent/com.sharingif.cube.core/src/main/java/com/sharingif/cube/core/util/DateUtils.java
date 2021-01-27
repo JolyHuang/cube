@@ -142,15 +142,15 @@ public class DateUtils {
 	}
 
 	/**
-	 * 获取指定月份开始、结束日期
+	 * 获取指定日期开始、结束日期
 	 * @param month
 	 * @return
 	 */
-	public static StartEndDate getStartEndDate(int month) {
+	public static StartEndDate getStartEndDate(Date date) {
 		StartEndDate startEndDate = new StartEndDate();
 
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.MONTH, month);
+		calendar.setTime(date);
 		calendar.set(Calendar.DAY_OF_MONTH,1);
 		calendar.set(Calendar.HOUR_OF_DAY, 00);
 		calendar.set(Calendar.MINUTE, 00);
@@ -159,7 +159,7 @@ public class DateUtils {
 		startEndDate.setStartDate(calendar.getTime());
 
 		calendar = Calendar.getInstance();
-		calendar.set(Calendar.MONTH, month);
+		calendar.setTime(date);
 		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 		calendar.set(Calendar.HOUR_OF_DAY, 23);
 		calendar.set(Calendar.MINUTE, 59);
